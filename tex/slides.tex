@@ -1,0 +1,2516 @@
+\documentclass[aspectratio=169]{beamer}
+\mode<presentation> {
+  \usetheme{Szeged}
+% \setbeamercovered{transparent}
+  \setbeamercovered{dynamic}
+  % or whatever (possibly just delete it)
+}
+
+\usepackage{inconsolata}
+%\usepackage[charter]{mathdesign}
+% \def\rmdefault{bch} % not scaled
+% \def\ttdefault{blg}
+
+\usepackage{url}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{listings}
+
+\usepackage{subfigure}
+\usepackage{beamerthemesplit}
+\usepackage[brazil]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage[mathscr]{eucal}
+\usepackage{amsmath}
+
+\usepackage{multicol}
+\usepackage{mwlabinputs2}
+\lstdefinestyle{normal}{
+  basicstyle=\scriptsize\ttfamily,%
+  keywordstyle=[1]\color[rgb]{0.2,0.2,0.8}\bfseries,%
+  keywordstyle=[2]\color[rgb]{0.8,0.2,0.2}\bfseries,%
+  commentstyle=\color[rgb]{0.5,0.5,1}\itshape,%
+  stringstyle=\color[rgb]{0.2,0.5,0.2}\itshape,%
+  showstringspaces=false,%
+  xleftmargin=-12pt,%
+  %framesep=0pt,%
+  %rulesep=0pt,%
+  %framerule=0pt,%
+  %frame=single,%
+  tabsize=2
+}
+\lstdefinestyle{new}{
+  style=normal,%
+  showlines=true,%
+  aboveskip=0pt,%
+  belowskip=0pt,%
+}
+\lstdefinestyle{old}{
+  style=new,%
+  basicstyle=\scriptsize\color[gray]{0.5}\ttfamily,%
+  keywordstyle=[1]\color[rgb]{0.5,0.5,1}\bfseries,%
+  keywordstyle=[2]\color[rgb]{1,0.5,0.5}\bfseries,%
+  commentstyle=\color[rgb]{0.8,0.8,1}\itshape,%
+  stringstyle=\color[rgb]{0.5,0.8,0.5}\itshape%
+}
+
+\codestyle{normal}
+\codelanguage{java}
+
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\term}[1]{\textit{#1}}
+
+\newcommand{\inputlua}[4][]
+  {\lstinputlisting[
+    language=lua,style=#2,#1]{src/#3/lua/openbus/demo/#4.lua}}
+\newcommand{\inputidl}[4][]
+  {\lstinputlisting[
+    language={[CORBA]IDL},style=#2,#1]{src/#3/idl/#4.idl}}
+\newcommand{\inputjava}[4][]
+  {\lstinputlisting[
+    language=java,style=#2,#1]{src/#3/java/tecgraf/openbus/demo/#4.java}}
+
+%%%% INICIO %%%%%%%%%%%%%%%%%%%%%%
+
+%\addtobeamertemplate{frametitle}{\includegraphics{img/tecgraf.jpg}}
+%\titlegraphic{\includegraphics[scale=0.5]{img/tecgraf.jpg}}
+%\logo{\includegraphics[scale=0.5]{img/tecgraf.jpg}}
+\setbeamertemplate{headline}{}
+\setbeamertemplate{footline}[page number]
+\setbeamertemplate{navigation symbols}{}
+% \setbeamertemplate{footline}[page number]
+% \setbeamertemplate{footline}{\hfill\insertframenumber/\inserttotalframenumber}
+
+\definecolor{tecgraf}{rgb}{.26953125,.43359375,.51171875}
+\usecolortheme[named=tecgraf]{structure}
+
+\title[OpenBus 2.0]{OpenBus 2.0}
+
+\author{Renato Maia \\ (maia@tecgraf.puc-rio.br)}
+
+\institute{Tecgraf/PUC-Rio}
+
+\date{17 de março de 2014}
+
+% revisitando a agenda a cada mudança de seção
+\AtBeginSection[]
+{
+  \begin{frame}<beamer>
+  \frametitle{Agenda}
+  \tableofcontents[currentsection,currentsubsection]
+  \end{frame}
+}
+% revisitando a agenda a cada mudança de sub-seção
+\AtBeginSubsection[]
+{
+  \begin{frame}<beamer>
+  \frametitle{Agenda}
+  \tableofcontents[currentsection,currentsubsection]
+  \end{frame}
+}
+
+\begin{document}
+
+\frame{\titlepage}
+
+\begin{frame}
+%\transdissolve
+\frametitle{Agenda}
+\tableofcontents
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{O Que é?}
+
+% problema
+\frame{
+  \frametitle{O que é o OpenBus?}
+  \begin{center}
+    Middleware de Integração de Sistemas Computacionais Corporativos
+  \end{center}
+}
+
+\frame{
+  \frametitle{O que é o OpenBus?}
+  \begin{center}
+    \textbf{Middleware} de Integração de Sistemas Computacionais Corporativos
+  \end{center}
+  \begin{itemize}
+    \item Mistura de vários elementos.
+    \begin{itemize}
+      \item Bibliotecas
+      \item Serviços
+      \item Processos
+      \item Utilitários (compiladores, geradores, etc.)
+    \end{itemize}
+    \item Implementados sobre o sistema operational.
+    \item Formam uma infraestrutura de software para aplicações.
+  \end{itemize}
+}
+
+\frame{
+  \frametitle{O que é o OpenBus?}
+  \begin{center}
+    Middleware de \textbf{Integração} de Sistemas Computacionais Corporativos
+  \end{center}
+  \begin{itemize}
+    \item Permitir que componentes distintos funcionem em conjunto.
+    \item Permitir a troca de informações.
+    \item Permitir a solicitação de serviços.
+  \end{itemize}
+}
+
+\frame{
+  \frametitle{O que é o OpenBus?}
+  \begin{center}
+    Middleware de Integração de \textbf{Sistemas Computacionais} Corporativos
+  \end{center}
+  \begin{itemize}
+    \item Os clientes ou usuários são programas.
+    \begin{itemize}
+      \item Provedores de serviços.
+      \item Aplicações cliente.
+      \item Servidores/aplicações Web.
+      \item Aplicativos de celular.
+    \end{itemize}
+    \item Os nossos usuários indiretos são os desenvolvedores dessas aplicações.
+  \end{itemize}
+}
+
+\frame{
+  \frametitle{O que é o OpenBus?}
+  \begin{center}
+    Middleware de Integração de Sistemas Computacionais \textbf{Corporativos}
+  \end{center}
+  \begin{itemize}
+    \item Os sistemas integrados estão sob o domínio de uma institiuição ou corporação.
+    \item Devem seguir regras e definições da instituição.
+    \item Esse controle é denominado \textbf{governança}.
+  \end{itemize}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{De Onde Surgiu?}
+
+\subsection{Motivação}
+
+\begin{frame}
+  \frametitle{Serviços de E\&P}
+  \begin{center}
+    \includegraphics[height=.8\textheight]{img/theneed_01}
+  \end{center}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Integração dos Serviços de E\&P}
+  \begin{center}
+    \includegraphics[height=.8\textheight]{img/theneed_02}
+  \end{center}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Tecnologias de Integração}
+  \begin{center}
+    \includegraphics[height=.8\textheight]{img/theneed_03}
+  \end{center}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Gerência das Integrações}
+  \begin{center}
+    \includegraphics[height=.8\textheight]{img/theneed_04}
+  \end{center}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Uma Proposta para Integração de Serviços}
+  \begin{center}
+    \includegraphics[height=.8\textheight]{img/theneed_05}
+  \end{center}
+\end{frame}
+
+\subsection{Requisitos}
+
+\begin{frame}
+  \frametitle{Comunicação Padronizada}
+  \begin{itemize}
+    \item Aberto e independente de tecnologia.
+    \begin{itemize}
+      \item Implementações heterogêneas.
+      \item Implementações por terceiros.
+    \end{itemize}
+    \item Dados estruturados.
+    \begin{itemize}
+      \item Dados complexos.
+      \item Alto nível de processamento.
+    \end{itemize}
+    \item Eficiente (rápido, pequeno e escalável).
+    \begin{itemize}
+      \item Grandes volumes de dados.
+      \item Muitos clientes.
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Acesso Identificado}
+  \begin{itemize}
+    \item Serviços são confidenciais e estrategicamente valiosos.
+    \item Mesmo dentro de uma corporação nem todos devem ter acesso a tudo.
+    \item É necessário pelo menos saber quem solicita cada serviço.
+    \begin{itemize}
+      \item Aplicações podem negar ou aceitar de acordo com quem solicita.
+      \item Ou seja, autorização fica a cargo das aplicações.
+    \end{itemize}
+    \item Permitir fazer solicitações em nome de alguém (delegação).
+    \begin{itemize}
+      \item Quando um serviço recebe uma solicitação, poder solicitar outros serviços em nome do originador da solicitação.
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Descoberta de Serviços}
+  \begin{itemize}
+    \item Quais serviços estão disponiveis?
+    \item Quais serviços devem ser utilizados?
+    \item Como acessar esses serviços?
+    \item Como oferecer serviços de forma fácil e simplificada?
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Governança Centralizada}
+  \begin{itemize}
+    \item Dentro do domínio de uma instituição é necessário ter controle e imposição de regras e padrões.
+    \begin{itemize}
+      \item Otimização de processos da instituição.
+      \item Aderência às estratégias da instituição.
+      \item Acompanhamento do desempenho dentro da instituição.
+    \end{itemize}
+    \item A governança é realizada por uma equipe técnica responsável pela monitoração, avaliação e controle das integrações.
+  \end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Qual a Proposta?}
+
+\subsection{Visão Geral}
+
+\begin{frame}
+  \frametitle{Barramento e Conexões}
+  \includegraphics[width=\textwidth]{img/bus_00}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Autenticação}
+  \includegraphics[width=\textwidth]{img/bus_01}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Logins}
+  \includegraphics[width=\textwidth]{img/bus_02}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Entidades}
+  \includegraphics[width=\textwidth]{img/bus_03}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Entidades}
+  \includegraphics[width=\textwidth]{img/bus_04}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Serviços}
+  \includegraphics[width=\textwidth]{img/bus_05}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Ofertas de Serviço}
+  \includegraphics[width=\textwidth]{img/bus_06}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Cadeias de Chamada: Autorização}
+  \includegraphics[width=\textwidth]{img/bus_07}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Cadeias de Chamada: Autorização}
+  \includegraphics[width=\textwidth]{img/bus_08}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Cadeias de Chamada: Delegação}
+  \includegraphics[width=\textwidth]{img/bus_09}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Cadeias de Chamada: Delegação}
+  \includegraphics[width=\textwidth]{img/bus_10}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Cadeias de Chamada: Delegação}
+  \includegraphics[width=\textwidth]{img/bus_11}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Conceitos}
+  \includegraphics[height=.8\textheight]{img/concepts}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Conceitos}
+  \includegraphics[height=.8\textheight]{img/concepts2}
+\end{frame}
+
+\subsection{Visão Interna}
+
+\begin{frame}
+  \frametitle{Arquitetura Interna do Barramento}
+  \includegraphics[width=\textwidth]{img/bussoa_01}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Arquitetura Interna do Barramento}
+  \includegraphics[width=\textwidth]{img/bussoa_02}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Arquitetura Interna do Barramento}
+  \includegraphics[width=\textwidth]{img/bussoa_03}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Arquitetura Interna do Barramento}
+  \includegraphics[width=\textwidth]{img/bussoa_04}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Arquitetura Interna do Barramento}
+  \includegraphics[width=\textwidth]{img/bussoa_05}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Arquitetura Interna do Barramento}
+  \includegraphics[width=\textwidth]{img/bussoa_06}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Arquitetura Interna do Barramento}
+  \includegraphics[width=\textwidth]{img/bussoa_07}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Como Se Usa?}
+
+\subsection{Comunicação}
+
+\begin{frame}
+  \frametitle{Exemplo: Matrizes de Transformação}
+  \inputjava{new}{ex01}{matrices/Application}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Exercício 01: Executando a Aplicação}
+  \begin{block}{Compilação}
+    \begin{samplecode}[language=bash]
+    javac java/tecgraf/openbus/demo/matrices/Application.java
+    \end{samplecode}
+  \end{block}
+  \begin{block}{Execução}
+    \begin{samplecode}[language=bash]
+    java tecgraf.openbus.demo.matrices.Application
+    \end{samplecode}
+  \end{block}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Aplicação Monolítica}
+  \includegraphics[width=\textwidth]{img/monolithic}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Intermediador de Chamadas de Objeto}
+  \includegraphics[width=\textwidth]{img/orbapp}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Protocolo de Interoperabilidade de ORBs}
+  \includegraphics[width=\textwidth]{img/giop}
+\end{frame}
+
+\begin{frame}
+  \frametitle{ORB Genérico}
+  \includegraphics[width=\textwidth]{img/orbgeneric}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Linguagem de Descrição de Interfaces}
+  \includegraphics[width=\textwidth]{img/idlspec}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Compilação da IDL}
+  \includegraphics[width=\textwidth]{img/idloutput}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Referências de Objeto}
+  \includegraphics[width=\textwidth]{img/ior}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Arquitetura Comum de ORBs}
+  \includegraphics[width=\textwidth]{img/corba}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Matrizes de Transformação em IDL}
+  \inputidl{new}{ex02}{matrices}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Exercício 02: Compilando a IDL (Oracle JDK)}
+  \begin{block}{Compilação}
+    \begin{samplecode}[language=bash]
+    idlj -fallTIE matrices.idl  
+    \end{samplecode}
+  \end{block}
+  \begin{itemize}
+    \item CardinalHelper.java
+    \item SquareMatrix.java
+    \item SquareMatrixHelper.java
+    \item SquareMatrixHolder.java
+    \item SquareMatrixOperations.java
+    \item SquareMatrixPOA.java
+    \item SquareMatrixPOATie.java
+    \item VectorHelper.java
+    \item VectorHolder.java
+    \item \_SquareMatrixStub.java
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Servidor CORBA}
+  \inputjava[firstline=8,lastline=26]{new}{ex02}{matrices/Server}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Exercício 02-A: Executando o Servidor}
+  \begin{block}{Compilação}
+    \begin{samplecode}[language=bash]
+    javac java/tecgraf/openbus/demo/matrices/Server.java
+    \end{samplecode}
+  \end{block}
+  \begin{block}{Execução}
+    \begin{samplecode}[language=bash]
+    java tecgraf.openbus.demo.matrices.Server
+    \end{samplecode}
+    \begin{itemize}
+      \item Selecione e copie o IOR.
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Aplicação CORBA}
+  \inputjava[firstline= 7,lastline= 7]{old}{ex02}{matrices/Application}
+  \inputjava[firstline= 8,lastline=12]{new}{ex02}{matrices/Application}
+  \inputjava[firstline=13,lastline=21]{old}{ex02}{matrices/Application}
+  \inputjava[firstline=22,lastline=23]{new}{ex02}{matrices/Application}
+  \inputjava[firstline=24,lastline=25]{old}{ex02}{matrices/Application}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Exercício 02-B: Executando a Aplicação}
+  \begin{block}{Compilação}
+    \begin{samplecode}[language=bash]
+    javac java/tecgraf/openbus/demo/matrices/Application.java
+    \end{samplecode}
+  \end{block}
+  \begin{block}{Execução}
+    \begin{samplecode}[language=bash]
+    java tecgraf.openbus.demo.matrices.Application
+    \end{samplecode}
+    \begin{itemize}
+      \item Cole o IOR produzido pelo servidor e pressione [ENTER].
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{IDL: Tipos Básicos}
+  {\small
+  \begin{tabular}{l|l|l}
+    Tipo IDL & Tipo Java & Descrição \\
+    \hline
+    boolean & boolean & \code{true} ou \code{false} \\
+    char & char & caracter de 1 byte \\
+    wchar & char & caracter de 2 bytes \\
+    octet & byte & inteiro em 1 byte \\
+    string & java.lang.String & cadeia de carac. de 1 byte \\
+    wstring & java.lang.String & cadeia de carac. de 2 bytes \\
+    short & short & inteiro de 2 bytes \\
+    unsigned short & short & int. não-neg. de 2 bytes \\
+    long & int & inteiro de 4 bytes \\
+    unsigned long & int & int. não-neg. de 4 bytes \\
+    long long & long & inteiro de 8 bytes \\
+    unsigned long long & long & int. não-neg. de 8 bytes \\
+    float & float & ponto-flut. de prec. simples \\
+    double & double & ponto-flut. de prec. dupla \\
+    fixed & java.math.BigDecimal & decimal em ponto fixo \\
+  \end{tabular}
+  }
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{IDL: Tipos Construídos}
+  \begin{itemize}
+    \item Enumeração
+    \begin{samplecode}[language= {[CORBA]IDL} ]
+    enum Color { red, green, blue };
+    enum Size { small, medium, large };
+    \end{samplecode}
+    \item Arranjo
+    \begin{samplecode}[language= {[CORBA]IDL} ]
+    double Vetor3D[3];
+    \end{samplecode}
+    \item Sequência
+    \begin{samplecode}[language= {[CORBA]IDL} ]
+    sequence<long> LongIntegers;
+    sequence<Color> Colors;
+    \end{samplecode}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{IDL: Tipos Construídos}
+  \begin{itemize}
+    \item Estrutura
+    \begin{samplecode}[language= {[CORBA]IDL} ]
+    struct Foo {
+      long some_value;
+      double other_value;
+      string another_value;
+      Color yet_another_value;
+    };
+    \end{samplecode}
+    \item União
+    \begin{samplecode}[language= {[CORBA]IDL} ]
+    enum ValueKind { BOOL_VALUE, NUM_VALUE, TXT_VALUE };
+    union Value switch (ValueKind) {
+      case BOOL_VALUE: boolean bool_val;
+      case NUM_VALUE: double num_val;
+      case TXT_VALUE: string txt_val;
+    };
+    \end{samplecode}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{IDL: Interfaces}
+  \begin{itemize}
+    \item Interface
+    \begin{samplecode}[language= {[CORBA]IDL} ]
+    interface Hello {
+      attribute boolean quiet;
+      readonly attribute long count;
+      string say_hello_to(in string name);
+    };
+    \end{samplecode}
+    \item Exceção
+    \begin{samplecode}[language= {[CORBA]IDL} ]
+    exception DivisionByZero {
+      long dividend;
+      long divisor;
+    };
+    interface IntegerMath {
+      long div(in long dividend, in long divisor, out long remainder)
+        raises(DivisionByZero);
+    };
+    \end{samplecode}
+  \end{itemize}
+\end{frame}
+
+%\begin{frame}[fragile]
+%  \frametitle{IDL: Value Types}
+%  \begin{itemize}
+%    \item Estruturas Recursivas
+%    \begin{samplecode}[language= {[CORBA]IDL} ]
+%      struct Foo; // Forward declaration
+%      typedef sequence<Foo> FooSeq;
+%      struct Foo {
+%        long value;
+%        FooSeq chain;
+%      };
+%    \end{samplecode}
+%    \item Objeto por Valor
+%    \begin{samplecode}[language= {[CORBA]IDL} ]
+%      valuetype Foo {
+%        public long value;
+%        public Foo other;
+%      };
+%    \end{samplecode}
+%    \item Tipos Encaixotados (Boxed Value Type)
+%    \begin{samplecode}[language= {[CORBA]IDL} ]
+%      valuetype FooSeq sequence<Foo>;
+%    \end{samplecode}
+%  \end{itemize}
+%\end{frame}
+%
+%\begin{frame}[fragile]
+%  \frametitle{IDL: Value Types}
+%  \begin{itemize}
+%    \item Interfaces Abstratas
+%    \begin{samplecode}[language= {[CORBA]IDL} ]
+%      abstract interface IAccount {
+%        // operations
+%        boolean withdraw(in long amount);
+%        void    pay_in(in long amount);
+%      };
+%    \end{samplecode}
+%    \item Objeto por Valor
+%    \begin{samplecode}[language= {[CORBA]IDL} ]
+%      valuetype AccountVal supports IAccount {
+%        // state members
+%        public  long   m_account_id;
+%        public  string m_owner;
+%        private long   m_balance;
+%        // initializer
+%        factory init(in string owner);
+%        // local operations
+%        void disclose();
+%      };
+%    \end{samplecode}
+%  \end{itemize}
+%\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{IDL: Outras Definições}
+  \begin{itemize}
+    \item Apelidos
+    \begin{samplecode}[language= {[CORBA]IDL} ]
+    typedef unsigned long Cardinal;
+    \end{samplecode}
+    \item Espaços de Nomes
+    \begin{samplecode}[language= {[CORBA]IDL} ]
+    module tecgraf {
+      module openbus {
+        interface SquareMatrix {};
+      };
+    };
+    interface MyFactory {
+      tecgraf::openbus::SquareMatrix newMatrix();
+    };
+    \end{samplecode}
+    \item Tipagem Dinâmica
+    \begin{samplecode}[language= {[CORBA]IDL} ]
+    interface Storage {
+      void store(in string tag, in any value);
+      any retrieve(in string tag);
+    };
+    \end{samplecode}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Fábrica de Matrizes em IDL}
+  \inputidl[firstline= 6,lastline= 8]{old}{ex03}{matrices}
+  \inputidl[firstline= 9,lastline=12]{new}{ex03}{matrices}
+  \inputidl[firstline=13,lastline=15]{old}{ex03}{matrices}
+  \inputidl[firstline=16,lastline=16]{new}{ex03}{matrices}
+  \inputidl[firstline=17,lastline=18]{old}{ex03}{matrices}
+  \inputidl[firstline=19,lastline=27]{new}{ex03}{matrices}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exercício 03: Implementando a Fábrica de Matrizes}
+  \begin{itemize}
+    \item Adaptar o exemplo para utilizar essa nova IDL.
+    \item Dicas:
+    \begin{itemize}
+      \item Sua fábrica de matrizes só deve criar matrizes cujo tipo (\code{kind}) é descrito como \code{reverse}. Caso outro tipo seja utlizado, lançe a exceção \code{UnknownMatrixKind}.
+      \item Nessa nova IDL a operação \code{multiply} lança uma exceção, portanto a classe \code{Matrix} não é mais compatível com a interface descrita na IDL. Portanto, o ideal é criar uma classe que estende \code{SquareMatrixPOA} e implementa seus métodos usando uma instância de \code{Matrix}. Não utilize o \code{SquareMatrixPOATie}.
+      \item Dentro da execução de qualquer chamada feita através do ORB é possível obter o POA em que ele está registrado através da operação \code{\_poa} herdada pelas classes geradas como a \code{MatrixFactoryPOA} ou \code{SquareMatrixPOA}.
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Exercício 03: Compilando a IDL da Fábrica (Oracle JDK)}
+  \begin{samplecode}[language=bash]
+    idlj -fallTIE matrices.idl  
+  \end{samplecode}
+  {\scriptsize
+    \begin{multicols}{2}
+       \begin{itemize}
+         \item CardinalHelper.java
+         \item MatrixIdHelper.java
+         \item MatrixFactory.java
+         \item MatrixFactoryHelper.java
+         \item MatrixFactoryHolder.java
+         \item MatrixFactoryOperations.java
+         \item MatrixFactoryPOA.java
+         \item MatrixFactoryPOATie.java
+         \item ServiceFailure.java
+         \item ServiceFailureHelper.java
+         \item ServiceFailureHolder.java
+         \item SquareMatrix.java
+         \item SquareMatrixHelper.java
+         \item SquareMatrixHolder.java
+         \item SquareMatrixOperations.java
+         \item SquareMatrixPOA.java
+         \item SquareMatrixPOATie.java
+         \item UnknownMatrixKind.java
+         \item UnknownMatrixKindHelper.java
+         \item UnknownMatrixKindHolder.java
+         \item VectorHelper.java
+         \item VectorHolder.java
+         \item WrongCardinality.java
+         \item WrongCardinalityHelper.java
+         \item WrongCardinalityHolder.java
+         \item \_MatrixFactoryStub.java
+         \item \_SquareMatrixStub.java
+       \end{itemize}
+    \end{multicols}
+  }
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exercício 03: O Servant da Matriz}
+  \inputjava[firstline=11,lastline=23]{new}{ex03}{matrices/Server}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exercício 03: A Fábrica de Matrizes}
+  \inputjava[firstline=25,lastline=42]{new}{ex03}{matrices/Server}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exercício 03: O Servidor da Fábrica}
+  \inputjava[firstline=45,lastline=51]{old}{ex03}{matrices/Server}
+  \inputjava[firstline=52,lastline=52]{new}{ex03}{matrices/Server}
+  \inputjava[firstline=53,lastline=59]{old}{ex03}{matrices/Server}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exercício 03: A Aplicação que Utiliza a Fábrica}
+  \inputjava[firstline= 8,lastline=10]{old}{ex03}{matrices/Application}
+  \inputjava[firstline=11,lastline=11]{new}{ex03}{matrices/Application}
+  \inputjava[firstline=12,lastline=13]{old}{ex03}{matrices/Application}
+  \inputjava[firstline=14,lastline=14]{new}{ex03}{matrices/Application}
+  \inputjava[firstline=15,lastline=26]{old}{ex03}{matrices/Application}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Exercício 03: Executando os Programas}
+  \begin{block}{Compilação}
+    \begin{samplecode}[language=bash]
+    idlj -fallTIE matrices.idl  
+    javac java/tecgraf/openbus/demo/matrices/Server.java
+    javac java/tecgraf/openbus/demo/matrices/Application.java
+    \end{samplecode}
+  \end{block}
+  \begin{block}{Execução}
+    \begin{samplecode}[language=bash]
+    java tecgraf.openbus.demo.matrices.Server > ref.ior
+    java tecgraf.openbus.demo.matrices.Application < ref.ior
+    \end{samplecode}
+  \end{block}
+\end{frame}
+
+\begin{frame}
+  \frametitle{IDL de Matrizes Descartáveis}
+  \inputidl[firstline= 6,lastline=16]{old}{ex04}{matrices}
+  \inputidl[firstline=17,lastline=17]{new}{ex04}{matrices}
+  \inputidl[firstline=18,lastline=28]{old}{ex04}{matrices}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exercício 04: Implementando Matrizes Descartáveis}
+  \begin{itemize}
+    \item Adaptar o exemplo para utilizar essa nova IDL (operação \code{SquareMatrix::dispose}).
+    \item Dicas:
+    \begin{itemize}
+      \item Dentro da execução de qualquer chamada feita através do ORB também é possível obter o identificador de objeto (OID) com que o servant está registrado no POA através da operação \code{\_object\_id}, mas, assim como a operação \code{\_poa}, essa operação só funciona dentro da execução de uma chamada feita através do ORB.
+      \item Para desativar um servant de forma que ele possa ser coletado, use a operação \code{deactivate\_object} do POA passando o identificador de objeto (OID) com que o servant está registrado.
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exercício 04: Servidor de Matrizes Descartáveis}
+  \inputjava[firstline=10,lastline=23]{old}{ex04}{matrices/Server}
+  \inputjava[firstline=24,lastline=28]{new}{ex04}{matrices/Server}
+  \inputjava[firstline=29,lastline=30]{old}{ex04}{matrices/Server}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exercício 04: Aplicação usando Matrizes Descartáveis}
+  \inputjava[firstline= 8,lastline=24]{old}{ex04}{matrices/Application}
+  \inputjava[firstline=25,lastline=25]{new}{ex04}{matrices/Application}
+  \inputjava[firstline=26,lastline=28]{old}{ex04}{matrices/Application}
+\end{frame}
+
+\subsection{Identificação}
+
+\begin{frame}
+  \frametitle{OpenBus Java SDK}
+  \begin{itemize}
+    \item Pacote com as ferramentas para o desenvolvimento de integrações usando Java.
+    \begin{itemize}
+      \item Compilador de IDL.
+      \item Biblioteca de acesso.
+      \item Classes utilitárias.
+      \item Documentação.
+      \item Aplicações de demonstração.
+    \end{itemize}
+    \item Existem outros SDKs para as linguagens:
+    \begin{itemize}
+      \item C++
+      \item C\#
+      \item Lua
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Inicializando um ORB com Suporte ao OpenBus}
+  \begin{itemize}
+    \item Inicializador de ORBs OpenBus:
+    \begin{samplecode}
+    public class ORBInitializer {
+      public static ORB initORB();
+      public static ORB initORB(String[] args);
+      public static ORB initORB(String[] args, Properties props);
+    }
+    \end{samplecode}
+    \item ORB Default:
+    \begin{samplecode}
+    org.omg.CORBA.ORB orb = ORBInitializer.initORB();
+    \end{samplecode}
+    \item Passando argumentos da linha de comando:
+    \begin{samplecode}
+    org.omg.CORBA.ORB orb = ORBInitializer.initORB(args);
+    \end{samplecode}
+    \item Passando argumentos e propriedades:
+    \begin{samplecode}
+    Properties props = new Properties();
+    props.setProperty("jacorb.log.default.verbosity", "0");
+    org.omg.CORBA.ORB orb = ORBInitializer.initORB(args, props);
+    \end{samplecode}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Exercício 05: Usando um ORB OpenBus}
+  \begin{itemize}
+    \item Adapte o exemplo de matrizes (servidor e aplicação) para utilizar um ORB com suporte ao OpenBus.
+    \item Para compilar a IDL:
+    \begin{samplecode}[language=bash]
+java -cp $ODK_HOME/lib/jacorb-idl-3.3.jar org.jacorb.idl.parser matrices.idl
+    \end{samplecode}
+    \item Para compilar o código:
+    \begin{samplecode}[language=bash]
+javac -cp "$ODK_HOME/lib/jacorb-3.3.jar\
+:$ODK_HOME/lib/openbus-sdk-core-2.0.0.3.jar\
+:$ODK_HOME/lib/openbus-sdk-legacy-2.0.0.3.jar\
+:$ODK_HOME/lib/scs-core-1.2.1.2.jar\
+:$ODK_HOME/lib/slf4j-api-1.6.4.jar\
+:$ODK_HOME/lib/slf4j-jdk14-1.6.4.jar" \
+    tecgraf/openbus/demo/matrices/Server.java \
+    tecgraf/openbus/demo/matrices/Application.java
+    \end{samplecode}
+    \item Para executar os processos:
+    \begin{samplecode}[language=bash]
+java -Djava.endorsed.dirs=$ODK_HOME/lib \
+  tecgraf.openbus.demo.matrices.Server > ref.ior
+java -Djava.endorsed.dirs=$ODK_HOME/lib \
+  tecgraf.openbus.demo.matrices.Application < ref.ior
+    \end{samplecode}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exercício 05: Servidor com ORB OpenBus}
+  \inputjava[firstline=52,lastline=52]{old}{ex05}{matrices/Server}
+  \inputjava[firstline=53,lastline=53]{new}{ex05}{matrices/Server}
+  \inputjava[firstline=54,lastline=66]{old}{ex05}{matrices/Server}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Exceção \code{NO\_PERMISSION}}
+    \begin{samplecode}
+public final class NO_PERMISSION {
+  CompletionStatus completed;
+  int minor;
+}
+...
+catch (org.omg.CORBA.NO_PERMISSION e) {
+  if (e.minor == tecgraf.openbus.core.v2_0.services.access_control.NoLoginCode.value)
+    if (e.completed.equals(org.omg.CORBA.CompletionStatus.COMPLETED_NO)) 
+      System.err.println("Unable to complete call because no login was available.");
+}
+    \end{samplecode}
+    {\footnotesize
+    \begin{tabular}{l|c|c|l}
+      Nome & vmcid & minor & Descrição \\
+      \hline
+      NoCredential      & 0x42555000 & 774 & chamada feita sem credencial \\
+      NoLogin           & 0x42555000 & 887 & conexão atual não está logada \\
+      InvalidChain      & 0x42555000 & 769 & cadeia de chamadas inválida \\
+      InvalidPublicKey  & 0x42555000 & 773 & alvo informou chave pública inválida \\
+      InvalidRemote     & 0x42555000 & 886 & alvo não respeita o protocolo \\
+      InvalidTarget     & 0x42555000 & 884 & alvo com login inválido \\
+      UnavailableBus    & 0x42555000 & 885 & alvo sem acesso ao barramento \\
+      UnknownBus        & 0x42555000 & 772 & alvo está em outro barramento \\
+      UnverifiedLogin   & 0x42555000 & 771 & alvo não pôde verificar o login \\
+    \end{tabular}
+    }
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exceções de Sistema de CORBA}
+  \begin{itemize}
+    \item São \code{RuntimeException} em Java.
+    \item Apresentam a mesma estrutura da \code{NO\_PERMISSION}.
+  \end{itemize}
+  \begin{tabular}{l|l}
+    Nome             & Descrição \\
+    \hline
+    CORBA::UNKNOWN            & erro que não pode ser mapeado para CORBA \\
+    \hline
+    CORBA::OBJECT\_NOT\_EXIST & objeto referenciado não existe \\
+    CORBA::TRANSIENT          & falha transiente, tente novamente \\
+    CORBA::COMM\_FAILURE      & falha de comunicação \\
+    \hline
+    CORBA::MARSHAL            & erro na codificação dos valores \\
+    CORBA::NO\_IMPLEMENT      & implementação da operação indisponível \\
+    CORBA::BAD\_OPERATION     & operação chamada é inválida \\
+    \hline
+    CORBA::BAD\_INV\_ORDER    & invocação fora de ordem \\
+    CORBA::BAD\_PARAM         & parâmetro inválido \\
+  \end{tabular}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{O Contexto OpenBus}
+  \begin{itemize}
+    \item Permite controlar e inspecionar a identidade das chamadas feitas através do ORB em barramentos OpenBus.
+    \item Obtenção
+    \begin{samplecode}[language=java]
+org.omg.CORBA.ORB orb = ORBInitializer.initORB();
+tecgraf.openbus.OpenBusContext context =
+  (tecgraf.openbus.OpenBusContext)
+    orb.resolve_initial_references("OpenBusContext");
+    \end{samplecode}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Contexto OpenBus: Manipulando Conexões}
+  \begin{itemize}
+    \item O contexto permite criar e manipular conexões ao barramento.
+    \begin{samplecode}[language=java]
+public interface OpenBusContext {
+  ...
+  Connection createConnection(String bus_host, int bus_port);
+  Connection createConnection(String bus_host, int bus_port,
+                              Properties props) throws InvalidPropertyValue;
+
+  Connection setDefaultConnection(Connection conn);
+  Connection getDefaultConnection();
+
+  Connection setCurrentConnection(Connection conn);
+  Connection getCurrentConnection();
+  ...      
+}
+    \end{samplecode}
+    \item Criando uma conexão default:
+    \begin{samplecode}[language=java]
+Connection conn = context.createConnection("host", 20000);
+context.setDefaultConnection(conn);
+    \end{samplecode}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Conexões: Autenticação da Entidade}
+  \begin{itemize}
+    \item Conexões recebem um login após uma autenticação:
+    \begin{samplecode}[language=java]
+public interface Connection {
+  ...
+  org.omg.CORBA.ORB orb();
+  String busid();
+  LoginInfo login();
+
+  void loginByPassword(String entity, byte[] password) throws AlreadyLoggedIn,
+                                                              AccessDenied,
+                                                              ServiceFailure;
+
+  boolean logout() throws ServiceFailure;
+  ...
+}
+    \end{samplecode}
+    \item Login com autenticação por senha:
+    \begin{samplecode}[language=java]
+conn.loginByPassword("SomeoneUser", ("Someone").getBytes());
+System.out.println("Meu login é "+conn.login().id);
+conn.logout();
+    \end{samplecode}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exercício 06: Autenticando por Senha}
+  \begin{itemize}
+    \item Adapte a aplicação do exemplo de matrizes para se autenticar por senha no barramento na máquina \code{ubu} e na porta 20100.
+    \item Escolha um nome para o seu grupo, que será usado para derivar nomes de entidade utilizados nos seus exercícios.
+    \begin{itemize}
+      \item Evite utilizar o mesmo nome de outro grupo para facilitar identificar seus acessos.
+      \item Por exemplo, utilize o nome \code{Team\#\#} substituindo o \code{\#\#} pelo número da sua máquina.
+    \end{itemize}
+    \item Use como entidade o nome do seu grupo com o sufixo \code{User}.
+    \item Use como senha o nome do seu grupo com o sufixo \code{Password}).
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exercício 06: Login com Senha}
+  \inputjava[firstline=16,lastline=16]{old}{ex06}{matrices/Application}
+  \inputjava[firstline=17,lastline=25]{new}{ex06}{matrices/Application}
+  \inputjava[firstline=26,lastline=38]{old}{ex06}{matrices/Application}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exercício 06: Logout ao Final}
+  \inputjava[firstline=27,lastline=42]{old}{ex06}{matrices/Application}
+  \inputjava[firstline=43,lastline=43]{new}{ex06}{matrices/Application}
+  \inputjava[firstline=44,lastline=46]{old}{ex06}{matrices/Application}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Conexões: Autenticação por Certificado}
+  \begin{itemize}
+    \item Utilitário para leitura de chaves
+    \begin{samplecode}
+public class OpenBusPrivateKey {
+  static public PrivateKey createPrivateKeyFromBytes(
+    byte[] privateKeyBytes) throws NoSuchAlgorithmException,
+                                   InvalidKeySpecException;
+  static public PrivateKey createPrivateKeyFromFile(
+    String privateKeyFile) throws IOException,
+                                  NoSuchAlgorithmException,
+                                  InvalidKeySpecException;
+}
+    \end{samplecode}
+    \item Conexões permitem autenticação por certificado:
+    \begin{samplecode}
+public interface Connection {
+  void loginByCertificate(String entity, PrivateKey privateKey)
+    throws AlreadyLoggedIn, AccessDenied, MissingCertificate, ServiceFailure;
+  ...
+\end{samplecode}
+    \item Login por certificado:
+    \begin{samplecode}
+OpenBusPrivateKey privateKey =
+  OpenBusPrivateKey.createPrivateKeyFromFile(privateKeyFile);
+conn.loginByCertificate("SomeoneService", privateKey);
+    \end{samplecode}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Exercício 07-A: Certificado de Autenticação}
+  \begin{itemize}
+    \item Crie um par de chave privada e certificado:
+    \begin{samplecode}[language=bash]
+openssl genrsa -out tmp.key 2048
+openssl pkcs8 -topk8 -nocrypt -in tmp.key \
+        -out private.key -outform DER
+openssl req -new -x509 \
+        -key private.key -keyform DER \
+        -out system.crt -outform DER
+    \end{samplecode}
+    \item Copie o certificado (extensão \code{.crt}) para uma pasta compartilhada na rede com o nome do seu grupo (acrescido da extensão \code{.crt}).
+    \item Aguarde que o gerente do barramento registre o seu certificado no barramento.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exercício 07-B: Autenticação por Certificado}
+  \begin{itemize}
+    \item Adapte o servidor do exemplo de matrizes para que se autentique ao barramento usando o certificado registrado no exercício anterior.
+    \item Use como entidade o nome do seu grupo acrescido do sufixo \code{Service}.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exercício 07-B: Login por Certificado}
+  \inputjava[firstline=60,lastline=60]{old}{ex07}{matrices/Server}
+  \inputjava[firstline=61,lastline=72]{new}{ex07}{matrices/Server}
+  \inputjava[firstline=73,lastline=80]{old}{ex07}{matrices/Server}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exercício 07-B: Logout ao Final}
+  \inputjava[firstline=74,lastline=83]{old}{ex07}{matrices/Server}
+  \inputjava[firstline=84,lastline=84]{new}{ex07}{matrices/Server}
+  \inputjava[firstline=85,lastline=87]{old}{ex07}{matrices/Server}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Conexões: Autenticação Compartilhada}
+  \begin{itemize}
+    \item Conexões permitem compartilhamento de autenticação:
+    \begin{samplecode}
+public interface Connection {
+  ...
+  LoginProcess startSharedAuth(OctetSeqHolder secret) throws ServiceFailure;
+
+  void loginBySharedAuth(LoginProcess process, byte[] secret)
+    throws AlreadyLoggedIn,
+           InvalidLoginProcess,
+           AccessDenied,
+           ServiceFailure;
+  ...
+    \end{samplecode}
+    \item Login por autenticação compartilhada:
+    \begin{samplecode}
+      OctetSeqHolder secret = new OctetSeqHolder();
+      LoginProcess attempt = conn1.startSharedAuth(secret);
+      ...
+      conn2.loginBySharedAuth(attempt, secret.value());
+    \end{samplecode}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{O Registro de Logins}
+  \begin{block}{O contexto dá acesso aos serviços do núcleo do barramento.}
+    \begin{samplecode}
+public interface OpenBusContext {
+  LoginRegistry getLoginRegistry();
+  ...      
+}
+    \end{samplecode}
+  \end{block}
+  \begin{block}{O registro de logins permite manipular logins no barramento.}
+    \begin{samplecode}[language= {[CORBA]IDL} ]
+interface LoginRegistry {
+  LoginInfoSeq getAllLogins()
+    raises (UnauthorizedOperation, ServiceFailure);
+  LoginInfoSeq getEntityLogins(in Identifier entity)
+    raises (UnauthorizedOperation, ServiceFailure);
+  boolean invalidateLogin(in Identifier loginId)
+    raises (UnauthorizedOperation, ServiceFailure);
+  LoginInfo getLoginInfo(in Identifier loginId, out OctetSeq pubkey)
+    raises (InvalidLogins, ServiceFailure);
+  ValidityTime getLoginValidity(in Identifier loginId)
+    raises (ServiceFailure);
+ ...
+};
+    \end{samplecode}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Exercício 08: Listagem de Logins da Entidade}
+  \begin{itemize}
+    \item Escreva uma aplicação que receba por parâmetro as seguintes informações:
+    \begin{itemize}
+      \item O IOR do \code{LoginProcess}.
+      \item O segredo gerado codificado em texto, por exemplo:
+      \begin{samplecode}
+import javax.xml.bind.DatatypeConverter;
+String encoded = DatatypeConverter.printBase64Binary(secret.value));
+byte[] decoded = DatatypeConverter.parseBase64Binary(encoded);
+      \end{samplecode}
+    \end{itemize}
+    \item Essa nova aplicação deve utilizar essas informações para se logar ao barramento na máquina \code{ubu.tecgraf.puc-rio.br} e porta 20100 utilizando autenticação compartilhada e deve exibir na saída padrão todos os logins da entidade com que se autenticar.
+    \item Adapte a aplicação do exemplo de matrizes para imprimir essas informações na tela.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exercício 08: Iniciando Compartilhamento de Autenticação}
+  \inputjava[firstline=22,lastline=29]{old}{ex08}{matrices/Application}
+  \inputjava[firstline=30,lastline=34]{new}{ex08}{matrices/Application}
+  \inputjava[firstline=35,lastline=41]{old}{ex08}{matrices/Application}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exercício 08: Compartilhando Autenticação}
+  \inputjava[firstline=19,lastline=42]{new}{ex08}{showlogins/Application}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Cadeias de Chamada}
+  \begin{block}{O contexto permite obter a cadeia de chamada da chamada corrente.}
+    \begin{samplecode}[language=java]
+    public interface OpenBusContext {
+      ...
+      CallerChain getCallerChain();
+      ...      
+    }
+    \end{samplecode}
+  \end{block}
+  \begin{block}{Cadeias de chamada permitem identificar os originadores das chamadas.}
+    \begin{samplecode}[language=java]
+    public interface CallerChain {
+      String busid();
+      String target();
+      LoginInfo[] originators();
+      LoginInfo caller();
+    }
+    \end{samplecode}
+  \end{block}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exercício 09: Identificando a Origem da Chamada}
+  \begin{itemize}
+    \item Adapte o servidor do exemplo de matrizes para que as seguintes operações só sejam executadas se forem oriundas da entidade utilizada pela aplicação (\code{<NomeDoGrupo>User}).
+    \begin{itemize}
+      \item \code{MatrixFactory::newMatrix}
+      \item \code{SquareMatrix::multiply}
+      \item \code{SquareMatrix::dispose}
+    \end{itemize}
+    \item Caso a chamada não seja da entidade esperada, lançe uma exceção, como por exemplo \code{org.omg.CORBA.NO\_PERMISSION}.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exercício 09: Autorizando Chamadas da Fábrica}
+  \inputjava[firstline=54,lastline=55]{old}{ex09}{matrices/Server}
+  \inputjava[firstline=56,lastline=65]{new}{ex09}{matrices/Server}
+  \inputjava[firstline=66,lastline=76]{old}{ex09}{matrices/Server}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exercício 09: Operação de Autorização da Matriz}
+  \inputjava[firstline=18,lastline=22]{old}{ex09}{matrices/Server}
+  \inputjava[firstline=23,lastline=34]{new}{ex09}{matrices/Server}
+  \inputjava[firstline=35,lastline=36]{old}{ex09}{matrices/Server}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exercício 09: Autorizando Chamadas da Matriz}
+  \inputjava[firstline=38,lastline=38]{old}{ex09}{matrices/Server}
+  \inputjava[firstline=39,lastline=39]{new}{ex09}{matrices/Server}
+  \inputjava[firstline=40,lastline=45]{old}{ex09}{matrices/Server}
+  \inputjava[firstline=46,lastline=46]{new}{ex09}{matrices/Server}
+  \inputjava[firstline=47,lastline=51]{old}{ex09}{matrices/Server}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exercício 10: Assumindo Múltiplas Identidades}
+  \begin{itemize}
+    \item Adapte a aplicação do exemplo de matrizes para que crie uma segunda conexão.
+    \item Essa segunda conexão deve-se se logar com a entidade \code{guest} e a senha \code{guest}.
+    \item Usando essa segunda conexão faça uma chamada a \code{SquareMatrix::multiply} de uma matriz obtida utilizando a primeira conexão, que está logada com a entidade autorizada.
+    \item Verifique que a chamada usando a segunda conexão é negada com a exceção correta.
+    \item Dica:
+    \begin{itemize}
+      \item Utilize a operção \code{setCurrentConnection} do \code{OpenBusContext} para definir a segunda conexão como a conexão corrente antes de fazer a chamada \code{SquareMatrix::multiply}.
+      \item Não faça logout na primeira conexão para poder utilizá-la para chamar \code{SquareMatrix::dispose} antes de terminar a execução.
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exercício 10: Assumindo uma Segunda Identidade}
+  \inputjava[firstline=36,lastline=41]{old}{ex10}{matrices/Application}
+  \inputjava[firstline=42,lastline=50]{new}{ex10}{matrices/Application}
+  \inputjava[firstline=51,lastline=57]{old}{ex10}{matrices/Application}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Serviço de Dados de Transformações}
+  \inputidl{new}{ex11}{transformations}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Exercício 11: Delegando Parte da Funcionalidade}
+  \begin{itemize}
+    \item Adapte o servidor do exemplo de matrizes para que utilize o \code{TransformationRepository}.
+    \item Sempre que uma nova matriz for solicitada (operação \code{MatrixFactory::newMatrix(kind)}) crie uma nova instância de \code{Matrix} passando os dados obtidos usando a operação \code{TransformationRepository::getTransformation(kind)}.
+    \item Se a operação \code{getTransformation} lançar \code{UnknownTransformation}, então a exceção \code{UnknownMatrixKind} deverá ser lançada para o cliente.
+    \item Para obter uma referência ao \code{TransformationRepository} utilize como IOR o seguinte texto:
+    \begin{samplecode}
+corbaloc::iiop:1.2@ubu.tecgraf.puc-rio.br:22222/Transformations
+    \end{samplecode}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exercício 11: Obtendo o Serviço de Transformações}
+  \inputjava[firstline=102,lastline=112]{old}{ex11}{matrices/Server}
+  \inputjava[firstline=113,lastline=115]{new}{ex11}{matrices/Server}
+  \inputjava[firstline=116,lastline=117]{old}{ex11}{matrices/Server}
+  \inputjava[firstline=118,lastline=118]{new}{ex11}{matrices/Server}
+  \inputjava[firstline=119,lastline=124]{old}{ex11}{matrices/Server}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exercício 11: Utilizando o Serviço de Transformações}
+  \inputjava[firstline=53,lastline=53]{old}{ex11}{matrices/Server}
+  \inputjava[firstline=54,lastline=61]{new}{ex11}{matrices/Server}
+  \inputjava[firstline=62,lastline=64]{old}{ex11}{matrices/Server}
+  \inputjava[firstline=65,lastline=74]{new}{ex11}{matrices/Server}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exercício 11: Autenticando Usando Contexto Salvo}
+  \inputjava[firstline=21,lastline=22]{old}{ex11}{matrices/Server}
+  \inputjava[firstline=23,lastline=28]{new}{ex11}{matrices/Server}
+  \inputjava[firstline=29,lastline=30]{old}{ex11}{matrices/Server}
+  \inputjava[firstline=31,lastline=33]{new}{ex11}{matrices/Server}
+  \inputjava[firstline=34,lastline=43]{old}{ex11}{matrices/Server}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Contexto OpenBus: Cadeias de Chamada}
+  \begin{block}{O contexto permite obter e manipular cadeias de chamada.}
+    \begin{samplecode}[language=java]
+      public interface OpenBusContext {
+        ...
+
+        CallerChain getCallerChain();
+
+        void joinChain(CallerChain chain);
+        void joinChain();
+
+        void exitChain();
+
+        CallerChain getJoinedChain();
+
+        ...      
+      }
+    \end{samplecode}
+  \end{block}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exercício 12: Identificando Chamadas Delegadas}
+  \begin{itemize}
+    \item Adapte o servidor do exemplo de matrizes para que faça as chamadas a \code{TransformationRepository::getTransformation} dentro da mesma cadeia de chamadas de \code{MatrixFactory::newMatrix}.
+    \item Recompile e teste o exemplo novamente.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exercício 12: Identificando a Chamada Delegada}
+  \inputjava[firstline=63,lastline=69]{old}{ex12}{matrices/Server}
+  \inputjava[firstline=70,lastline=70]{new}{ex12}{matrices/Server}
+  \inputjava[firstline=71,lastline=86]{old}{ex12}{matrices/Server}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Observadores de Login}
+  \begin{block}{O contexto dá acesso aos serviços do núcleo do barramento.}
+    \begin{samplecode}[language=java]
+      public interface OpenBusContext {
+        LoginRegistry getLoginRegistry();
+        ...      
+      }
+    \end{samplecode}
+  \end{block}
+  \begin{block}{O registro de logins permite manipular logins no barramento.}
+    \begin{samplecode}[language= {[CORBA]IDL} ]
+      interface LoginRegistry {
+        LoginObserverSubscription subscribeObserver(in LoginObserver callback)
+          raises (ServiceFailure);
+        ...
+      };
+    \end{samplecode}
+  \end{block}
+  \begin{block}{Observador de logins pode ser notificado do logout.}
+    \begin{samplecode}[language= {[CORBA]IDL} ]
+      interface LoginObserver {
+        void entityLogout (in LoginInfo login);
+      };
+    \end{samplecode}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Observadores de Login}
+  \begin{block}{Através da inscrição do observador podemos gerenciar os logins observados.}
+    \begin{samplecode}[language= {[CORBA]IDL} ]
+      interface LoginObserverSubscription {
+
+        boolean watchLogin(in Identifier loginId)
+          raises (ServiceFailure);
+
+        void forgetLogin(in Identifier loginId)
+          raises (ServiceFailure);
+
+        void watchLogins(in IdentifierSeq loginIds)
+          raises (InvalidLogins, ServiceFailure);
+
+        void forgetLogins(in IdentifierSeq loginIds)
+          raises (ServiceFailure);
+
+        LoginInfoSeq getWatchedLogins();
+
+        void remove()
+          raises (ServiceFailure);
+
+      };
+    \end{samplecode}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Exercício 13: Descarte Automático de Matrizes}
+  \begin{itemize}
+    \item Adapte o servidor do exemplo de matrizes para que descarte matrizes automaticamente após o logout da aplicação que chamou \code{newMatrix}.
+    \item Para saber o Object ID de cada servant, ao invés de fazer:
+    \begin{samplecode}
+Object obj = poa.servant_to_reference(servant);
+    \end{samplecode}
+    Faça:
+    \begin{samplecode}
+byte[] oid = poa.activate_object(servant); // object ID
+Object obj = poa.id_to_reference(oid);     // referência
+...
+poa.deactivate_object(oid); // descartando servant
+    \end{samplecode}
+    \item O observador de login é um objeto CORBA, logo:
+    \begin{samplecode}
+context.getLoginRegistry().subscribeObserver(
+LoginObserverHelper.narrow(
+  poa.servant_to_reference(new LoginObserverPOA () {
+    public void entityLogout(LoginInfo login) {
+      System.out.println("O login "+login.id+" é inválido.");
+    }
+  })));
+    \end{samplecode}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exercício 13: Passando o POA para Criação de Observador}
+  \inputjava[firstline=184,lastline=199]{old}{ex13}{matrices/Server}
+  \inputjava[firstline=200,lastline=200]{new}{ex13}{matrices/Server}
+  \inputjava[firstline=201,lastline=206]{old}{ex13}{matrices/Server}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exercício 13: Observador que Descarta Matrizes}
+  \inputjava[firstline=71,lastline=73]{old}{ex13}{matrices/Server}
+  \inputjava[firstline=74,lastline=75]{new}{ex13}{matrices/Server}
+  \inputjava[firstline=76,lastline=77]{old}{ex13}{matrices/Server}
+  \inputjava[firstline=78,lastline=79]{new}{ex13}{matrices/Server}
+  \inputjava[firstline=80,lastline=81]{old}{ex13}{matrices/Server}
+  \inputjava[firstline=82,lastline=95]{new}{ex13}{matrices/Server}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exercício 13: Criando Matriz que Notifica Descarte}
+  \inputjava[firstline= 97,lastline=108]{old}{ex13}{matrices/Server}
+  \inputjava[firstline=109,lastline=112]{new}{ex13}{matrices/Server}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exercício 13: Registrando Matriz para Descarte}
+  \inputjava[firstline=114,lastline=114]{new}{ex13}{matrices/Server}
+  \inputjava[firstline=115,lastline=115]{old}{ex13}{matrices/Server}
+  \inputjava[firstline=116,lastline=131]{new}{ex13}{matrices/Server}
+  \inputjava[firstline=132,lastline=134]{old}{ex13}{matrices/Server}
+  \inputjava[firstline=135,lastline=135]{new}{ex13}{matrices/Server}
+  \inputjava[firstline=136,lastline=137]{old}{ex13}{matrices/Server}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exercício 13: Registrando Interesse no Login do Solicitante}
+  \inputjava[firstline=130,lastline=131]{new}{ex13}{matrices/Server}
+  \inputjava[firstline=132,lastline=134]{old}{ex13}{matrices/Server}
+  \inputjava[firstline=135,lastline=135]{new}{ex13}{matrices/Server}
+  \inputjava[firstline=136,lastline=137]{old}{ex13}{matrices/Server}
+  \inputjava[firstline=139,lastline=151]{new}{ex13}{matrices/Server}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exercício 13: Descarte da Matriz}
+  \inputjava[firstline=153,lastline=167]{new}{ex13}{matrices/Server}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exercício 13: Matriz com Dados para Notificar Descarte}
+  \inputjava[firstline=33,lastline=35]{old}{ex13}{matrices/Server}
+  \inputjava[firstline=36,lastline=40]{new}{ex13}{matrices/Server}
+  \inputjava[firstline=41,lastline=42]{old}{ex13}{matrices/Server}
+  \inputjava[firstline=43,lastline=44]{new}{ex13}{matrices/Server}
+  \inputjava[firstline=45,lastline=53]{old}{ex13}{matrices/Server}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exercício 13: Notificação do Descarte pela Matriz}
+  \inputjava[firstline=47,lastline=63]{old}{ex13}{matrices/Server}
+  \inputjava[firstline=64,lastline=64]{new}{ex13}{matrices/Server}
+  \inputjava[firstline=65,lastline=68]{old}{ex13}{matrices/Server}
+\end{frame}
+
+\subsection{Descoberta}
+
+\begin{frame}
+  \frametitle{Componentes de Software}
+  \begin{itemize}
+    \item Serviços OpenBus são componentes de software.
+    \item Componentes de Software
+    \begin{itemize}
+      \item Foco em reuso de software
+      \item Objetos em geral são muito pequenos.
+      \begin{itemize}
+        \item Difícil de ser reutilizado isolatamente.
+        \item É necessário recombiná-los em novos cenários de uso.
+        \item Alguns são muito especializados e precisam ser reescritos.
+      \end{itemize}
+      \item Inspirado em componentes de eletrônica.
+      \item São blocos básicos para construção de software.
+      \item Oferecem funcionalidades relacionadas num pacote coeso.
+      \item Têm suas dependências explícitas e bem definidas.
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Componentes de Software}
+  \includegraphics[width=\textwidth]{img/obj_vs_comp}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Componentes de Software}
+  \includegraphics[width=\textwidth]{img/component}
+\end{frame}
+
+\begin{frame}
+  \frametitle{SCS: Sistema de Componentes de Software}
+  \includegraphics[height=.8\textheight]{img/scs_comp}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{SCS: Faceta IComponent}
+  \begin{samplecode}[language= {[CORBA]IDL} ]
+    struct ComponentId {
+      string name;
+      octet major_version;
+      octet minor_version;
+      octet patch_version;
+      string platform_spec;
+    };
+
+    exception StartupFailed {};
+    exception ShutdownFailed {};
+
+    interface IComponent {
+      ComponentId getComponentId();
+
+      Object getFacet(in string interfaceId);
+      Object getFacetByName(in string name);
+
+      void startup() raises (StartupFailed);
+      void shutdown() raises (ShutdownFailed);
+    };
+  \end{samplecode}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{SCS: Faceta IMetaInterface}
+  \begin{samplecode}[language= {[CORBA]IDL} ]
+    exception InvalidName { string name; };
+
+    interface IMetaInterface {
+      FacetDescriptions getFacets();
+      FacetDescriptions getFacetsByName(in NameList names)
+        raises (InvalidName);
+      ReceptacleDescriptions getReceptacles();
+      ReceptacleDescriptions getReceptaclesByName(in NameList names)
+        raises (InvalidName);
+    };
+  \end{samplecode}  
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{SCS: Faceta IMetaInterface}
+  \begin{samplecode}[language= {[CORBA]IDL} ]
+    typedef sequence<string> NameList;
+    typedef unsigned long ConnectionId;
+
+    struct FacetDescription {
+      string name;
+      string interface_name;
+      Object facet_ref;
+    };
+    typedef sequence<FacetDescription> FacetDescriptions;
+
+    struct ConnectionDescription {
+      ConnectionId id;
+      Object objref;
+    };
+    typedef sequence<ConnectionDescription> ConnectionDescriptions;
+
+    struct ReceptacleDescription {
+      string name;
+      string interface_name;         
+      boolean is_multiplex;
+      ConnectionDescriptions connections;
+    };
+    typedef sequence<ReceptacleDescription> ReceptacleDescriptions;
+  \end{samplecode}  
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{SCS: Faceta IRecetacles}
+  \begin{samplecode}[language= {[CORBA]IDL} ]
+    typedef unsigned long ConnectionId;
+
+    exception InvalidName { string name; };
+    exception InvalidConnection {};
+    exception AlreadyConnected {};
+    exception ExceededConnectionLimit {};
+    exception NoConnection {};
+
+    interface IReceptacles {
+      ConnectionId connect (in string receptacle, in Object obj)
+        raises (InvalidName, InvalidConnection, AlreadyConnected,
+                ExceededConnectionLimit);
+      void disconnect (in ConnectionId id)
+        raises (InvalidConnection, NoConnection);
+      ConnectionDescriptions getConnections (in string receptacle)
+        raises (InvalidName);
+    };
+  \end{samplecode}  
+\end{frame}
+
+\begin{frame}
+  \frametitle{Propriedades da Oferta de Serviço}
+  \begin{itemize}
+    \item Toda oferta de serviço tem um conjunto de propriedades que a descreve.
+    \item As propriedades da oferta são uma sequência de pares nome+valor.
+    \item As propriedades da oferta podem conter mais de um par com o mesmo nome.
+    \item Há dois tipos básicos de propriedades:
+    \begin{itemize}
+      \item Propriedades automáticas:
+      \begin{itemize}
+        \item Nomes começam com \code{openbus.*}.
+        \item Não podem ser definidas pelo servidor no momento no registro da oferta ou alteradas posteriormente.
+      \end{itemize}
+      \item Propriedades adicionais:
+      \begin{itemize}
+        \item São definidas pelo servidor ao registrar a oferta.
+        \item Podem ser alteradas posteriormente.
+        \item Recomenda-se que os nomes dessas propriedades não tenham o prefixo \code{openbus.*} pois esses nomes são reservados para uso futuro no OpenBus.
+      \end{itemize}
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Propriedades da Oferta de Serviço}
+  \begin{itemize}
+    \item Propriedades automáticas:
+  \end{itemize}
+  {\scriptsize
+  \begin{tabular}{l|l}
+    Nome da Propridade & Descrição \\
+    \hline
+    \code{openbus.offer.id} & Ident. único da oferta. \\
+    \code{openbus.offer.login} & Ident. do login com que a oferta foi registrada. \\
+    \code{openbus.offer.entity} & Ident. da entidade que registrou a oferta. \\
+    \code{openbus.offer.timestamp} & Número indicando o momento do registro da oferta. \\
+    \code{openbus.offer.year} & Ano em que a oferta foi registrada. \\
+    \code{openbus.offer.month} & Número do mês em que a oferta foi registrada. \\
+    \code{openbus.offer.day} & Dia do mês que a oferta foi registrada. \\
+    \code{openbus.offer.hour} & Hora do dia em que a oferta foi registrada. \\
+    \code{openbus.offer.minute} & Minuto do dia em que a oferta foi registrada. \\
+    \code{openbus.offer.second} & Segundo do dia em que a oferta foi registrada. \\
+    \code{openbus.component.name} & Nome do componente SCS que implementa o serviço. \\
+    \code{openbus.component.version.major} & Versão maior do componente SCS. \\
+    \code{openbus.component.version.minor} & Versão menor do componente SCS. \\
+    \code{openbus.component.version.patch} & Versão de correção do componente SCS. \\
+    \code{openbus.component.facet} & Nome de faceta oferecida pelo componente SCS. \\
+    \code{openbus.component.interface} & RepID de interface implem. pela faceta do comp. SCS.
+  \end{tabular}
+  }
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{O Registro de Ofertas de Serviço}
+  \begin{block}{O contexto dá acesso aos serviços do núcleo do barramento.}
+    \begin{samplecode}[language=java]
+      public interface OpenBusContext {
+        ...
+        OfferRegistry getOfferRegistry();
+        ...      
+      }
+    \end{samplecode}
+  \end{block}
+  \begin{block}{O registro de ofertas permite buscas.}
+    \begin{samplecode}[language= {[CORBA]IDL} ]
+      struct ServiceProperty {
+        string name;
+        string value;
+      };
+      typedef sequence<ServiceProperty> ServicePropertySeq;
+
+      interface OfferRegistry {
+        ...
+        ServiceOfferDescSeq findServices(
+          in ServicePropertySeq properties) raises (ServiceFailure);
+        ServiceOfferDescSeq getAllServices() raises (ServiceFailure);
+        ...
+      };
+    \end{samplecode}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{O Registro de Ofertas de Serviço}
+  \begin{block}{As ofertas possuem a referência para o serviço e as propriedades da oferta.}
+    \begin{samplecode}[language= {[CORBA]IDL} ]
+      typedef scs::core::IComponent OfferedService;
+      struct ServiceOfferDesc {
+        OfferedService service_ref;
+        ServicePropertySeq properties;
+        ServiceOffer ref;
+      };
+      typedef sequence<ServiceOfferDesc> ServiceOfferDescSeq;
+    \end{samplecode}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Exercício 14: Usando o Serviço de Transformações Ofertado}
+  \begin{itemize}
+    \item Adapte o servidor do exemplo de matrizes para utilizar o serviço \code{TransformationRepository} ofertado no barramento ao invés do \code{corbaloc}.
+    \item Utilize as seguintes propriedades de busca para encontrar o serviço ofertado:
+    \begin{samplecode}
+new ServiceProperty[] = {
+  new ServiceProperty("domain", "Tutorial"),
+  new ServiceProperty("openbus.offer.entity", "Transformations"),
+  new ServiceProperty("openbus.component.interface",
+                      TransformationRepositoryHelper.id()) };
+    \end{samplecode}
+    \item Trate adequadamente a situação que nem todos os serviços ofertados estejam acessíveis, ou seja, alguns serviços encontrados podem lançar \code{CORBA::TRANSIENT}, \code{CORBA::COMM\_FAILURE} ou \code{CORBA::OBJECT\_NOT\_EXIST}.
+    \item Caso nenhum serviço disponível seja encontrado, o servidor deve terminar com uma mensagem de erro indicando essa situação.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exercício 14: Buscando Ofertas de Interesse}
+  \inputjava[firstline=103,lastline=115]{old}{ex14}{matrices/Server}
+  \inputjava[firstline=116,lastline=122]{new}{ex14}{matrices/Server}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exercício 14: Inspecionando Ofertas Encontradas}
+  \inputjava[firstline=124,lastline=136]{new}{ex14}{matrices/Server}
+  \inputjava[firstline=137,lastline=143]{old}{ex14}{matrices/Server}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Exercício 15: Substituindo o Serviço Ofertado após Falha}
+  \begin{itemize}
+    \item Adapte o servidor do exemplo de matrizes para buscar um novo serviço \code{TransformationRepository} ofertado no barramento caso o serviço ofertado apresente alguma falha.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exercício 15: Fábrica não Recebe um Serviço para Utilizar}
+  \inputjava[firstline=134,lastline=151]{old}{ex15}{matrices/Server}
+  \inputjava[firstline=152,lastline=152]{new}{ex15}{matrices/Server}
+  \inputjava[firstline=153,lastline=161]{old}{ex15}{matrices/Server}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exercício 15: Fábrica com Propriedades de Busca do Serviço}
+  \inputjava[firstline=55,lastline=56]{old}{ex15}{matrices/Server}
+  \inputjava[firstline=57,lastline=65]{new}{ex15}{matrices/Server}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exercício 15: Fábrica com Operação de Acesso ao Serviço}
+  \inputjava[firstline=100,lastline=108]{old}{ex15}{matrices/Server}
+  \inputjava[firstline=109,lastline=109]{new}{ex15}{matrices/Server}
+  \inputjava[firstline=110,lastline=112]{old}{ex15}{matrices/Server}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exercício 15: Acesso Protegido ao Serviço}
+  \inputjava[firstline=67,lastline=78]{new}{ex15}{matrices/Server}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exercício 15: Buscando Novo Serviço Ofertado}
+  \inputjava[firstline=80,lastline=98]{new}{ex15}{matrices/Server}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Criando um Componente SCS}
+  \begin{itemize}
+    \item O ComponentID:
+    \begin{samplecode}
+ComponentId cid = new ComponentId("Name",  // component name
+                                  (byte)1, // major version
+                                  (byte)0, // minor version
+                                  (byte)0, // patch version
+                                  "java"); // platform name
+    \end{samplecode}
+    \item O contexto do componente:
+    \begin{samplecode}
+ComponentContext component = new ComponentContext(orb, poa, cid);
+    \end{samplecode}
+    \item Adicionando facetas:
+    \begin{samplecode}
+component.addFacet("Transformations",                         // facet name
+                   TransformationRepositoryHelper.id(),       // interface repID
+                   new TransformationRepositoryPOA () {...}); // implementation
+    \end{samplecode}
+    \item Adicionando receptáculos:
+    \begin{samplecode}
+component.addReceptacle("Matrices",               // receptacle name
+                        MatrixFactoryHelper.id(), // interface repID
+                        false);                   // is multiple?
+    \end{samplecode}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Manipulando Localmente um Componente SCS}
+  \begin{itemize}
+    \item Obtendo uma referência para o IComponent:
+    \begin{samplecode}
+IComponent icomp = component.getIComponent();
+    \end{samplecode}
+    \item Obtendo uma referência para uma faceta:
+    \begin{samplecode}
+org.omg.CORBA.Object obj =
+  component.getFacetByName("Transformations").getReference();
+    \end{samplecode}
+    \item Obtendo um objeto conectado a um recetáculo:
+    \begin{samplecode}
+Receptacle r = component.getRecetacleByName("Matrices")
+org.omg.CORBA.Object obj = r.getConnectionsSize()>0  ?
+                           r.getConnections().get(0) :
+                           null;
+    \end{samplecode}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Registrando Nova Oferta de Serviço}
+  \begin{block}{O registro de ofertas permite registro de novas ofertas.}
+    \begin{samplecode}[language= {[CORBA]IDL} ]
+      struct ServiceProperty {
+        string name;
+        string value;
+      };
+      typedef sequence<ServiceProperty> ServicePropertySeq;
+
+      typedef scs::core::IComponent OfferedService;
+
+      interface OfferRegistry {
+        ...
+        ServiceOfferDescSeq registerService(
+          in OfferedService service_ref,
+          in ServicePropertySeq properties)
+          raises (InvalidService, InvalidProperties,
+                  UnauthorizedFacets, ServiceFailure);
+        ...
+      };
+    \end{samplecode}
+  \end{block}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exercício 16: Ofertando a Fábrica de Matrizes}
+  \begin{itemize}
+    \item Adapte o servidor do exemplo de matrizes para ofertar o \code{MatrixFactory} como um serviço OpenBus.
+    \item Crie um componente SCS com uma faceta \code{Matrices} que implementa a interface \code{MatrixFactory}.
+    \item Registre o serviço com a propriedade \code{new ServiceProperty("domain", "Tutorial")}.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exercício 16: Criando Oferta de Serviço no Barramento}
+  \inputjava[firstline=145,lastline=152]{old}{ex16}{matrices/Server}
+  \inputjava[firstline=153,lastline=159]{new}{ex16}{matrices/Server}
+  \inputjava[firstline=160,lastline=160]{old}{ex16}{matrices/Server}
+  \inputjava[firstline=161,lastline=163]{new}{ex16}{matrices/Server}
+  \inputjava[firstline=164,lastline=167]{old}{ex16}{matrices/Server}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Exercício 17: Buscando a Fábrica de Matrizes Ofertada}
+  \begin{itemize}
+    \item Adapte a aplicação do exemplo de matrizes para utilizar o serviço \code{MatrixFactory} ofertado no barramento ao invés do IOR.
+    \item Utilize as seguintes propriedades de busca para encontrar o serviço ofertado, sendo que \code{factoryEntity} deve ser o nome da entidade usada pelo seu servidor:
+    \begin{samplecode}
+new ServiceProperty[] = {
+  new ServiceProperty("domain", "Tutorial"),
+  new ServiceProperty("openbus.offer.entity", factoryEntity),
+  new ServiceProperty("openbus.component.interface",
+                      MatrixFactoryHelper.id()) };
+    \end{samplecode}
+    \item Trate adequadamente a situação que nem todos os serviços ofertados estejam acessíveis, ou seja, alguns serviços encontrados podem lançar \code{CORBA::TRANSIENT}, \code{COMM\_FAILURE} ou \code{CORBA::OBJECT\_NOT\_EXIST}.
+    \item Caso nenhum serviço disponível seja encontrado, a aplicação deve terminar com uma mensagem de erro indicando essa situação.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exercício 17: Buscando a Fábrica de Matrizes Ofertada}
+  \inputjava[firstline=30,lastline=50]{new}{ex17}{matrices/Application}
+  \inputjava[firstline=51,lastline=52]{old}{ex17}{matrices/Application}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Observadores do Registro de Ofertas}
+  \begin{block}{Observadores do registro de ofertas são registrados com um conjunto de propriedades de interesse.}
+    \begin{samplecode}[language= {[CORBA]IDL} ]
+interface OfferRegistry {
+  ...
+  OfferRegistryObserverSubscription subscribeObserver(
+    in OfferRegistryObserver observer,
+    in ServicePropertySeq properties)
+    raises (ServiceFailure);
+  ...
+};
+    \end{samplecode}
+  \end{block}
+  \begin{block}{Observadores são notificados de novas ofertas registradas com aquelas propriedades.}
+    \begin{samplecode}[language= {[CORBA]IDL} ]
+interface OfferRegistryObserver {
+  void offerRegistered(in ServiceOfferDesc offer);
+};
+    \end{samplecode}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Exercício 18: Observando Novas Ofertas}
+  \begin{itemize}
+    \item Escreva uma aplicação que se autentique como a entidade \code{guest} usando a senha \code{guest}.
+    \item Essa aplicação deve exibir todas as ofertas registradas no barramento com a seguinte propriedade:
+    \begin{samplecode}
+    new ServiceProperty("domain", "Tutorial")
+    \end{samplecode}
+    \item A aplicação também deve informar qualquer nova oferta que seja registrada com essa propriedade.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exercício 18: Inscrevendo o Observador do Registro}
+  \frametitle{Observando o Registro de Oferta}
+  \inputjava[firstline= 99,lastline=103]{old}{ex18}{watchoffers/Application}
+  \inputjava[firstline=104,lastline=118]{new}{ex18}{watchoffers/Application}
+  \inputjava[firstline=119,lastline=122]{old}{ex18}{watchoffers/Application}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Observadores de Ofertas de Serviço}
+  \begin{block}{As ofertas permitem o registro de observadores.}
+    \begin{samplecode}[language= {[CORBA]IDL} ]
+    interface ServiceOffer {
+      ...
+      OfferObserverSubscription subscribeObserver(
+        in OfferObserver observer)
+        raises (ServiceFailure);
+      ...
+    };
+    \end{samplecode}
+  \end{block}
+  \begin{block}{Observadores são notificados da modificação das propriedades e da remoção da oferta.}
+    \begin{samplecode}[language= {[CORBA]IDL} ]
+    interface OfferObserver {
+      void propertiesChanged(in ServiceOfferDesc offer);
+      void removed(in ServiceOfferDesc offer);
+    };
+    \end{samplecode}
+  \end{block}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exercício 19: Observando Ofertas Existentes}
+  \begin{itemize}
+    \item Adapte a aplicação de monitoração de ofertas para que informe quando qualquer oferta com a propriedade \code{new ServiceProperty("domain", "Tutorial")} é removida do registro.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exercício 19: Observando a Modificação de Ofertas}
+  \inputjava[firstline=108,lastline=115]{old}{ex19}{watchoffers/Application}
+  \inputjava[firstline=116,lastline=125]{new}{ex19}{watchoffers/Application}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exercício 19: Observando a Remoção de Ofertas}
+  \inputjava[firstline=126,lastline=140]{new}{ex19}{watchoffers/Application}
+  \inputjava[firstline=141,lastline=147]{old}{ex19}{watchoffers/Application}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exercício 19: Tratando Notificações de Registro Duplicadas}
+  \inputjava[firstline=147,lastline=147]{old}{ex19}{watchoffers/Application}
+  \inputjava[firstline=148,lastline=155]{new}{ex19}{watchoffers/Application}
+  \inputjava[firstline=156,lastline=156]{old}{ex19}{watchoffers/Application}
+  \inputjava[firstline=157,lastline=162]{new}{ex19}{watchoffers/Application}
+  \inputjava[firstline=163,lastline=163]{old}{ex19}{watchoffers/Application}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exercício 19: Inscrevendo o Observador da Oferta}
+  \inputjava[firstline=165,lastline=187]{new}{ex19}{watchoffers/Application}
+  \inputjava[firstline=188,lastline=189]{old}{ex19}{watchoffers/Application}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Callback de Login Inválido}
+  \begin{itemize}
+    \item Manipulando a callback de login inválido:
+    \begin{samplecode}
+    public interface Connection {
+      ...
+      void onInvalidLoginCallback(InvalidLoginCallback callback);
+      InvalidLoginCallback onInvalidLoginCallback();
+      ...
+    }
+    \end{samplecode}
+    \item Interface da callback de login inválido:
+    \begin{samplecode}
+    public interface InvalidLoginCallback {
+      void invalidLogin(Connection conn, LoginInfo login);
+    }
+    \end{samplecode}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exercício 20: Relogin após Login Inválido}
+  \begin{itemize}
+    \item Adapte o servidor do exemplo de matrizes para implementar a callback de login inválido de forma que ela reautentique a conexão usando o certificado de autenticação registrado.
+    \item Lembre que é possível que haja várias chamadas concorrentes a essa callback.
+    \item Apesar das operações na conexão serem \term{thread-safe}, é possível que uma chamada a \code{loginByCertificate} lance \code{AlreadyLoggedIn} indicando que outra thread realizou o login com sucesso.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exercício 20: Implementando a Callback de Login Inválido}
+  \inputjava[firstline=148,lastline=150]{old}{ex20}{matrices/Server}
+  \inputjava[firstline=151,lastline=170]{new}{ex20}{matrices/Server}
+\end{frame}
+
+\begin{frame}
+  \frametitle{O Assistente}
+  \begin{itemize}
+    \item É um utilitário utilizado para simplificar a maioria das integrações com o OpenBus.
+    \item Ele implementa o código de boilerplate comum que os sistemas devem implementar, tal como:
+    \begin{itemize}
+      \item Relogin automático.
+      \item Renovação das ofertas após invalidação de login.
+      \item Tratar a inacessibilidade ao barramento.
+    \end{itemize}
+    \item O assistente funciona como um agente independente do sistema, que é responsável por:
+    \begin{itemize}
+      \item Manter uma conexão ativa com o barramento para realizar e receber chamadas.
+      \item Manter ofertas de serviço do sistema ativas no barramento.
+      \item Fazer buscas de serviços de interesse do sistema.
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Criando um Assistente}
+  \begin{samplecode}
+public abstract class Assistant {
+  ...
+  public static Assistant createWithPassword(String host, int port,
+                                             String entity,
+                                             byte[] password);
+  public static Assistant createWithPassword(String host, int port,
+                                             String entity, 
+                                             byte[] password,
+                                             AssistantParams params);
+
+  public static Assistant createWithPrivateKey(String host, int port,
+                                               String entity,
+                                               PrivateKey key);
+  public static Assistant createWithPrivateKey(String host, int port,
+                                               String entity,
+                                               PrivateKey key,
+                                               AssistantParams params);
+  ...
+}
+  \end{samplecode}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Criando um Assistente}
+  \begin{samplecode}
+public abstract class Assistant {
+  ...
+  public Assistant(String host, int port);
+  public Assistant(String host, int port, AssistantParams params);
+  public abstract AuthArgs onLoginAuthentication();
+  ...
+}
+
+public class AuthArgs {
+  public AuthArgs(String entity, byte[] password);
+  public AuthArgs(String entity, PrivateKey privkey);
+  public AuthArgs(LoginProcess attempt, byte[] secret);
+}
+
+return new Assistant(busHost, busPort) {
+  public AuthArgs onLoginAuthentication() {
+    OctetSeqHolder secret = new OctetSeqHolder();
+    LoginProcess attempt = conn.startSharedAuth(secret);
+    return new AuthArgs(attempt, secret.value);
+  }
+};
+  \end{samplecode}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Usando o Assistente}
+  \begin{samplecode}
+public abstract class Assistant {
+  ...
+  public ORB orb();
+
+  public void registerService(IComponent component,
+                              ServiceProperty[] properties);
+  public ServiceOfferDesc[] findServices(ServiceProperty[] properties,
+                                         int retries)
+                                         throws Throwable;
+  public ServiceOfferDesc[] getAllServices(int retries)
+                                           throws Throwable;
+
+  public LoginProcess startSharedAuth(OctetSeqHolder secret,
+                                      int retries)
+                                      throws Throwable;
+
+  public void shutdown();
+  ...
+}
+  \end{samplecode}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{A Callback de Falhas do Assistente}
+  \begin{samplecode}
+public class AssistantParams {
+  public Integer interval;
+  public ORB orb;
+  public Properties connprops;
+  public OnFailureCallback callback;
+}
+
+public interface OnFailureCallback {
+  void onLoginFailure(Assistant assistant,
+                      Throwable except);
+  void onRegisterFailure(Assistant assistant,
+                         IComponent component,
+                         ServiceProperty[] properties,
+                         Throwable except);
+  void onFindFailure(Assistant assistant,
+                     Throwable except);
+  void onStartSharedAuthFailure(Assistant assistant,
+                                Throwable except);
+}
+  \end{samplecode}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exercício 21: Utilizando o Assistente}
+  \begin{itemize}
+    \item Adapte o servidor e a aplicação do exemplo de matrizes para usarem um assistente.
+    \item Forneça uma callback de falha que exiba todos os erros capturados pelo assistente.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exercício 21: Criando o Assistente com Chave Privada (Servidor)}
+  \inputjava[firstline=142,lastline=145]{old}{ex21}{matrices/Server}
+  \inputjava[firstline=146,lastline=152]{new}{ex21}{matrices/Server}
+  \inputjava[firstline=153,lastline=165]{old}{ex21}{matrices/Server}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exercício 21: Utilizando o Assistente (Servidor)}
+  \inputjava[firstline=157,lastline=166]{old}{ex21}{matrices/Server}
+  \inputjava[firstline=167,lastline=167]{new}{ex21}{matrices/Server}
+  \inputjava[firstline=168,lastline=168]{old}{ex21}{matrices/Server}
+  \inputjava[firstline=169,lastline=169]{new}{ex21}{matrices/Server}
+  \inputjava[firstline=170,lastline=173]{old}{ex21}{matrices/Server}
+  \inputjava[firstline=174,lastline=177]{new}{ex21}{matrices/Server}
+  \inputjava[firstline=178,lastline=179]{old}{ex21}{matrices/Server}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exercício 21: Fábrica de Matrizes com Assistente (Servidor)}
+  \inputjava[firstline=60,lastline=61]{old}{ex21}{matrices/Server}
+  \inputjava[firstline=62,lastline=62]{new}{ex21}{matrices/Server}
+  \inputjava[firstline=63,lastline=70]{old}{ex21}{matrices/Server}
+  \inputjava[firstline=71,lastline=71]{new}{ex21}{matrices/Server}
+  \inputjava[firstline=72,lastline=72]{old}{ex21}{matrices/Server}
+  \inputjava[firstline=73,lastline=73]{new}{ex21}{matrices/Server}
+  \inputjava[firstline=74,lastline=87]{old}{ex21}{matrices/Server}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exercício 21: Usando Assistente nas Buscas de Ofertas (Servidor)}
+  \inputjava[firstline= 83,lastline= 90]{old}{ex21}{matrices/Server}
+  \inputjava[firstline= 91,lastline= 91]{new}{ex21}{matrices/Server}
+  \inputjava[firstline= 92,lastline=102]{old}{ex21}{matrices/Server}
+  \inputjava[firstline=103,lastline=103]{new}{ex21}{matrices/Server}
+  \inputjava[firstline=104,lastline=106]{old}{ex21}{matrices/Server}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exercício 21: Criando o Assistente com Senha (Aplicação)}
+  \inputjava[firstline=21,lastline=28]{new}{ex21}{matrices/Application}
+  \inputjava[firstline=29,lastline=32]{old}{ex21}{matrices/Application}
+  \inputjava[firstline=33,lastline=33]{new}{ex21}{matrices/Application}
+  \inputjava[firstline=34,lastline=37]{old}{ex21}{matrices/Application}
+  \inputjava[firstline=38,lastline=38]{new}{ex21}{matrices/Application}
+  \inputjava[firstline=39,lastline=48]{old}{ex21}{matrices/Application}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exercício 21: Encerrando o Assistente ao Final (Aplicação)}
+  \inputjava[firstline=49,lastline=66]{old}{ex21}{matrices/Application}
+  \inputjava[firstline=67,lastline=70]{new}{ex21}{matrices/Application}
+  \inputjava[firstline=71,lastline=72]{old}{ex21}{matrices/Application}
+\end{frame}
+
+%TODO: EXERCÍCIO PARA LISTAR TODAS AS TRANSFORMAÇÕES
+
+\subsection{Governança}
+
+\begin{frame}
+  \frametitle{Pacotes do OpenBus Core}
+  \begin{itemize}
+    \item Executáveis:
+    \begin{description}
+      \item[\code{busservices}] Utilitário que levanta a infraestrutura básica de um barramento OpenBus.
+      \item[\code{busadmin}] Utilitário de linha de comando de administração de barramentos OpenBus.
+    \end{description}
+    \item Documentação.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Arquivo de Configuração do \code{busservices}}
+  \begin{itemize}
+    \item Arquivo local
+    \begin{itemize}
+      \item Arquivo denominado \code{openbus.cfg} localizado no diretório de execução do \code{busservices}.
+    \end{itemize}
+    \begin{samplecode}[language=bash]
+echo "host='127.0.0.1' port=29999" > openbus.cfg
+    \end{samplecode}
+    \item Variável de ambiente
+    \begin{itemize}
+      \item A variável de ambiente \code{OPENBUS\_CONFIG} define o caminho do arquivo de configuração a ser utilizado.
+    \end{itemize}
+    \begin{samplecode}[language=bash]
+set OPENBUS_CONFIG="C:\OpenBus\configs.lua"
+    \end{samplecode}
+    \item Parâmetro de linha de comando
+    \begin{itemize}
+      \item O parâmetro \code{-configs} na linha de comando de execução do \code{busservices} define o caminho do arquivo de configuração a ser utilizado.
+    \end{itemize}
+    \begin{samplecode}[language=bash]
+busservices.exe -configs C:\OpenBus\configs.lua
+    \end{samplecode}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Parâmetros de Configuração}
+  \begin{itemize}
+    \item Através do arquivo de configuração.
+    \begin{samplecode}[language=lua]
+port = 20000
+admin = {"admin"}
+validator = {"myvalidators.PasswordIsEntityName"}
+    \end{samplecode}
+    \item Através da linha de comando.
+    \begin{samplecode}[language=bash]
+busservices -port 20000 -admin admin -validator myvalidators.PasswordIsEntityName
+    \end{samplecode}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Configurações Básicas}
+{\footnotesize
+  \begin{tabular}{l|c|l}
+    Name             & Valor     & Descrição \\
+    \hline
+    host             & address & endereço de rede usado pelo barramento \\
+    port             & number  & número da porta usada pelo barramento \\
+    database         & path    & arquivo de dados do barramento \\
+    privatekey       & path    & arquivo com chave privada do barramento \\
+    leasetime        & seconds & tempo de lease dos logins de acesso \\
+    expirationgap    & seconds & tempo que os logins ficam válidos após o lease \\
+    admin            & user    & usuário com privilégio de administração \\
+    validator        & name    & nome de pacote de validação de senhas \\
+    loglevel         & number  & nível de log gerado pelo barramento \\
+    logfile          & path    & arquivo de log gerado pelo barramento \\
+    oilloglevel      & number  & nível de log gerado pelo OiL (debug) \\
+    oillogfile       & path    & arquivo de log gerado pelo OiL (debug) \\
+    noauthorizations &         & desativa o suporte a autorizações de oferta \\
+    nolegacy         &         & desativa o suporte à versão antiga do barramento \\
+    configs          & path    & arquivo de configurações adicionais do barramento 
+  \end{tabular}
+}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Validador de Senhas}
+  \inputlua{new}{ex22}{password/validator/MD5}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Exercício 22: Levantando um Barramento}
+  \begin{itemize}
+    \item Gere uma chave privada para o seu barramento num arquivo.
+    \begin{samplecode}[language=bash]
+openssl genrsa -out tmp.key 2048
+openssl pkcs8 -topk8 -nocrypt -in tmp.key \
+        -out openbus.key -outform DER
+    \end{samplecode}
+    \item Escreva um validador de senhas que permita a autenticação de qualquer entidade com qualquer senha.
+    \inputlua{new}{ex22}{password/validator/AnythingGoes}
+    \item Levante uma instância de barramento na sua máquina usando a chave gerada e o seu validador de senhas.
+    \begin{itemize}
+      \item O \code{busservices} usa a variável ambiente \code{LUA\_PATH} para encontrar os arquivos que implementam os módulos de validação de senha.
+      \item Por padrão, o pacote \code{aaa.bbb.ccc.Validator} é carregado do arquivo \code{aaa/bbb/ccc/Validator.lua}.  \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{O BusExplorer}
+  \begin{itemize}
+    \item Utilitário para inspeção e administração do barramento.
+    \begin{itemize}
+      \item Certificados de autenticação.
+      \item Contratos de serviço (interfaces de objeto).
+      \item Autorizações de oferta.
+      \item Ofertas de serviço.
+      \item Logins válidos.
+    \end{itemize}
+    \item Web Site:
+    \url{http://jira.tecgraf.puc-rio.br/confluence/display/OpenBus/Home}
+    \item Navegação
+    \begin{itemize}
+      \item OpenBus 2.0
+      \item Download
+      \item Core
+      \item Ferramentas
+      \item BusExplorer 1.0.1
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exercício 23: Registrando Certificados}
+  \begin{itemize}
+    \item Gere pares de chave para:
+    \begin{itemize}
+      \item Seu serviço (\code{MatrixFactory})
+      \item O serviço \code{TransformationRepository}.
+    \end{itemize}
+    \item Registre os certificados para suas respectivas entidades.
+    \begin{itemize}
+      \item A entidade do serviço \code{TransformationRepository} deve ser \code{Transformations}.
+      \item A entidade do seu próprio serviço: \code{<NomeDoGrupo>Service}
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Exercício 24: Registrando Interfaces (Contratos)}
+  \begin{itemize}
+    \item Cadastre as interfaces oferecidas pelos serviços:
+    \begin{samplecode}
+IDL:tecgraf/openbus/demo/matrices/MatrixFactory:1.0
+IDL:tecgraf/openbus/demo/transformations/TransformationRepository:1.0
+    \end{samplecode}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exercício 25: Autorizando Ofertas de Serviço}
+  \begin{itemize}
+    \item Cadastre uma categoria qualquer.
+    \item Cadastre as entidades que necessitam ser autorizadas:
+    \begin{itemize}
+      \item \code{Transformations}
+      \item \code{<NomeDoGrupo>Service}
+    \end{itemize}
+    \item Autorize as interfaces para a entidade respectiva.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Exercício 26: Gerenciando Ofertas}
+  \begin{itemize}
+    \item Executes os servidores envolvidos no exercício.
+    \begin{itemize}
+      \item Para executar o \code{TransformationRepository} faça:
+      \begin{samplecode}[language=bash]
+java -Djava.endorsed.dirs=$OBSDK_HOME/lib \
+  tecgraf.openbus.demo.transformations \
+  localhost 2089 Transformations tranfrepo.key
+      \end{samplecode}
+    \end{itemize}
+    \item Observe se as ofertas são registradas no barramento.
+    \begin{itemize}
+      \item Observe as propriedades das ofertas.
+    \end{itemize}
+    \item Execute a aplicação, verificando a funcionalidade da integração.
+    \item Remova a oferta da entidade \code{Transformations}.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exercício 27: Gerenciando Logins Válidos}
+  \begin{itemize}
+    \item Execute os servidores envolvidos no exercício.
+    \item Observe se as ofertas são registradas no barramento.
+    \item Remova o login da entidade \code{Transformations}.
+    \item Repare que o serviço é republicado com um novo identificador de login.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \begin{center}
+    \includegraphics[scale=0.5]{img/tecgraf.jpg}
+
+    Tecgraf/PUC-Rio
+  \end{center}
+
+  \begin{center}
+    {\LARGE FIM}
+  \end{center}
+
+  \begin{center}
+    Obrigado!
+
+    Contato: \url{openbus-users@tecgraf.puc-rio.br}
+
+    Web Site: \url{http://www.tecgraf.puc-rio.br/openbus/}
+  \end{center}
+\end{frame}
+
+\end{document}

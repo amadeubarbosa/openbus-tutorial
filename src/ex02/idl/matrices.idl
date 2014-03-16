@@ -1,0 +1,17 @@
+module tecgraf {
+module openbus {
+module demo {
+module matrices {
+
+	typedef unsigned long Cardinal;
+	typedef sequence<double> Vector;
+
+	interface SquareMatrix {
+		readonly attribute Cardinal cardinality;
+		Vector multiply(in Vector v);
+	};
+
+};
+};
+};
+};

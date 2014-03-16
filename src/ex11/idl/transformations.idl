@@ -1,0 +1,21 @@
+module tecgraf {
+module openbus {
+module demo {
+module transformations {
+
+	typedef string TransformationId;
+	typedef sequence<TransformationId> TransformationIdSeq;
+	typedef sequence<double> Transformation;
+
+	exception UnknownTransformation { TransformationId id; };
+
+	interface TransformationRepository {
+		TransformationIdSeq listTransformations();
+		Transformation getTransformation(in TransformationId id)
+			raises (UnknownTransformation);
+	};
+
+};
+};
+};
+};

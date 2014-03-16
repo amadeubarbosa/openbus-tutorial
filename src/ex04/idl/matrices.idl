@@ -1,0 +1,33 @@
+module tecgraf {
+module openbus {
+module demo {
+module matrices {
+
+	typedef unsigned long Cardinal;
+	typedef sequence<double> Vector;
+
+	exception WrongCardinality {
+		Cardinal actual;
+		Cardinal expected;
+	};
+
+	interface SquareMatrix {
+		readonly attribute Cardinal cardinality;
+		Vector multiply(in Vector v) raises (WrongCardinality);
+		void dispose();
+	};
+
+	typedef string MatrixKind;
+
+	exception UnknownMatrixKind { MatrixKind kind; };
+	exception GeneralFailure { string message; };
+
+	interface MatrixFactory {
+		SquareMatrix newMatrix(in MatrixKind kind) raises (UnknownMatrixKind,
+		                                                   GeneralFailure);
+	};
+
+};
+};
+};
+};

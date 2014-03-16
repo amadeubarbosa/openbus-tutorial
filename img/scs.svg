@@ -1,0 +1,2420 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:v="http://schemas.microsoft.com/visio/2003/SVGExtensions/"
+   xmlns:osb="http://www.openswatchbook.org/uri/2009/osb"
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="744.09448819"
+   height="1052.3622047"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.2 r9819"
+   sodipodi:docname="scs.svg">
+  <defs
+     id="defs4">
+    <marker
+       inkscape:stockid="DotM"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="DotM"
+       style="overflow:visible">
+      <path
+         id="path19573"
+         d="M -2.5,-1.0 C -2.5,1.7600000 -4.7400000,4.0 -7.5,4.0 C -10.260000,4.0 -12.5,1.7600000 -12.5,-1.0 C -12.5,-3.7600000 -10.260000,-6.0 -7.5,-6.0 C -4.7400000,-6.0 -2.5,-3.7600000 -2.5,-1.0 z "
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1.0pt;marker-start:none;marker-end:none"
+         transform="scale(0.4) translate(7.4, 1)" />
+    </marker>
+    <linearGradient
+       id="linearGradient32146">
+      <stop
+         id="stop32148"
+         offset="0"
+         style="stop-color:#ffffff;stop-opacity:0.05882353;" />
+      <stop
+         style="stop-color:#ffffff;stop-opacity:1;"
+         offset="0.25"
+         id="stop32152" />
+      <stop
+         id="stop12118"
+         offset="0.75"
+         style="stop-color:#ffffff;stop-opacity:1;" />
+      <stop
+         id="stop32150"
+         offset="1"
+         style="stop-color:#ffffff;stop-opacity:0.05882353;" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient30846"
+       osb:paint="solid">
+      <stop
+         style="stop-color:#ffeeaa;stop-opacity:1;"
+         offset="0"
+         id="stop30848" />
+    </linearGradient>
+    <marker
+       inkscape:stockid="TriangleOutM"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="TriangleOutM"
+       style="overflow:visible">
+      <path
+         id="path19654"
+         d="M 5.77,0.0 L -2.88,5.0 L -2.88,-5.0 L 5.77,0.0 z "
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1.0pt;marker-start:none"
+         transform="scale(0.4)" />
+    </marker>
+    <marker
+       inkscape:stockid="TriangleOutS"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="TriangleOutS"
+       style="overflow:visible">
+      <path
+         id="path19657"
+         d="M 5.77,0.0 L -2.88,5.0 L -2.88,-5.0 L 5.77,0.0 z "
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1.0pt;marker-start:none"
+         transform="scale(0.2)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow2Send"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="Arrow2Send"
+       style="overflow:visible;">
+      <path
+         id="path19541"
+         style="font-size:12.0;fill-rule:evenodd;stroke-width:0.62500000;stroke-linejoin:round;"
+         d="M 8.7185878,4.0337352 L -2.2072895,0.016013256 L 8.7185884,-4.0017078 C 6.9730900,-1.6296469 6.9831476,1.6157441 8.7185878,4.0337352 z "
+         transform="scale(0.3) rotate(180) translate(-2.3,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow2Sstart"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="Arrow2Sstart"
+       style="overflow:visible">
+      <path
+         id="path19538"
+         style="font-size:12.0;fill-rule:evenodd;stroke-width:0.62500000;stroke-linejoin:round"
+         d="M 8.7185878,4.0337352 L -2.2072895,0.016013256 L 8.7185884,-4.0017078 C 6.9730900,-1.6296469 6.9831476,1.6157441 8.7185878,4.0337352 z "
+         transform="scale(0.3) translate(-2.3,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lstart"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="Arrow1Lstart"
+       style="overflow:visible">
+      <path
+         id="path19508"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1.0pt;marker-start:none"
+         transform="scale(0.8) translate(12.5,0)" />
+    </marker>
+    <linearGradient
+       id="linearGradient17657">
+      <stop
+         id="stop17659"
+         stop-color="#df2e07"
+         offset="0"
+         style="stop-color:#c4c4c4;stop-opacity:1;" />
+      <stop
+         id="stop17661"
+         stop-color="#a1241f"
+         offset="1"
+         style="stop-color:#d4d4d4;stop-opacity:1;" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient11154">
+      <stop
+         style="stop-color:#e9afaf;stop-opacity:0;"
+         offset="0"
+         id="stop11156" />
+      <stop
+         id="stop11162"
+         offset="0.3125"
+         style="stop-color:#ff0000;stop-opacity:0.49803922;" />
+      <stop
+         style="stop-color:#e9afaf;stop-opacity:0;"
+         offset="1"
+         id="stop11158" />
+    </linearGradient>
+    <linearGradient
+       y2="131.04"
+       x2="30.895"
+       gradientTransform="translate(-0.29643,6)"
+       y1="131.04"
+       gradientUnits="userSpaceOnUse"
+       xlink:href="#linearGradient2241"
+       x1="19.499"
+       id="linearGradient2897" />
+    <linearGradient
+       y2="112.07"
+       y1="112.07"
+       x2="30.599"
+       gradientUnits="userSpaceOnUse"
+       xlink:href="#linearGradient2241"
+       x1="19.203"
+       id="linearGradient2895" />
+    <linearGradient
+       y2="138.87"
+       x2="39.714"
+       gradientTransform="matrix(1,0,0,0.41394,65.589,130.93)"
+       y1="125.05"
+       gradientUnits="userSpaceOnUse"
+       xlink:href="#linearGradient2206"
+       x1="36.39"
+       id="linearGradient2882" />
+    <linearGradient
+       y2="115.48"
+       x2="38.717"
+       gradientTransform="matrix(1,0,0,0.41394,65.589,130.93)"
+       y1="147.34"
+       gradientUnits="userSpaceOnUse"
+       x1="35.393"
+       id="linearGradient2880">
+      <stop
+         offset="0"
+         stop-color="#fcfcff"
+         id="stop2889" />
+      <stop
+         offset=".45833"
+         stop-color="#fafaff"
+         id="stop2891" />
+      <stop
+         offset="1"
+         stop-color="#c8c8cd"
+         id="stop2893" />
+    </linearGradient>
+    <linearGradient
+       y2="127.18"
+       x2="205.43"
+       gradientTransform="matrix(1,0,0,0.87693,56.219,69.199)"
+       y1="120.21"
+       gradientUnits="userSpaceOnUse"
+       xlink:href="#linearGradient2299"
+       x1="207.21"
+       id="linearGradient2429" />
+    <linearGradient
+       y2="127.18"
+       x2="205.43"
+       gradientTransform="matrix(1,0,0,0.87693,79.934,69.199)"
+       y1="120.21"
+       gradientUnits="userSpaceOnUse"
+       xlink:href="#linearGradient2299"
+       x1="207.21"
+       id="linearGradient2426" />
+    <linearGradient
+       y2="127.18"
+       x2="205.43"
+       gradientTransform="matrix(1,0,0,0.87693,68.077,69.199)"
+       y1="120.21"
+       gradientUnits="userSpaceOnUse"
+       xlink:href="#linearGradient2299"
+       x1="207.21"
+       id="linearGradient2423" />
+    <radialGradient
+       r="22.053"
+       gradientTransform="matrix(-4.6007,0.10426,-0.25927,-3.1188,357.87,515.51)"
+       cx="47.511"
+       cy="115.41"
+       gradientUnits="userSpaceOnUse"
+       xlink:href="#linearGradient2206"
+       id="radialGradient2420" />
+    <radialGradient
+       r="65.094"
+       gradientTransform="matrix(-1.6113,-0.13803,0.10628,-0.63871,420.61,237.26)"
+       cx="131.02"
+       cy="116.22"
+       gradientUnits="userSpaceOnUse"
+       xlink:href="#linearGradient2299"
+       id="radialGradient2417" />
+    <linearGradient
+       id="linearGradient2206">
+      <stop
+         offset="0"
+         stop-color="#fcfcff"
+         id="stop2208" />
+      <stop
+         offset=".45833"
+         stop-color="#fafaff"
+         id="stop2225" />
+      <stop
+         offset="1"
+         stop-color="#c8c8cd"
+         id="stop2210" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient2241">
+      <stop
+         offset="0"
+         stop-color="#3a3a3a"
+         id="stop2243" />
+      <stop
+         offset="1"
+         stop-color="#c5c5c5"
+         id="stop2245" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient2299">
+      <stop
+         offset="0"
+         stop-color="#9e9e9e"
+         id="stop2301" />
+      <stop
+         offset="1"
+         stop-color="#323232"
+         id="stop2303" />
+    </linearGradient>
+    <linearGradient
+       y2="14.364"
+       y1="58.78"
+       gradientTransform="scale(0.88284,1.1327)"
+       x2="98.988"
+       gradientUnits="userSpaceOnUse"
+       xlink:href="#linearGradient2821"
+       x1="112.68"
+       id="linearGradient3601" />
+    <linearGradient
+       y2="46.701"
+       y1="81.669"
+       gradientTransform="scale(1.0149,0.98529)"
+       x2="64.276"
+       gradientUnits="userSpaceOnUse"
+       xlink:href="#linearGradient2821"
+       x1="73.541"
+       id="linearGradient3593" />
+    <linearGradient
+       y2="80.057"
+       y1="116"
+       gradientTransform="scale(1.1179,0.89451)"
+       x2="6.1457"
+       gradientUnits="userSpaceOnUse"
+       xlink:href="#linearGradient2821"
+       x1="43.924"
+       id="linearGradient2827" />
+    <linearGradient
+       id="linearGradient2821">
+      <stop
+         offset="0"
+         stop-color="#d3b900"
+         id="stop2823" />
+      <stop
+         offset="1"
+         stop-color="#fdffb8"
+         id="stop2825" />
+    </linearGradient>
+    <linearGradient
+       x1="420.98"
+       x2="297.84"
+       y1="520.04"
+       gradientUnits="userSpaceOnUse"
+       y2="619.16"
+       id="linearGradient5465">
+      <stop
+         offset="0"
+         stop-color="#e6cc4b"
+         id="stop5427" />
+      <stop
+         offset="1"
+         stop-color="#f7b215"
+         id="stop5429" />
+    </linearGradient>
+    <pattern
+       height="256"
+       patternUnits="userSpaceOnUse"
+       width="256"
+       id="sand_bitmap-5" />
+    <pattern
+       patternTransform="translate(.045135 .45389)"
+       xlink:href="#sand_bitmap-5"
+       id="pattern5396" />
+    <pattern
+       height="256"
+       patternTransform="translate(-.94437 -.70828)"
+       patternUnits="userSpaceOnUse"
+       width="256"
+       id="sand_bitmap" />
+    <pattern
+       patternTransform="translate(-.94437 -.70828)"
+       xlink:href="#sand_bitmap"
+       id="pattern5444" />
+    <pattern
+       patternTransform="translate(.045135 .45389)"
+       xlink:href="#pattern5396"
+       id="pattern5447" />
+    <pattern
+       patternTransform="translate(-.94437 -.70828)"
+       xlink:href="#sand_bitmap"
+       id="pattern5450" />
+    <radialGradient
+       r="198.88"
+       gradientTransform="matrix(1,0,0,0.94882,0,10.406)"
+       cx="173.02"
+       cy="169.44"
+       gradientUnits="userSpaceOnUse"
+       xlink:href="#linearGradient6335"
+       id="radialGradient6540" />
+    <linearGradient
+       y2="759.93"
+       x2="242.94"
+       gradientTransform="translate(31.429,-105.71)"
+       y1="852.86"
+       gradientUnits="userSpaceOnUse"
+       spreadMethod="reflect"
+       xlink:href="#linearGradient6335"
+       x1="185.37"
+       id="linearGradient6538" />
+    <linearGradient
+       y2="759.93"
+       x2="242.94"
+       gradientTransform="matrix(-1,0,0,1,677.42,-90.059)"
+       y1="852.86"
+       gradientUnits="userSpaceOnUse"
+       spreadMethod="reflect"
+       x1="185.37"
+       id="linearGradient6536">
+      <stop
+         offset="0"
+         stop-color="#ab0000"
+         id="stop6500" />
+      <stop
+         offset="1"
+         stop-color="#7a1010"
+         id="stop6502" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient6335">
+      <stop
+         offset="0"
+         stop-color="#ab0000"
+         id="stop6337" />
+      <stop
+         offset="1"
+         stop-color="#911313"
+         id="stop6339" />
+    </linearGradient>
+    <style
+       id="style10358"
+       type="text/css">
+    .str1 {stroke:#1F1A17;stroke-width:0.0286362}
+    .str0 {stroke:white;stroke-width:0.0286362}
+    .fil2 {fill:#1F1A17}
+    .fil0 {fill:#EAE342}
+    .fil1 {fill:white}
+  </style>
+    <v:pageProperties
+       v:drawingUnits="24"
+       v:pageScale="0.0393701"
+       v:drawingScale="0.0393701"
+       v:shadowOffsetY="-8.50394"
+       v:shadowOffsetX="8.50394" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient6536"
+       id="linearGradient11240"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(-1,0,0,1,677.42,-90.059)"
+       spreadMethod="reflect"
+       x1="185.37"
+       y1="852.86"
+       x2="242.94"
+       y2="759.93" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient6335"
+       id="linearGradient11242"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(31.429,-105.71)"
+       spreadMethod="reflect"
+       x1="185.37"
+       y1="852.86"
+       x2="242.94"
+       y2="759.93" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient6335"
+       id="radialGradient11244"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1,0,0,0.94882,0,10.406)"
+       cx="173.02"
+       cy="169.44"
+       r="198.88" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient6536"
+       id="linearGradient11307"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(-1,0,0,1,677.42,-90.059)"
+       spreadMethod="reflect"
+       x1="185.37"
+       y1="852.86"
+       x2="242.94"
+       y2="759.93" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient6335"
+       id="linearGradient11309"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(31.429,-105.71)"
+       spreadMethod="reflect"
+       x1="185.37"
+       y1="852.86"
+       x2="242.94"
+       y2="759.93" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient6335"
+       id="radialGradient11311"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1,0,0,0.94882,0,10.406)"
+       cx="173.02"
+       cy="169.44"
+       r="198.88" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient6536"
+       id="linearGradient11367"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(-1,0,0,1,677.42,-90.059)"
+       spreadMethod="reflect"
+       x1="185.37"
+       y1="852.86"
+       x2="242.94"
+       y2="759.93" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient6335"
+       id="linearGradient11369"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(31.429,-105.71)"
+       spreadMethod="reflect"
+       x1="185.37"
+       y1="852.86"
+       x2="242.94"
+       y2="759.93" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient6335"
+       id="radialGradient11371"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1,0,0,0.94882,0,10.406)"
+       cx="173.02"
+       cy="169.44"
+       r="198.88" />
+    <filter
+       id="filter8141">
+      <feGaussianBlur
+         stdDeviation="0.9772817"
+         id="feGaussianBlur8143" />
+    </filter>
+    <radialGradient
+       r="49.5"
+       gradientTransform="matrix(1.0152,0,0,1.1848,594.9,-645.9)"
+       cx="-122.32"
+       cy="953.13"
+       gradientUnits="userSpaceOnUse"
+       xlink:href="#linearGradient4243"
+       id="radialGradient5724" />
+    <radialGradient
+       r="24.25"
+       gradientTransform="matrix(0.5154,0,0,0.27324,542.36,454.4)"
+       cx="-160.19"
+       cy="55.827"
+       gradientUnits="userSpaceOnUse"
+       xlink:href="#linearGradient4338"
+       id="radialGradient5721" />
+    <radialGradient
+       r="36"
+       gradientTransform="matrix(1.973,3.8889e-8,-4.3805e-8,2.2224,122.6,-45.229)"
+       cx="-119.59"
+       cy="30.918"
+       gradientUnits="userSpaceOnUse"
+       xlink:href="#linearGradient4243"
+       id="radialGradient5717" />
+    <radialGradient
+       r="49.5"
+       gradientTransform="matrix(1.0152,0,0,1.1848,543.39,-646.15)"
+       cx="-122.32"
+       cy="953.13"
+       gradientUnits="userSpaceOnUse"
+       xlink:href="#linearGradient4244"
+       id="radialGradient5711" />
+    <radialGradient
+       r="24.25"
+       gradientTransform="matrix(0.5154,0,0,0.27324,490.85,454.15)"
+       cx="-160.19"
+       cy="55.827"
+       gradientUnits="userSpaceOnUse"
+       xlink:href="#linearGradient4338"
+       id="radialGradient5708" />
+    <radialGradient
+       r="36"
+       gradientTransform="matrix(1.973,3.8889e-8,-4.3805e-8,2.2224,122.6,-45.229)"
+       cx="-119.59"
+       cy="30.918"
+       gradientUnits="userSpaceOnUse"
+       xlink:href="#linearGradient4244"
+       id="radialGradient5704" />
+    <radialGradient
+       r="49.5"
+       gradientTransform="matrix(1.0152,0,0,1.1848,492.5,-646.15)"
+       cx="-122.32"
+       cy="953.13"
+       gradientUnits="userSpaceOnUse"
+       xlink:href="#linearGradient4240"
+       id="radialGradient5698" />
+    <radialGradient
+       r="24.25"
+       gradientTransform="matrix(0.5154,0,0,0.27324,439.96,454.15)"
+       cx="-160.19"
+       cy="55.827"
+       gradientUnits="userSpaceOnUse"
+       xlink:href="#linearGradient4338"
+       id="radialGradient5695" />
+    <radialGradient
+       r="36"
+       gradientTransform="matrix(1.973,3.8889e-8,-4.3805e-8,2.2224,122.6,-45.229)"
+       cx="-119.59"
+       cy="30.918"
+       gradientUnits="userSpaceOnUse"
+       xlink:href="#linearGradient4240"
+       id="radialGradient5691" />
+    <radialGradient
+       r="49.5"
+       gradientTransform="matrix(1.0152,0,0,1.1848,440.53,-646.15)"
+       cx="-122.32"
+       cy="953.13"
+       gradientUnits="userSpaceOnUse"
+       xlink:href="#linearGradient4241"
+       id="radialGradient5685" />
+    <radialGradient
+       r="24.25"
+       gradientTransform="matrix(0.5154,0,0,0.27324,387.99,454.15)"
+       cx="-160.19"
+       cy="55.827"
+       gradientUnits="userSpaceOnUse"
+       xlink:href="#linearGradient4338"
+       id="radialGradient5682" />
+    <radialGradient
+       r="36"
+       gradientTransform="matrix(1.973,3.8889e-8,-4.3805e-8,2.2224,122.6,-45.229)"
+       cx="-119.59"
+       cy="30.918"
+       gradientUnits="userSpaceOnUse"
+       xlink:href="#linearGradient4241"
+       id="radialGradient5678" />
+    <radialGradient
+       r="49.5"
+       gradientTransform="matrix(1.0152,0,0,1.1848,388.85,-646.15)"
+       cx="-122.32"
+       cy="953.13"
+       gradientUnits="userSpaceOnUse"
+       xlink:href="#linearGradient4242"
+       id="radialGradient5672" />
+    <radialGradient
+       r="24.25"
+       gradientTransform="matrix(0.5154,0,0,0.27324,336.31,454.15)"
+       cx="-160.19"
+       cy="55.827"
+       gradientUnits="userSpaceOnUse"
+       xlink:href="#linearGradient4338"
+       id="radialGradient5669" />
+    <radialGradient
+       r="36"
+       gradientTransform="matrix(1.973,3.8889e-8,-4.3805e-8,2.2224,122.6,-45.229)"
+       cx="-119.59"
+       cy="30.918"
+       gradientUnits="userSpaceOnUse"
+       xlink:href="#linearGradient4242"
+       id="radialGradient5665" />
+    <linearGradient
+       id="linearGradient4338">
+      <stop
+         offset="0"
+         stop-color="#2e3436"
+         id="stop4340" />
+      <stop
+         offset="1"
+         stop-opacity="0"
+         stop-color="#2e3436"
+         id="stop4342" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient4240">
+      <stop
+         offset="0"
+         stop-color="#9ce008"
+         id="stop4242" />
+      <stop
+         offset="1"
+         stop-color="#65a320"
+         id="stop4244" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient4244">
+      <stop
+         offset="0"
+         stop-color="#07c9df"
+         id="stop5886" />
+      <stop
+         offset="1"
+         stop-color="#1f7fa1"
+         id="stop5888" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient4243">
+      <stop
+         offset="0"
+         stop-color="#df0775"
+         id="stop13705" />
+      <stop
+         offset="1"
+         stop-color="#a11f48"
+         id="stop13707" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient4242">
+      <stop
+         offset="0"
+         stop-color="#df2e07"
+         id="stop15192" />
+      <stop
+         offset="1"
+         stop-color="#a1241f"
+         id="stop15194" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient4241">
+      <stop
+         offset="0"
+         stop-color="#f7f108"
+         id="stop20934" />
+      <stop
+         offset="1"
+         stop-color="#98b64a"
+         id="stop20936" />
+    </linearGradient>
+    <filter
+       x="-.12375"
+       y="-.33"
+       color-interpolation-filters="sRGB"
+       width="1.2475"
+       height="1.66"
+       id="filter3927">
+      <feGaussianBlur
+         stdDeviation="2.475"
+         id="feGaussianBlur3929" />
+    </filter>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient32146"
+       id="linearGradient32218"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.2183223,0,0,1.1782623,-69.672112,-86.878028)"
+       x1="295.43231"
+       y1="487.36194"
+       x2="334.81726"
+       y2="487.36194" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="3.6093746"
+     inkscape:cx="207.69848"
+     inkscape:cy="525.20695"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1920"
+     inkscape:window-height="1058"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       inkscape:export-ydpi="600"
+       inkscape:export-xdpi="600"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/component.png"
+       style="fill:#aaccff;fill-opacity:1;stroke:#2c5aa0;stroke-width:0.99999994;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect3270"
+       width="49"
+       height="39"
+       x="464.07101"
+       y="-364.75381"
+       rx="3.7930148"
+       ry="3.7930143"
+       transform="matrix(0,1,-1,0,0,0)" />
+    <text
+       transform="scale(1.0001374,0.99986262)"
+       xml:space="preserve"
+       style="font-size:6px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:80.00000119%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial Unicode MS;-inkscape-font-specification:Arial Unicode MS"
+       x="344.82065"
+       y="490.21698"
+       id="text31991"
+       sodipodi:linespacing="80.000001%"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/component.png"
+       inkscape:export-xdpi="600"
+       inkscape:export-ydpi="600"><tspan
+         style="font-size:6px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:80.00000119%;writing-mode:lr-tb;text-anchor:middle;font-family:Arial Unicode MS;-inkscape-font-specification:Arial Unicode MS"
+         sodipodi:role="line"
+         x="344.82065"
+         y="490.21698"
+         id="tspan31993">Componente</tspan></text>
+    <path
+       inkscape:export-ydpi="600"
+       inkscape:export-xdpi="600"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/component.png"
+       sodipodi:type="arc"
+       style="fill:#aaccff;fill-opacity:1;stroke:#2c5aa0;stroke-width:2.3205018;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="path3272"
+       sodipodi:cx="342.21164"
+       sodipodi:cy="483.09067"
+       sodipodi:rx="11.602509"
+       sodipodi:ry="11.602509"
+       d="m 353.81415,483.09067 a 11.602509,11.602509 0 1 1 -23.20502,0 11.602509,11.602509 0 1 1 23.20502,0 z"
+       transform="matrix(0.43094129,0,0,0.43094129,197.78069,240.91387)" />
+    <path
+       inkscape:export-ydpi="600"
+       inkscape:export-xdpi="600"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/component.png"
+       sodipodi:type="arc"
+       style="fill:#3771c8;fill-opacity:1;stroke:#0b1728;stroke-width:2.3205018;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="path4088"
+       sodipodi:cx="342.21164"
+       sodipodi:cy="483.09067"
+       sodipodi:rx="11.602509"
+       sodipodi:ry="11.602509"
+       d="m 353.81415,483.09067 a 11.602509,11.602509 0 1 1 -23.20502,0 11.602509,11.602509 0 1 1 23.20502,0 z"
+       transform="matrix(0.43094129,0,0,0.43094129,162.77474,270.62028)" />
+    <path
+       transform="matrix(0.43094129,0,0,0.43094129,162.77474,290.15429)"
+       d="m 353.81415,483.09067 a 11.602509,11.602509 0 1 1 -23.20502,0 11.602509,11.602509 0 1 1 23.20502,0 z"
+       sodipodi:ry="11.602509"
+       sodipodi:rx="11.602509"
+       sodipodi:cy="483.09067"
+       sodipodi:cx="342.21164"
+       id="path4090"
+       style="fill:#3771c8;fill-opacity:1;stroke:#0b1728;stroke-width:2.3205018;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       sodipodi:type="arc"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/component.png"
+       inkscape:export-xdpi="600"
+       inkscape:export-ydpi="600" />
+    <path
+       inkscape:export-ydpi="600"
+       inkscape:export-xdpi="600"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/component.png"
+       inkscape:connector-curvature="0"
+       id="path4108"
+       d="m 382.72531,471.304 0,2.5 c -2.76142,0 -5,2.23858 -5,5 0,2.76142 2.23858,5 5,5 l 0,2.5 c -4.14214,0 -7.5,-3.35786 -7.5,-7.5 0,-4.14214 3.35786,-7.5 7.5,-7.5 z"
+       style="fill:#ffeeaa;fill-opacity:1;stroke:#2b2200" />
+    <path
+       style="fill:#ffeeaa;fill-opacity:1;stroke:#2b2200"
+       d="m 382.72531,490.83801 0,2.5 c -2.76142,0 -5,2.23858 -5,5 0,2.76142 2.23858,5 5,5 l 0,2.5 c -4.14214,0 -7.5,-3.35786 -7.5,-7.5 0,-4.14214 3.35786,-7.5 7.5,-7.5 z"
+       id="path4110"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/component.png"
+       inkscape:export-xdpi="600"
+       inkscape:export-ydpi="600" />
+    <path
+       style="fill:none;stroke:#00112b;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 315.74786,478.804 9.66663,0"
+       id="path4112"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/component.png"
+       inkscape:export-xdpi="600"
+       inkscape:export-ydpi="600" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path4114"
+       d="m 315.74786,498.33801 9.66663,0"
+       style="fill:none;stroke:#00112b;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/component.png"
+       inkscape:export-xdpi="600"
+       inkscape:export-ydpi="600" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path4116"
+       d="m 365.24786,478.804 9.66663,0"
+       style="fill:none;stroke:#2b2200;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/component.png"
+       inkscape:export-xdpi="600"
+       inkscape:export-ydpi="600" />
+    <path
+       style="fill:none;stroke:#2b2200;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 365.24786,498.33801 9.66663,0"
+       id="path4118"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/component.png"
+       inkscape:export-xdpi="600"
+       inkscape:export-ydpi="600" />
+    <path
+       style="fill:none;stroke:#214478;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 345.25382,453.93095 0,9.66663"
+       id="path4122"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/component.png"
+       inkscape:export-xdpi="600"
+       inkscape:export-ydpi="600" />
+    <path
+       inkscape:export-ydpi="600.26581"
+       inkscape:export-xdpi="600.26581"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/obj_vs_comp.png"
+       sodipodi:type="arc"
+       style="fill:#cccccc;fill-opacity:1;stroke:#4d4d4d;stroke-width:2.3205018;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="path4126"
+       sodipodi:cx="342.21164"
+       sodipodi:cy="483.09067"
+       sodipodi:rx="11.602509"
+       sodipodi:ry="11.602509"
+       d="m 353.81415,483.09067 a 11.602509,11.602509 0 1 1 -23.20502,0 11.602509,11.602509 0 1 1 23.20502,0 z"
+       transform="matrix(0.43094129,0,0,0.43094129,-76.374043,250.51645)" />
+    <path
+       transform="matrix(0.43094129,0,0,0.43094129,-64.236397,261.51618)"
+       d="m 353.81415,483.09067 a 11.602509,11.602509 0 1 1 -23.20502,0 11.602509,11.602509 0 1 1 23.20502,0 z"
+       sodipodi:ry="11.602509"
+       sodipodi:rx="11.602509"
+       sodipodi:cy="483.09067"
+       sodipodi:cx="342.21164"
+       id="path4128"
+       style="fill:#cccccc;fill-opacity:1;stroke:#4d4d4d;stroke-width:2.3205018;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       sodipodi:type="arc"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/obj_vs_comp.png"
+       inkscape:export-xdpi="600.26581"
+       inkscape:export-ydpi="600.26581" />
+    <path
+       inkscape:export-ydpi="600.26581"
+       inkscape:export-xdpi="600.26581"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/obj_vs_comp.png"
+       sodipodi:type="arc"
+       style="fill:#cccccc;fill-opacity:1;stroke:#4d4d4d;stroke-width:2.3205018;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="path4130"
+       sodipodi:cx="342.21164"
+       sodipodi:cy="483.09067"
+       sodipodi:rx="11.602509"
+       sodipodi:ry="11.602509"
+       d="m 353.81415,483.09067 a 11.602509,11.602509 0 1 1 -23.20502,0 11.602509,11.602509 0 1 1 23.20502,0 z"
+       transform="matrix(0.43094129,0,0,0.43094129,-80.925659,267.58501)" />
+    <path
+       transform="matrix(0.43094129,0,0,0.43094129,-67.270808,275.55034)"
+       d="m 353.81415,483.09067 a 11.602509,11.602509 0 1 1 -23.20502,0 11.602509,11.602509 0 1 1 23.20502,0 z"
+       sodipodi:ry="11.602509"
+       sodipodi:rx="11.602509"
+       sodipodi:cy="483.09067"
+       sodipodi:cx="342.21164"
+       id="path4132"
+       style="fill:#cccccc;fill-opacity:1;stroke:#4d4d4d;stroke-width:2.3205018;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       sodipodi:type="arc"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/obj_vs_comp.png"
+       inkscape:export-xdpi="600.26581"
+       inkscape:export-ydpi="600.26581" />
+    <path
+       inkscape:export-ydpi="600.26581"
+       inkscape:export-xdpi="600.26581"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/obj_vs_comp.png"
+       sodipodi:type="arc"
+       style="fill:#cccccc;fill-opacity:1;stroke:#4d4d4d;stroke-width:2.3205018;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="path4134"
+       sodipodi:cx="342.21164"
+       sodipodi:cy="483.09067"
+       sodipodi:rx="11.602509"
+       sodipodi:ry="11.602509"
+       d="m 353.81415,483.09067 a 11.602509,11.602509 0 1 1 -23.20502,0 11.602509,11.602509 0 1 1 23.20502,0 z"
+       transform="matrix(0.43094129,0,0,0.43094129,-93.0633,255.06806)" />
+    <path
+       transform="matrix(0.43094129,0,0,0.43094129,-84.339372,281.99847)"
+       d="m 353.81415,483.09067 a 11.602509,11.602509 0 1 1 -23.20502,0 11.602509,11.602509 0 1 1 23.20502,0 z"
+       sodipodi:ry="11.602509"
+       sodipodi:rx="11.602509"
+       sodipodi:cy="483.09067"
+       sodipodi:cx="342.21164"
+       id="path4136"
+       style="fill:#cccccc;fill-opacity:1;stroke:#4d4d4d;stroke-width:2.3205018;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       sodipodi:type="arc"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/obj_vs_comp.png"
+       inkscape:export-xdpi="600.26581"
+       inkscape:export-ydpi="600.26581" />
+    <path
+       inkscape:export-ydpi="600.26581"
+       inkscape:export-xdpi="600.26581"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/obj_vs_comp.png"
+       sodipodi:type="arc"
+       style="fill:#cccccc;fill-opacity:1;stroke:#4d4d4d;stroke-width:2.3205018;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="path4138"
+       sodipodi:cx="342.21164"
+       sodipodi:cy="483.09067"
+       sodipodi:rx="11.602509"
+       sodipodi:ry="11.602509"
+       d="m 353.81415,483.09067 a 11.602509,11.602509 0 1 1 -23.20502,0 11.602509,11.602509 0 1 1 23.20502,0 z"
+       transform="matrix(0.43094129,0,0,0.43094129,-97.61492,270.61942)" />
+    <text
+       inkscape:export-ydpi="600.26581"
+       inkscape:export-xdpi="600.26581"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/obj_vs_comp.png"
+       sodipodi:linespacing="80.000001%"
+       id="text4140"
+       y="507.02859"
+       x="65.773338"
+       style="font-size:6px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:80.00000119%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial Unicode MS;-inkscape-font-specification:Arial Unicode MS"
+       xml:space="preserve"
+       transform="scale(1.0001374,0.99986262)"><tspan
+         id="tspan4142"
+         y="507.02859"
+         x="65.773338"
+         sodipodi:role="line"
+         style="font-size:6px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:80.00000119%;writing-mode:lr-tb;text-anchor:middle;font-family:Arial Unicode MS;-inkscape-font-specification:Arial Unicode MS">Objetos</tspan></text>
+    <path
+       style="fill:none;stroke:#4d4d4d;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 53.237655,482.45156 5.57864,4.9056"
+       id="path4146"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/obj_vs_comp.png"
+       inkscape:export-xdpi="600.26581"
+       inkscape:export-ydpi="600.26581" />
+    <path
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path4148"
+       d="m 71.224865,474.07116 7.41824,-2.4528"
+       style="fill:none;stroke:#4d4d4d;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/obj_vs_comp.png"
+       inkscape:export-xdpi="600.26581"
+       inkscape:export-ydpi="600.26581" />
+    <path
+       style="fill:none;stroke:#4d4d4d;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 67.545665,471.00516 2.30824,-7.3584"
+       id="path4150"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/obj_vs_comp.png"
+       inkscape:export-xdpi="600.26581"
+       inkscape:export-ydpi="600.26581" />
+    <path
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path4152"
+       d="m 71.020465,478.56796 4.55664,2.24841"
+       style="fill:none;stroke:#4d4d4d;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/obj_vs_comp.png"
+       inkscape:export-xdpi="600.26581"
+       inkscape:export-ydpi="600.26581" />
+    <path
+       style="fill:none;stroke:#4d4d4d;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 81.853665,474.47996 -0.96216,4.29241"
+       id="path4154"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/obj_vs_comp.png"
+       inkscape:export-xdpi="600.26581"
+       inkscape:export-ydpi="600.26581" />
+    <text
+       transform="scale(1.0001374,0.99986262)"
+       xml:space="preserve"
+       style="font-size:6px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:80.00000119%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial Unicode MS;-inkscape-font-specification:Arial Unicode MS"
+       x="281.39145"
+       y="484.52246"
+       id="text4158"
+       sodipodi:linespacing="80.000001%"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/component.png"
+       inkscape:export-xdpi="600"
+       inkscape:export-ydpi="600"><tspan
+         style="font-size:6px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:80.00000119%;writing-mode:lr-tb;text-anchor:middle;font-family:Arial Unicode MS;-inkscape-font-specification:Arial Unicode MS"
+         sodipodi:role="line"
+         x="281.39145"
+         y="484.52246"
+         id="tspan4160">Serviços</tspan><tspan
+         style="font-size:6px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:80.00000119%;writing-mode:lr-tb;text-anchor:middle;font-family:Arial Unicode MS;-inkscape-font-specification:Arial Unicode MS"
+         sodipodi:role="line"
+         x="281.39145"
+         y="489.32245"
+         id="tspan4162">ou</tspan><tspan
+         style="font-size:6px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:80.00000119%;writing-mode:lr-tb;text-anchor:middle;font-family:Arial Unicode MS;-inkscape-font-specification:Arial Unicode MS"
+         sodipodi:role="line"
+         x="281.39145"
+         y="494.12244"
+         id="tspan4164">Funcionalidades</tspan></text>
+    <text
+       inkscape:export-ydpi="600"
+       inkscape:export-xdpi="600"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/component.png"
+       sodipodi:linespacing="80.000001%"
+       id="text4166"
+       y="486.11383"
+       x="403.91385"
+       style="font-size:6px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:80.00000119%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial Unicode MS;-inkscape-font-specification:Arial Unicode MS"
+       xml:space="preserve"
+       transform="scale(1.0001374,0.99986262)"><tspan
+         id="tspan4172"
+         y="486.11383"
+         x="403.91385"
+         sodipodi:role="line"
+         style="font-size:6px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:80.00000119%;writing-mode:lr-tb;text-anchor:middle;font-family:Arial Unicode MS;-inkscape-font-specification:Arial Unicode MS">Dependências</tspan><tspan
+         y="490.91382"
+         x="403.91385"
+         sodipodi:role="line"
+         style="font-size:6px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:80.00000119%;writing-mode:lr-tb;text-anchor:middle;font-family:Arial Unicode MS;-inkscape-font-specification:Arial Unicode MS"
+         id="tspan4179">ou</tspan><tspan
+         y="495.71381"
+         x="403.91385"
+         sodipodi:role="line"
+         style="font-size:6px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:80.00000119%;writing-mode:lr-tb;text-anchor:middle;font-family:Arial Unicode MS;-inkscape-font-specification:Arial Unicode MS"
+         id="tspan4181">Requisitos</tspan></text>
+    <text
+       inkscape:export-ydpi="600"
+       inkscape:export-xdpi="600"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/component.png"
+       sodipodi:linespacing="80.000001%"
+       id="text4183"
+       y="431.53149"
+       x="344.67438"
+       style="font-size:6px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:80.00000119%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial Unicode MS;-inkscape-font-specification:Arial Unicode MS"
+       xml:space="preserve"
+       transform="scale(1.0001374,0.99986262)"><tspan
+         id="tspan4189"
+         y="431.53149"
+         x="344.67438"
+         sodipodi:role="line"
+         style="font-size:6px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:80.00000119%;writing-mode:lr-tb;text-anchor:middle;font-family:Arial Unicode MS;-inkscape-font-specification:Arial Unicode MS">Manipulação</tspan><tspan
+         y="436.33148"
+         x="344.67438"
+         sodipodi:role="line"
+         style="font-size:6px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:80.00000119%;writing-mode:lr-tb;text-anchor:middle;font-family:Arial Unicode MS;-inkscape-font-specification:Arial Unicode MS"
+         id="tspan4196">e</tspan><tspan
+         y="441.1315"
+         x="344.67438"
+         sodipodi:role="line"
+         style="font-size:6px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:80.00000119%;writing-mode:lr-tb;text-anchor:middle;font-family:Arial Unicode MS;-inkscape-font-specification:Arial Unicode MS"
+         id="tspan4198">Configuração</tspan></text>
+    <text
+       inkscape:export-ydpi="600"
+       inkscape:export-xdpi="600"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/component.png"
+       sodipodi:linespacing="80.000001%"
+       id="text4200"
+       y="455.69809"
+       x="291.81442"
+       style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:80.00000119%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial Unicode MS;-inkscape-font-specification:Arial Unicode MS"
+       xml:space="preserve"
+       transform="scale(1.0001374,0.99986262)"><tspan
+         id="tspan4206"
+         y="455.69809"
+         x="291.81442"
+         sodipodi:role="line"
+         style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:80.00000119%;writing-mode:lr-tb;text-anchor:middle;font-family:Arial Unicode MS;-inkscape-font-specification:Arial Unicode MS">Facetas</tspan></text>
+    <text
+       transform="scale(1.0001374,0.99986262)"
+       xml:space="preserve"
+       style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:80.00000119%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial Unicode MS;-inkscape-font-specification:Arial Unicode MS"
+       x="406.08676"
+       y="456.31137"
+       id="text4213"
+       sodipodi:linespacing="80.000001%"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/component.png"
+       inkscape:export-xdpi="600"
+       inkscape:export-ydpi="600"><tspan
+         style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:80.00000119%;writing-mode:lr-tb;text-anchor:middle;font-family:Arial Unicode MS;-inkscape-font-specification:Arial Unicode MS"
+         sodipodi:role="line"
+         x="406.08676"
+         y="456.31137"
+         id="tspan4215">Receptáculos</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#TriangleOutM)"
+       d="m 297.81089,458.58001 6.9496,11.4464"
+       id="path4217"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/component.png"
+       inkscape:export-xdpi="600"
+       inkscape:export-ydpi="600" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path4413"
+       d="m 312.06316,451.82308 23.80346,-1.98827"
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#TriangleOutM)"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/component.png"
+       inkscape:export-xdpi="600"
+       inkscape:export-ydpi="600" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path4415"
+       d="m 396.87072,460.01081 -9.4024,12.4684"
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#TriangleOutM)"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/component.png"
+       inkscape:export-xdpi="600"
+       inkscape:export-ydpi="600" />
+    <path
+       inkscape:export-ydpi="600"
+       inkscape:export-xdpi="600"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/scs_comp.png"
+       sodipodi:type="arc"
+       style="fill:#aaccff;fill-opacity:1;stroke:#2c5aa0;stroke-width:2.3205018;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="path4417"
+       sodipodi:cx="342.21164"
+       sodipodi:cy="483.09067"
+       sodipodi:rx="11.602509"
+       sodipodi:ry="11.602509"
+       d="m 353.81415,483.09067 a 11.602509,11.602509 0 1 1 -23.20502,0 11.602509,11.602509 0 1 1 23.20502,0 z"
+       transform="matrix(0.43094129,0,0,0.43094129,186.78304,356.9535)" />
+    <rect
+       transform="matrix(0,1,-1,0,0,0)"
+       ry="3.7930143"
+       rx="3.7930148"
+       y="-367.41101"
+       x="580.11066"
+       height="39"
+       width="49"
+       id="rect4419"
+       style="fill:#aaccff;fill-opacity:1;stroke:#2c5aa0;stroke-width:0.99999994;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/scs_comp.png"
+       inkscape:export-xdpi="600"
+       inkscape:export-ydpi="600" />
+    <text
+       inkscape:export-ydpi="600"
+       inkscape:export-xdpi="600"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/scs_comp.png"
+       sodipodi:linespacing="100%"
+       id="text4421"
+       y="603.84137"
+       x="347.47748"
+       style="font-size:6px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:100%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial Unicode MS;-inkscape-font-specification:Arial Unicode MS"
+       xml:space="preserve"
+       transform="scale(1.0001374,0.99986262)"><tspan
+         id="tspan4423"
+         y="603.84137"
+         x="347.47748"
+         sodipodi:role="line"
+         style="font-size:6px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:100%;writing-mode:lr-tb;text-anchor:middle;font-family:Arial Unicode MS;-inkscape-font-specification:Arial Unicode MS">Componente</tspan><tspan
+         y="609.84137"
+         x="347.47748"
+         sodipodi:role="line"
+         style="font-size:6px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:100%;writing-mode:lr-tb;text-anchor:middle;font-family:Arial Unicode MS;-inkscape-font-specification:Arial Unicode MS"
+         id="tspan4514">SCS</tspan></text>
+    <path
+       transform="matrix(0.43094129,0,0,0.43094129,200.43789,356.9535)"
+       d="m 353.81415,483.09067 a 11.602509,11.602509 0 1 1 -23.20502,0 11.602509,11.602509 0 1 1 23.20502,0 z"
+       sodipodi:ry="11.602509"
+       sodipodi:rx="11.602509"
+       sodipodi:cy="483.09067"
+       sodipodi:cx="342.21164"
+       id="path4425"
+       style="fill:#aaccff;fill-opacity:1;stroke:#2c5aa0;stroke-width:2.3205018;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       sodipodi:type="arc"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/scs_comp.png"
+       inkscape:export-xdpi="600"
+       inkscape:export-ydpi="600" />
+    <path
+       inkscape:export-ydpi="600"
+       inkscape:export-xdpi="600"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/scs_comp.png"
+       sodipodi:type="arc"
+       style="fill:#aaccff;fill-opacity:1;stroke:#2c5aa0;stroke-width:2.3205018;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="path4427"
+       sodipodi:cx="342.21164"
+       sodipodi:cy="483.09067"
+       sodipodi:rx="11.602509"
+       sodipodi:ry="11.602509"
+       d="m 353.81415,483.09067 a 11.602509,11.602509 0 1 1 -23.20502,0 11.602509,11.602509 0 1 1 23.20502,0 z"
+       transform="matrix(0.43094129,0,0,0.43094129,214.09275,356.9535)" />
+    <path
+       transform="matrix(0.43094129,0,0,0.43094129,165.43194,386.65991)"
+       d="m 353.81415,483.09067 a 11.602509,11.602509 0 1 1 -23.20502,0 11.602509,11.602509 0 1 1 23.20502,0 z"
+       sodipodi:ry="11.602509"
+       sodipodi:rx="11.602509"
+       sodipodi:cy="483.09067"
+       sodipodi:cx="342.21164"
+       id="path4429"
+       style="fill:#3771c8;fill-opacity:1;stroke:#0b1728;stroke-width:2.3205018;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       sodipodi:type="arc"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/scs_comp.png"
+       inkscape:export-xdpi="600"
+       inkscape:export-ydpi="600" />
+    <path
+       inkscape:export-ydpi="600"
+       inkscape:export-xdpi="600"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/scs_comp.png"
+       sodipodi:type="arc"
+       style="fill:#3771c8;fill-opacity:1;stroke:#0b1728;stroke-width:2.3205018;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="path4431"
+       sodipodi:cx="342.21164"
+       sodipodi:cy="483.09067"
+       sodipodi:rx="11.602509"
+       sodipodi:ry="11.602509"
+       d="m 353.81415,483.09067 a 11.602509,11.602509 0 1 1 -23.20502,0 11.602509,11.602509 0 1 1 23.20502,0 z"
+       transform="matrix(0.43094129,0,0,0.43094129,165.43194,406.19392)" />
+    <path
+       style="fill:#ffeeaa;fill-opacity:1;stroke:#2b2200"
+       d="m 385.38251,587.34363 0,2.5 c -2.76142,0 -5,2.23858 -5,5 0,2.76142 2.23858,5 5,5 l 0,2.5 c -4.14214,0 -7.5,-3.35786 -7.5,-7.5 0,-4.14214 3.35786,-7.5 7.5,-7.5 z"
+       id="path4433"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/scs_comp.png"
+       inkscape:export-xdpi="600"
+       inkscape:export-ydpi="600" />
+    <path
+       inkscape:export-ydpi="600"
+       inkscape:export-xdpi="600"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/scs_comp.png"
+       inkscape:connector-curvature="0"
+       id="path4435"
+       d="m 385.38251,606.87764 0,2.5 c -2.76142,0 -5,2.23858 -5,5 0,2.76142 2.23858,5 5,5 l 0,2.5 c -4.14214,0 -7.5,-3.35786 -7.5,-7.5 0,-4.14214 3.35786,-7.5 7.5,-7.5 z"
+       style="fill:#ffeeaa;fill-opacity:1;stroke:#2b2200" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path4437"
+       d="m 318.40506,594.84363 9.66663,0"
+       style="fill:none;stroke:#00112b;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/scs_comp.png"
+       inkscape:export-xdpi="600"
+       inkscape:export-ydpi="600" />
+    <path
+       style="fill:none;stroke:#00112b;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 318.40506,614.37764 9.66663,0"
+       id="path4439"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/scs_comp.png"
+       inkscape:export-xdpi="600"
+       inkscape:export-ydpi="600" />
+    <path
+       style="fill:none;stroke:#2b2200;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 367.90506,594.84363 9.66663,0"
+       id="path4441"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/scs_comp.png"
+       inkscape:export-xdpi="600"
+       inkscape:export-ydpi="600" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path4443"
+       d="m 367.90506,614.37764 9.66663,0"
+       style="fill:none;stroke:#2b2200;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/scs_comp.png"
+       inkscape:export-xdpi="600"
+       inkscape:export-ydpi="600" />
+    <path
+       style="fill:none;stroke:#214478;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 334.25617,569.97058 0,9.66663"
+       id="path4445"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/scs_comp.png"
+       inkscape:export-xdpi="600"
+       inkscape:export-ydpi="600" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path4447"
+       d="m 347.91102,569.97058 0,9.66663"
+       style="fill:none;stroke:#214478;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/scs_comp.png"
+       inkscape:export-xdpi="600"
+       inkscape:export-ydpi="600" />
+    <path
+       style="fill:none;stroke:#214478;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 361.56587,569.97058 0,9.66663"
+       id="path4449"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/scs_comp.png"
+       inkscape:export-xdpi="600"
+       inkscape:export-ydpi="600" />
+    <text
+       transform="matrix(0.70720394,-0.70720394,0.70700964,0.70700964,0,0)"
+       xml:space="preserve"
+       style="font-size:6px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:80.00000119%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial Unicode MS;-inkscape-font-specification:Arial Unicode MS"
+       x="-158.67732"
+       y="631.34125"
+       id="text4467"
+       sodipodi:linespacing="80.000001%"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/scs_comp.png"
+       inkscape:export-xdpi="600"
+       inkscape:export-ydpi="600"><tspan
+         id="tspan4473"
+         style="font-size:6px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:80.00000119%;writing-mode:lr-tb;text-anchor:start;font-family:Arial Unicode MS;-inkscape-font-specification:Arial Unicode MS"
+         sodipodi:role="line"
+         x="-158.67732"
+         y="631.34125">IComponent</tspan></text>
+    <text
+       transform="scale(1.0001374,0.99986262)"
+       xml:space="preserve"
+       style="font-size:8px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:89.99999762%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial Unicode MS;-inkscape-font-specification:Arial Unicode MS"
+       x="290.45621"
+       y="603.90839"
+       id="text4475"
+       sodipodi:linespacing="89.999998%"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/scs_comp.png"
+       inkscape:export-xdpi="600"
+       inkscape:export-ydpi="600"><tspan
+         style="font-size:8px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:89.99999762%;writing-mode:lr-tb;text-anchor:middle;font-family:Arial Unicode MS;-inkscape-font-specification:Arial Unicode MS"
+         sodipodi:role="line"
+         x="290.45621"
+         y="603.90839"
+         id="tspan4508">Demais</tspan><tspan
+         style="font-size:8px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:89.99999762%;writing-mode:lr-tb;text-anchor:middle;font-family:Arial Unicode MS;-inkscape-font-specification:Arial Unicode MS"
+         sodipodi:role="line"
+         x="290.45621"
+         y="611.1084"
+         id="tspan4512">Facetas</tspan></text>
+    <text
+       inkscape:export-ydpi="600"
+       inkscape:export-xdpi="600"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/scs_comp.png"
+       sodipodi:linespacing="89.999998%"
+       id="text4479"
+       y="606.80914"
+       x="413.78052"
+       style="font-size:8px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:89.99999762%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial Unicode MS;-inkscape-font-specification:Arial Unicode MS"
+       xml:space="preserve"
+       transform="scale(1.0001374,0.99986262)"><tspan
+         id="tspan4481"
+         y="606.80914"
+         x="413.78052"
+         sodipodi:role="line"
+         style="font-size:8px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:89.99999762%;writing-mode:lr-tb;text-anchor:middle;font-family:Arial Unicode MS;-inkscape-font-specification:Arial Unicode MS">Receptáculos</tspan></text>
+    <text
+       inkscape:export-ydpi="600"
+       inkscape:export-xdpi="600"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/scs_comp.png"
+       sodipodi:linespacing="80.000001%"
+       id="text4494"
+       y="640.98425"
+       x="-149.03711"
+       style="font-size:6px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:80.00000119%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial Unicode MS;-inkscape-font-specification:Arial Unicode MS"
+       xml:space="preserve"
+       transform="matrix(0.70720394,-0.70720394,0.70700964,0.70700964,0,0)"><tspan
+         y="640.98425"
+         x="-149.03711"
+         sodipodi:role="line"
+         style="font-size:6px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:80.00000119%;writing-mode:lr-tb;text-anchor:start;font-family:Arial Unicode MS;-inkscape-font-specification:Arial Unicode MS"
+         id="tspan4496">IMetaInterface</tspan></text>
+    <text
+       transform="matrix(0.70720394,-0.70720394,0.70700964,0.70700964,0,0)"
+       xml:space="preserve"
+       style="font-size:6px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:80.00000119%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial Unicode MS;-inkscape-font-specification:Arial Unicode MS"
+       x="-139.57254"
+       y="650.4516"
+       id="text4498"
+       sodipodi:linespacing="80.000001%"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/scs_comp.png"
+       inkscape:export-xdpi="600"
+       inkscape:export-ydpi="600"><tspan
+         id="tspan4500"
+         style="font-size:6px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:80.00000119%;writing-mode:lr-tb;text-anchor:start;font-family:Arial Unicode MS;-inkscape-font-specification:Arial Unicode MS"
+         sodipodi:role="line"
+         x="-139.57254"
+         y="650.4516">IReceptacles</tspan></text>
+    <text
+       inkscape:export-ydpi="600"
+       inkscape:export-xdpi="600"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/scs_comp.png"
+       sodipodi:linespacing="89.999998%"
+       id="text4502"
+       y="563.37225"
+       x="311.55051"
+       style="font-size:8px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:89.99999762%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial Unicode MS;-inkscape-font-specification:Arial Unicode MS"
+       xml:space="preserve"
+       transform="scale(1.0001374,0.99986262)"><tspan
+         id="tspan4504"
+         y="563.37225"
+         x="311.55051"
+         sodipodi:role="line"
+         style="font-size:8px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:89.99999762%;writing-mode:lr-tb;text-anchor:middle;font-family:Arial Unicode MS;-inkscape-font-specification:Arial Unicode MS">Facetas</tspan><tspan
+         y="570.57227"
+         x="311.55051"
+         sodipodi:role="line"
+         style="font-size:8px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:89.99999762%;writing-mode:lr-tb;text-anchor:middle;font-family:Arial Unicode MS;-inkscape-font-specification:Arial Unicode MS"
+         id="tspan4506">Básicas</tspan></text>
+    <g
+       id="g4745"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/obj_vs_comp.png"
+       inkscape:export-xdpi="600.26581"
+       inkscape:export-ydpi="600.26581">
+      <g
+         transform="matrix(0.4847191,0,0,0.4847191,106.36417,272.006)"
+         id="g4676">
+        <g
+           id="g4580"
+           transform="translate(-49.763033,-19.43128)">
+          <rect
+             inkscape:export-ydpi="150"
+             inkscape:export-xdpi="150"
+             inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/corba.png"
+             style="fill:#aaccff;fill-opacity:1;stroke:#2c5aa0;stroke-width:2.06305051;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+             id="rect4516"
+             width="49"
+             height="39"
+             x="355.45129"
+             y="-118.44083"
+             rx="3.7930148"
+             ry="3.7930143"
+             transform="matrix(0,1,-1,0,0,0)" />
+          <path
+             inkscape:export-ydpi="150"
+             inkscape:export-xdpi="150"
+             inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/orbgeneric.png"
+             sodipodi:type="arc"
+             style="fill:#aaccff;fill-opacity:1;stroke:#2c5aa0;stroke-width:4.78731251;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+             id="path4522"
+             sodipodi:cx="342.21164"
+             sodipodi:cy="483.09067"
+             sodipodi:rx="11.602509"
+             sodipodi:ry="11.602509"
+             d="m 353.81415,483.09067 c 0,6.40789 -5.19462,11.60251 -11.60251,11.60251 -6.40789,0 -11.60251,-5.19462 -11.60251,-11.60251 0,-6.40789 5.19462,-11.60251 11.60251,-11.60251 6.40789,0 11.60251,5.19462 11.60251,11.60251 z"
+             transform="matrix(0.43094129,0,0,0.43094129,-48.53229,132.29414)" />
+          <path
+             inkscape:export-ydpi="150"
+             inkscape:export-xdpi="150"
+             inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/orbgeneric.png"
+             sodipodi:type="arc"
+             style="fill:#3771c8;fill-opacity:1;stroke:#0b1728;stroke-width:4.78731251;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+             id="path4524"
+             sodipodi:cx="342.21164"
+             sodipodi:cy="483.09067"
+             sodipodi:rx="11.602509"
+             sodipodi:ry="11.602509"
+             d="m 353.81415,483.09067 c 0,6.40789 -5.19462,11.60251 -11.60251,11.60251 -6.40789,0 -11.60251,-5.19462 -11.60251,-11.60251 0,-6.40789 5.19462,-11.60251 11.60251,-11.60251 6.40789,0 11.60251,5.19462 11.60251,11.60251 z"
+             transform="matrix(0.43094129,0,0,0.43094129,-83.53824,162.00055)" />
+          <path
+             transform="matrix(0.43094129,0,0,0.43094129,-83.53824,181.53456)"
+             d="m 353.81415,483.09067 c 0,6.40789 -5.19462,11.60251 -11.60251,11.60251 -6.40789,0 -11.60251,-5.19462 -11.60251,-11.60251 0,-6.40789 5.19462,-11.60251 11.60251,-11.60251 6.40789,0 11.60251,5.19462 11.60251,11.60251 z"
+             sodipodi:ry="11.602509"
+             sodipodi:rx="11.602509"
+             sodipodi:cy="483.09067"
+             sodipodi:cx="342.21164"
+             id="path4526"
+             style="fill:#3771c8;fill-opacity:1;stroke:#0b1728;stroke-width:4.78731251;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+             sodipodi:type="arc"
+             inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/orbgeneric.png"
+             inkscape:export-xdpi="150"
+             inkscape:export-ydpi="150" />
+          <path
+             inkscape:export-ydpi="150"
+             inkscape:export-xdpi="150"
+             inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/orbgeneric.png"
+             inkscape:connector-curvature="0"
+             id="path4528"
+             d="m 136.41234,362.68427 0,2.5 c -2.76142,0 -5,2.23858 -5,5 0,2.76142 2.23858,5 5,5 l 0,2.5 c -4.14214,0 -7.5,-3.35786 -7.5,-7.5 0,-4.14214 3.35786,-7.5 7.5,-7.5 z"
+             style="fill:#ffeeaa;fill-opacity:1;stroke:#2b2200;stroke-width:2.06305051" />
+          <path
+             style="fill:#ffeeaa;fill-opacity:1;stroke:#2b2200;stroke-width:2.06305051"
+             d="m 136.41234,382.21828 0,2.5 c -2.76142,0 -5,2.23858 -5,5 0,2.76142 2.23858,5 5,5 l 0,2.5 c -4.14214,0 -7.5,-3.35786 -7.5,-7.5 0,-4.14214 3.35786,-7.5 7.5,-7.5 z"
+             id="path4530"
+             inkscape:connector-curvature="0"
+             inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/orbgeneric.png"
+             inkscape:export-xdpi="150"
+             inkscape:export-ydpi="150" />
+          <path
+             style="fill:none;stroke:#00112b;stroke-width:2.06305051px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+             d="m 69.434885,370.18427 9.66663,0"
+             id="path4532"
+             inkscape:connector-curvature="0" />
+          <path
+             inkscape:connector-curvature="0"
+             id="path4534"
+             d="m 69.434885,389.71828 9.66663,0"
+             style="fill:none;stroke:#00112b;stroke-width:2.06305051px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+          <path
+             inkscape:connector-curvature="0"
+             id="path4536"
+             d="m 118.93489,370.18427 9.66663,0"
+             style="fill:none;stroke:#2b2200;stroke-width:2.06305051px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+          <path
+             style="fill:none;stroke:#2b2200;stroke-width:2.06305051px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+             d="m 118.93489,389.71828 9.66663,0"
+             id="path4538"
+             inkscape:connector-curvature="0" />
+          <path
+             style="fill:none;stroke:#214478;stroke-width:2.06305051px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+             d="m 98.940845,345.31122 0,9.66663"
+             id="path4540"
+             inkscape:connector-curvature="0" />
+        </g>
+        <g
+           id="g4593"
+           transform="translate(22.748815,-19.43128)">
+          <rect
+             transform="matrix(0,1,-1,0,0,0)"
+             ry="3.7930143"
+             rx="3.7930148"
+             y="-118.44083"
+             x="355.45129"
+             height="39"
+             width="49"
+             id="rect4595"
+             style="fill:#aaccff;fill-opacity:1;stroke:#2c5aa0;stroke-width:2.06305051;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+             inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/corba.png"
+             inkscape:export-xdpi="150"
+             inkscape:export-ydpi="150" />
+          <path
+             transform="matrix(0.43094129,0,0,0.43094129,-48.53229,132.29414)"
+             d="m 353.81415,483.09067 c 0,6.40789 -5.19462,11.60251 -11.60251,11.60251 -6.40789,0 -11.60251,-5.19462 -11.60251,-11.60251 0,-6.40789 5.19462,-11.60251 11.60251,-11.60251 6.40789,0 11.60251,5.19462 11.60251,11.60251 z"
+             sodipodi:ry="11.602509"
+             sodipodi:rx="11.602509"
+             sodipodi:cy="483.09067"
+             sodipodi:cx="342.21164"
+             id="path4597"
+             style="fill:#aaccff;fill-opacity:1;stroke:#2c5aa0;stroke-width:4.78731251;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+             sodipodi:type="arc"
+             inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/orbgeneric.png"
+             inkscape:export-xdpi="150"
+             inkscape:export-ydpi="150" />
+          <path
+             transform="matrix(0.43094129,0,0,0.43094129,-83.53824,162.00055)"
+             d="m 353.81415,483.09067 c 0,6.40789 -5.19462,11.60251 -11.60251,11.60251 -6.40789,0 -11.60251,-5.19462 -11.60251,-11.60251 0,-6.40789 5.19462,-11.60251 11.60251,-11.60251 6.40789,0 11.60251,5.19462 11.60251,11.60251 z"
+             sodipodi:ry="11.602509"
+             sodipodi:rx="11.602509"
+             sodipodi:cy="483.09067"
+             sodipodi:cx="342.21164"
+             id="path4599"
+             style="fill:#3771c8;fill-opacity:1;stroke:#0b1728;stroke-width:4.78731251;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+             sodipodi:type="arc"
+             inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/orbgeneric.png"
+             inkscape:export-xdpi="150"
+             inkscape:export-ydpi="150" />
+          <path
+             inkscape:export-ydpi="150"
+             inkscape:export-xdpi="150"
+             inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/orbgeneric.png"
+             sodipodi:type="arc"
+             style="fill:#3771c8;fill-opacity:1;stroke:#0b1728;stroke-width:4.78731251;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+             id="path4601"
+             sodipodi:cx="342.21164"
+             sodipodi:cy="483.09067"
+             sodipodi:rx="11.602509"
+             sodipodi:ry="11.602509"
+             d="m 353.81415,483.09067 c 0,6.40789 -5.19462,11.60251 -11.60251,11.60251 -6.40789,0 -11.60251,-5.19462 -11.60251,-11.60251 0,-6.40789 5.19462,-11.60251 11.60251,-11.60251 6.40789,0 11.60251,5.19462 11.60251,11.60251 z"
+             transform="matrix(0.43094129,0,0,0.43094129,-83.53824,181.53456)" />
+          <path
+             style="fill:#ffeeaa;fill-opacity:1;stroke:#2b2200;stroke-width:2.06305051"
+             d="m 136.41234,362.68427 0,2.5 c -2.76142,0 -5,2.23858 -5,5 0,2.76142 2.23858,5 5,5 l 0,2.5 c -4.14214,0 -7.5,-3.35786 -7.5,-7.5 0,-4.14214 3.35786,-7.5 7.5,-7.5 z"
+             id="path4603"
+             inkscape:connector-curvature="0"
+             inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/orbgeneric.png"
+             inkscape:export-xdpi="150"
+             inkscape:export-ydpi="150" />
+          <path
+             inkscape:export-ydpi="150"
+             inkscape:export-xdpi="150"
+             inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/orbgeneric.png"
+             inkscape:connector-curvature="0"
+             id="path4605"
+             d="m 136.41234,382.21828 0,2.5 c -2.76142,0 -5,2.23858 -5,5 0,2.76142 2.23858,5 5,5 l 0,2.5 c -4.14214,0 -7.5,-3.35786 -7.5,-7.5 0,-4.14214 3.35786,-7.5 7.5,-7.5 z"
+             style="fill:#ffeeaa;fill-opacity:1;stroke:#2b2200;stroke-width:2.06305051" />
+          <path
+             inkscape:connector-curvature="0"
+             id="path4607"
+             d="m 69.434885,370.18427 9.66663,0"
+             style="fill:none;stroke:#00112b;stroke-width:2.06305051px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+          <path
+             style="fill:none;stroke:#00112b;stroke-width:2.06305051px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+             d="m 69.434885,389.71828 9.66663,0"
+             id="path4609"
+             inkscape:connector-curvature="0" />
+          <path
+             style="fill:none;stroke:#2b2200;stroke-width:2.06305051px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+             d="m 118.93489,370.18427 9.66663,0"
+             id="path4611"
+             inkscape:connector-curvature="0" />
+          <path
+             inkscape:connector-curvature="0"
+             id="path4613"
+             d="m 118.93489,389.71828 9.66663,0"
+             style="fill:none;stroke:#2b2200;stroke-width:2.06305051px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+          <path
+             inkscape:connector-curvature="0"
+             id="path4615"
+             d="m 98.940845,345.31122 0,9.66663"
+             style="fill:none;stroke:#214478;stroke-width:2.06305051px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+        </g>
+        <rect
+           transform="matrix(0,1,-1,0,0,0)"
+           ry="3.7930143"
+           rx="3.7930148"
+           y="-213.70149"
+           x="355.45129"
+           height="39"
+           width="92.601898"
+           id="rect4619"
+           style="fill:#aaccff;fill-opacity:1;stroke:#2c5aa0;stroke-width:2.06305051;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+           inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/corba.png"
+           inkscape:export-xdpi="150"
+           inkscape:export-ydpi="150" />
+        <path
+           transform="matrix(0.43094129,0,0,0.43094129,46.728377,132.29414)"
+           d="m 353.81415,483.09067 c 0,6.40789 -5.19462,11.60251 -11.60251,11.60251 -6.40789,0 -11.60251,-5.19462 -11.60251,-11.60251 0,-6.40789 5.19462,-11.60251 11.60251,-11.60251 6.40789,0 11.60251,5.19462 11.60251,11.60251 z"
+           sodipodi:ry="11.602509"
+           sodipodi:rx="11.602509"
+           sodipodi:cy="483.09067"
+           sodipodi:cx="342.21164"
+           id="path4621"
+           style="fill:#aaccff;fill-opacity:1;stroke:#2c5aa0;stroke-width:4.78731251;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+           sodipodi:type="arc"
+           inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/orbgeneric.png"
+           inkscape:export-xdpi="150"
+           inkscape:export-ydpi="150" />
+        <path
+           transform="matrix(0.43094129,0,0,0.43094129,11.722427,162.00055)"
+           d="m 353.81415,483.09067 c 0,6.40789 -5.19462,11.60251 -11.60251,11.60251 -6.40789,0 -11.60251,-5.19462 -11.60251,-11.60251 0,-6.40789 5.19462,-11.60251 11.60251,-11.60251 6.40789,0 11.60251,5.19462 11.60251,11.60251 z"
+           sodipodi:ry="11.602509"
+           sodipodi:rx="11.602509"
+           sodipodi:cy="483.09067"
+           sodipodi:cx="342.21164"
+           id="path4623"
+           style="fill:#3771c8;fill-opacity:1;stroke:#0b1728;stroke-width:4.78731251;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+           sodipodi:type="arc"
+           inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/orbgeneric.png"
+           inkscape:export-xdpi="150"
+           inkscape:export-ydpi="150" />
+        <path
+           inkscape:export-ydpi="150"
+           inkscape:export-xdpi="150"
+           inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/orbgeneric.png"
+           sodipodi:type="arc"
+           style="fill:#3771c8;fill-opacity:1;stroke:#0b1728;stroke-width:4.78731251;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+           id="path4625"
+           sodipodi:cx="342.21164"
+           sodipodi:cy="483.09067"
+           sodipodi:rx="11.602509"
+           sodipodi:ry="11.602509"
+           d="m 353.81415,483.09067 c 0,6.40789 -5.19462,11.60251 -11.60251,11.60251 -6.40789,0 -11.60251,-5.19462 -11.60251,-11.60251 0,-6.40789 5.19462,-11.60251 11.60251,-11.60251 6.40789,0 11.60251,5.19462 11.60251,11.60251 z"
+           transform="matrix(0.43094129,0,0,0.43094129,11.722427,224.66252)" />
+        <path
+           style="fill:#ffeeaa;fill-opacity:1;stroke:#2b2200;stroke-width:2.06305051"
+           d="m 231.67301,362.68427 0,2.5 c -2.76142,0 -5,2.23858 -5,5 0,2.76142 2.23858,5 5,5 l 0,2.5 c -4.14214,0 -7.5,-3.35786 -7.5,-7.5 0,-4.14214 3.35786,-7.5 7.5,-7.5 z"
+           id="path4627"
+           inkscape:connector-curvature="0"
+           inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/orbgeneric.png"
+           inkscape:export-xdpi="150"
+           inkscape:export-ydpi="150" />
+        <path
+           inkscape:export-ydpi="150"
+           inkscape:export-xdpi="150"
+           inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/orbgeneric.png"
+           inkscape:connector-curvature="0"
+           id="path4629"
+           d="m 231.67301,425.34624 0,2.5 c -2.76142,0 -5,2.23858 -5,5 0,2.76142 2.23858,5 5,5 l 0,2.5 c -4.14214,0 -7.5,-3.35786 -7.5,-7.5 0,-4.14214 3.35786,-7.5 7.5,-7.5 z"
+           style="fill:#ffeeaa;fill-opacity:1;stroke:#2b2200;stroke-width:2.06305051" />
+        <path
+           inkscape:connector-curvature="0"
+           id="path4631"
+           d="m 164.69555,370.18427 9.66663,0"
+           style="fill:none;stroke:#00112b;stroke-width:2.06305051px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+        <path
+           style="fill:none;stroke:#00112b;stroke-width:2.06305051px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           d="m 164.69555,432.84624 9.66663,0"
+           id="path4633"
+           inkscape:connector-curvature="0" />
+        <path
+           style="fill:none;stroke:#2b2200;stroke-width:2.06305051px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           d="m 214.19556,370.18427 9.66663,0"
+           id="path4635"
+           inkscape:connector-curvature="0" />
+        <path
+           inkscape:connector-curvature="0"
+           id="path4637"
+           d="m 214.19556,432.84624 9.66663,0"
+           style="fill:none;stroke:#2b2200;stroke-width:2.06305051px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+        <path
+           inkscape:connector-curvature="0"
+           id="path4639"
+           d="m 194.20151,345.31122 0,9.66663"
+           style="fill:none;stroke:#214478;stroke-width:2.06305051px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+        <g
+           transform="matrix(1,0,0,-1,22.748815,802.96232)"
+           id="g4652">
+          <rect
+             inkscape:export-ydpi="150"
+             inkscape:export-xdpi="150"
+             inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/corba.png"
+             style="fill:#aaccff;fill-opacity:1;stroke:#2c5aa0;stroke-width:2.06305051;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+             id="rect4654"
+             width="49"
+             height="39"
+             x="355.45129"
+             y="-118.44083"
+             rx="3.7930148"
+             ry="3.7930143"
+             transform="matrix(0,1,-1,0,0,0)" />
+          <path
+             inkscape:export-ydpi="150"
+             inkscape:export-xdpi="150"
+             inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/orbgeneric.png"
+             sodipodi:type="arc"
+             style="fill:#aaccff;fill-opacity:1;stroke:#2c5aa0;stroke-width:4.78731251;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+             id="path4656"
+             sodipodi:cx="342.21164"
+             sodipodi:cy="483.09067"
+             sodipodi:rx="11.602509"
+             sodipodi:ry="11.602509"
+             d="m 353.81415,483.09067 c 0,6.40789 -5.19462,11.60251 -11.60251,11.60251 -6.40789,0 -11.60251,-5.19462 -11.60251,-11.60251 0,-6.40789 5.19462,-11.60251 11.60251,-11.60251 6.40789,0 11.60251,5.19462 11.60251,11.60251 z"
+             transform="matrix(0.43094129,0,0,0.43094129,-48.53229,132.29414)" />
+          <path
+             inkscape:export-ydpi="150"
+             inkscape:export-xdpi="150"
+             inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/orbgeneric.png"
+             sodipodi:type="arc"
+             style="fill:#3771c8;fill-opacity:1;stroke:#0b1728;stroke-width:4.78731251;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+             id="path4658"
+             sodipodi:cx="342.21164"
+             sodipodi:cy="483.09067"
+             sodipodi:rx="11.602509"
+             sodipodi:ry="11.602509"
+             d="m 353.81415,483.09067 c 0,6.40789 -5.19462,11.60251 -11.60251,11.60251 -6.40789,0 -11.60251,-5.19462 -11.60251,-11.60251 0,-6.40789 5.19462,-11.60251 11.60251,-11.60251 6.40789,0 11.60251,5.19462 11.60251,11.60251 z"
+             transform="matrix(0.43094129,0,0,0.43094129,-83.53824,162.00055)" />
+          <path
+             transform="matrix(0.43094129,0,0,0.43094129,-83.53824,181.53456)"
+             d="m 353.81415,483.09067 c 0,6.40789 -5.19462,11.60251 -11.60251,11.60251 -6.40789,0 -11.60251,-5.19462 -11.60251,-11.60251 0,-6.40789 5.19462,-11.60251 11.60251,-11.60251 6.40789,0 11.60251,5.19462 11.60251,11.60251 z"
+             sodipodi:ry="11.602509"
+             sodipodi:rx="11.602509"
+             sodipodi:cy="483.09067"
+             sodipodi:cx="342.21164"
+             id="path4660"
+             style="fill:#3771c8;fill-opacity:1;stroke:#0b1728;stroke-width:4.78731251;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+             sodipodi:type="arc"
+             inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/orbgeneric.png"
+             inkscape:export-xdpi="150"
+             inkscape:export-ydpi="150" />
+          <path
+             inkscape:export-ydpi="150"
+             inkscape:export-xdpi="150"
+             inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/orbgeneric.png"
+             inkscape:connector-curvature="0"
+             id="path4662"
+             d="m 136.41234,362.68427 0,2.5 c -2.76142,0 -5,2.23858 -5,5 0,2.76142 2.23858,5 5,5 l 0,2.5 c -4.14214,0 -7.5,-3.35786 -7.5,-7.5 0,-4.14214 3.35786,-7.5 7.5,-7.5 z"
+             style="fill:#ffeeaa;fill-opacity:1;stroke:#2b2200;stroke-width:2.06305051" />
+          <path
+             style="fill:#ffeeaa;fill-opacity:1;stroke:#2b2200;stroke-width:2.06305051"
+             d="m 136.41234,382.21828 0,2.5 c -2.76142,0 -5,2.23858 -5,5 0,2.76142 2.23858,5 5,5 l 0,2.5 c -4.14214,0 -7.5,-3.35786 -7.5,-7.5 0,-4.14214 3.35786,-7.5 7.5,-7.5 z"
+             id="path4664"
+             inkscape:connector-curvature="0"
+             inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/orbgeneric.png"
+             inkscape:export-xdpi="150"
+             inkscape:export-ydpi="150" />
+          <path
+             style="fill:none;stroke:#00112b;stroke-width:2.06305051px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+             d="m 69.434885,370.18427 9.66663,0"
+             id="path4666"
+             inkscape:connector-curvature="0" />
+          <path
+             inkscape:connector-curvature="0"
+             id="path4668"
+             d="m 69.434885,389.71828 9.66663,0"
+             style="fill:none;stroke:#00112b;stroke-width:2.06305051px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+          <path
+             inkscape:connector-curvature="0"
+             id="path4670"
+             d="m 118.93489,370.18427 9.66663,0"
+             style="fill:none;stroke:#2b2200;stroke-width:2.06305051px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+          <path
+             style="fill:none;stroke:#2b2200;stroke-width:2.06305051px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+             d="m 118.93489,389.71828 9.66663,0"
+             id="path4672"
+             inkscape:connector-curvature="0" />
+          <path
+             style="fill:none;stroke:#214478;stroke-width:2.06305051px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+             d="m 98.940845,345.31122 0,9.66663"
+             id="path4674"
+             inkscape:connector-curvature="0" />
+        </g>
+      </g>
+      <text
+         inkscape:export-ydpi="150"
+         inkscape:export-xdpi="150"
+         inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/corba.png"
+         sodipodi:linespacing="80.000001%"
+         id="text4725"
+         y="507.08719"
+         x="165.23834"
+         style="font-size:6px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:80.00000119%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial Unicode MS;-inkscape-font-specification:Arial Unicode MS"
+         xml:space="preserve"
+         transform="scale(1.0001374,0.99986262)"><tspan
+           id="tspan4727"
+           y="507.08719"
+           x="165.23834"
+           sodipodi:role="line"
+           style="font-size:6px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:80.00000119%;writing-mode:lr-tb;text-anchor:middle;font-family:Arial Unicode MS;-inkscape-font-specification:Arial Unicode MS">Componentes</tspan></text>
+    </g>
+    <path
+       transform="matrix(0.43094129,0,0,0.43094129,-76.374043,250.51645)"
+       d="m 353.81415,483.09067 a 11.602509,11.602509 0 1 1 -23.20502,0 11.602509,11.602509 0 1 1 23.20502,0 z"
+       sodipodi:ry="11.602509"
+       sodipodi:rx="11.602509"
+       sodipodi:cy="483.09067"
+       sodipodi:cx="342.21164"
+       id="path4811"
+       style="fill:#cccccc;fill-opacity:1;stroke:#4d4d4d;stroke-width:2.3205018;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       sodipodi:type="arc"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/obj_vs_comp.png"
+       inkscape:export-xdpi="600.26581"
+       inkscape:export-ydpi="600.26581" />
+    <path
+       inkscape:export-ydpi="600.26581"
+       inkscape:export-xdpi="600.26581"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/obj_vs_comp.png"
+       sodipodi:type="arc"
+       style="fill:#cccccc;fill-opacity:1;stroke:#4d4d4d;stroke-width:2.3205018;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="path4813"
+       sodipodi:cx="342.21164"
+       sodipodi:cy="483.09067"
+       sodipodi:rx="11.602509"
+       sodipodi:ry="11.602509"
+       d="m 353.81415,483.09067 a 11.602509,11.602509 0 1 1 -23.20502,0 11.602509,11.602509 0 1 1 23.20502,0 z"
+       transform="matrix(0.43094129,0,0,0.43094129,-64.236397,261.51618)" />
+    <path
+       transform="matrix(0.43094129,0,0,0.43094129,-80.925659,267.58501)"
+       d="m 353.81415,483.09067 a 11.602509,11.602509 0 1 1 -23.20502,0 11.602509,11.602509 0 1 1 23.20502,0 z"
+       sodipodi:ry="11.602509"
+       sodipodi:rx="11.602509"
+       sodipodi:cy="483.09067"
+       sodipodi:cx="342.21164"
+       id="path4815"
+       style="fill:#cccccc;fill-opacity:1;stroke:#4d4d4d;stroke-width:2.3205018;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       sodipodi:type="arc"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/obj_vs_comp.png"
+       inkscape:export-xdpi="600.26581"
+       inkscape:export-ydpi="600.26581" />
+    <path
+       inkscape:export-ydpi="600.26581"
+       inkscape:export-xdpi="600.26581"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/obj_vs_comp.png"
+       sodipodi:type="arc"
+       style="fill:#cccccc;fill-opacity:1;stroke:#4d4d4d;stroke-width:2.3205018;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="path4817"
+       sodipodi:cx="342.21164"
+       sodipodi:cy="483.09067"
+       sodipodi:rx="11.602509"
+       sodipodi:ry="11.602509"
+       d="m 353.81415,483.09067 a 11.602509,11.602509 0 1 1 -23.20502,0 11.602509,11.602509 0 1 1 23.20502,0 z"
+       transform="matrix(0.43094129,0,0,0.43094129,-67.270808,275.55034)" />
+    <path
+       style="fill:none;stroke:#4d4d4d;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 71.224865,474.07116 7.41824,-2.4528"
+       id="path4819"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/obj_vs_comp.png"
+       inkscape:export-xdpi="600.26581"
+       inkscape:export-ydpi="600.26581" />
+    <path
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path4821"
+       d="m 67.545665,471.00516 2.30824,-7.3584"
+       style="fill:none;stroke:#4d4d4d;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/obj_vs_comp.png"
+       inkscape:export-xdpi="600.26581"
+       inkscape:export-ydpi="600.26581" />
+    <path
+       style="fill:none;stroke:#4d4d4d;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 71.020465,478.56796 4.55664,2.24841"
+       id="path4823"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/obj_vs_comp.png"
+       inkscape:export-xdpi="600.26581"
+       inkscape:export-ydpi="600.26581" />
+    <path
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path4825"
+       d="m 81.853665,474.47996 -0.96216,4.29241"
+       style="fill:none;stroke:#4d4d4d;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/obj_vs_comp.png"
+       inkscape:export-xdpi="600.26581"
+       inkscape:export-ydpi="600.26581" />
+    <path
+       transform="matrix(0.14966703,0,0,0.14966703,112.19002,400.11834)"
+       d="m 353.81415,483.09067 a 11.602509,11.602509 0 1 1 -23.20502,0 11.602509,11.602509 0 1 1 23.20502,0 z"
+       sodipodi:ry="11.602509"
+       sodipodi:rx="11.602509"
+       sodipodi:cy="483.09067"
+       sodipodi:cx="342.21164"
+       id="path4827"
+       style="fill:#cccccc;fill-opacity:1;stroke:#4d4d4d;stroke-width:6.68149853;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       sodipodi:type="arc"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/obj_vs_comp.png"
+       inkscape:export-xdpi="600.26581"
+       inkscape:export-ydpi="600.26581" />
+    <path
+       inkscape:export-ydpi="600.26581"
+       inkscape:export-xdpi="600.26581"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/obj_vs_comp.png"
+       sodipodi:type="arc"
+       style="fill:#cccccc;fill-opacity:1;stroke:#4d4d4d;stroke-width:6.68149853;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="path4829"
+       sodipodi:cx="342.21164"
+       sodipodi:cy="483.09067"
+       sodipodi:rx="11.602509"
+       sodipodi:ry="11.602509"
+       d="m 353.81415,483.09067 a 11.602509,11.602509 0 1 1 -23.20502,0 11.602509,11.602509 0 1 1 23.20502,0 z"
+       transform="matrix(0.14966703,0,0,0.14966703,116.40546,403.93857)" />
+    <path
+       transform="matrix(0.14966703,0,0,0.14966703,116.02564,373.17854)"
+       d="m 353.81415,483.09067 a 11.602509,11.602509 0 1 1 -23.20502,0 11.602509,11.602509 0 1 1 23.20502,0 z"
+       sodipodi:ry="11.602509"
+       sodipodi:rx="11.602509"
+       sodipodi:cy="483.09067"
+       sodipodi:cx="342.21164"
+       id="path4831"
+       style="fill:#cccccc;fill-opacity:1;stroke:#4d4d4d;stroke-width:6.68149853;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       sodipodi:type="arc"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/obj_vs_comp.png"
+       inkscape:export-xdpi="600.26581"
+       inkscape:export-ydpi="600.26581" />
+    <path
+       inkscape:export-ydpi="600.26581"
+       inkscape:export-xdpi="600.26581"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/obj_vs_comp.png"
+       sodipodi:type="arc"
+       style="fill:#cccccc;fill-opacity:1;stroke:#4d4d4d;stroke-width:6.68149853;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="path4833"
+       sodipodi:cx="342.21164"
+       sodipodi:cy="483.09067"
+       sodipodi:rx="11.602509"
+       sodipodi:ry="11.602509"
+       d="m 353.81415,483.09067 a 11.602509,11.602509 0 1 1 -23.20502,0 11.602509,11.602509 0 1 1 23.20502,0 z"
+       transform="matrix(0.14966703,0,0,0.14966703,115.3516,408.81267)" />
+    <path
+       inkscape:export-ydpi="600.26581"
+       inkscape:export-xdpi="600.26581"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/obj_vs_comp.png"
+       sodipodi:type="arc"
+       style="fill:#cccccc;fill-opacity:1;stroke:#4d4d4d;stroke-width:6.68149853;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="path4837"
+       sodipodi:cx="342.21164"
+       sodipodi:cy="483.09067"
+       sodipodi:rx="11.602509"
+       sodipodi:ry="11.602509"
+       d="m 353.81415,483.09067 a 11.602509,11.602509 0 1 1 -23.20502,0 11.602509,11.602509 0 1 1 23.20502,0 z"
+       transform="matrix(0.14966703,0,0,0.14966703,114.84005,378.18437)" />
+    <path
+       transform="matrix(0.14966703,0,0,0.14966703,110.22942,374.2324)"
+       d="m 353.81415,483.09067 a 11.602509,11.602509 0 1 1 -23.20502,0 11.602509,11.602509 0 1 1 23.20502,0 z"
+       sodipodi:ry="11.602509"
+       sodipodi:rx="11.602509"
+       sodipodi:cy="483.09067"
+       sodipodi:cx="342.21164"
+       id="path4839"
+       style="fill:#cccccc;fill-opacity:1;stroke:#4d4d4d;stroke-width:6.68149853;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       sodipodi:type="arc"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/obj_vs_comp.png"
+       inkscape:export-xdpi="600.26581"
+       inkscape:export-ydpi="600.26581" />
+    <path
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path4841"
+       d="m 162.62091,447.80225 1.93747,1.70373"
+       style="fill:none;stroke:#4d4d4d;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/obj_vs_comp.png"
+       inkscape:export-xdpi="600.26581"
+       inkscape:export-ydpi="600.26581" />
+    <path
+       style="fill:none;stroke:#4d4d4d;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 163.4515,477.75947 2.57638,-0.85186"
+       id="path4843"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/obj_vs_comp.png"
+       inkscape:export-xdpi="600.26581"
+       inkscape:export-ydpi="600.26581" />
+    <path
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path4845"
+       d="m 162.17371,476.69464 0.80165,-2.55559"
+       style="fill:none;stroke:#4d4d4d;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/obj_vs_comp.png"
+       inkscape:export-xdpi="600.26581"
+       inkscape:export-ydpi="600.26581" />
+    <path
+       style="fill:none;stroke:#4d4d4d;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 163.38051,479.32122 1.58254,0.78088"
+       id="path4847"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/obj_vs_comp.png"
+       inkscape:export-xdpi="600.26581"
+       inkscape:export-ydpi="600.26581" />
+    <path
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path4849"
+       d="m 167.14291,477.90145 -0.33416,1.49076"
+       style="fill:none;stroke:#4d4d4d;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/obj_vs_comp.png"
+       inkscape:export-xdpi="600.26581"
+       inkscape:export-ydpi="600.26581" />
+    <path
+       inkscape:export-ydpi="600.26581"
+       inkscape:export-xdpi="600.26581"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/obj_vs_comp.png"
+       sodipodi:type="arc"
+       style="fill:#cccccc;fill-opacity:1;stroke:#4d4d4d;stroke-width:6.68149853;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="path4851"
+       sodipodi:cx="342.21164"
+       sodipodi:cy="483.09067"
+       sodipodi:rx="11.602509"
+       sodipodi:ry="11.602509"
+       d="m 353.81415,483.09067 a 11.602509,11.602509 0 1 1 -23.20502,0 11.602509,11.602509 0 1 1 23.20502,0 z"
+       transform="matrix(0.14966703,0,0,0.14966703,112.19002,400.11834)" />
+    <path
+       transform="matrix(0.14966703,0,0,0.14966703,116.40546,403.93857)"
+       d="m 353.81415,483.09067 a 11.602509,11.602509 0 1 1 -23.20502,0 11.602509,11.602509 0 1 1 23.20502,0 z"
+       sodipodi:ry="11.602509"
+       sodipodi:rx="11.602509"
+       sodipodi:cy="483.09067"
+       sodipodi:cx="342.21164"
+       id="path4853"
+       style="fill:#cccccc;fill-opacity:1;stroke:#4d4d4d;stroke-width:6.68149853;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       sodipodi:type="arc"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/obj_vs_comp.png"
+       inkscape:export-xdpi="600.26581"
+       inkscape:export-ydpi="600.26581" />
+    <path
+       inkscape:export-ydpi="600.26581"
+       inkscape:export-xdpi="600.26581"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/obj_vs_comp.png"
+       sodipodi:type="arc"
+       style="fill:#cccccc;fill-opacity:1;stroke:#4d4d4d;stroke-width:6.68149853;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="path4855"
+       sodipodi:cx="342.21164"
+       sodipodi:cy="483.09067"
+       sodipodi:rx="11.602509"
+       sodipodi:ry="11.602509"
+       d="m 353.81415,483.09067 a 11.602509,11.602509 0 1 1 -23.20502,0 11.602509,11.602509 0 1 1 23.20502,0 z"
+       transform="matrix(0.14966703,0,0,0.14966703,110.60923,406.04629)" />
+    <path
+       transform="matrix(0.14966703,0,0,0.14966703,115.3516,408.81267)"
+       d="m 353.81415,483.09067 a 11.602509,11.602509 0 1 1 -23.20502,0 11.602509,11.602509 0 1 1 23.20502,0 z"
+       sodipodi:ry="11.602509"
+       sodipodi:rx="11.602509"
+       sodipodi:cy="483.09067"
+       sodipodi:cx="342.21164"
+       id="path4857"
+       style="fill:#cccccc;fill-opacity:1;stroke:#4d4d4d;stroke-width:6.68149853;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       sodipodi:type="arc"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/obj_vs_comp.png"
+       inkscape:export-xdpi="600.26581"
+       inkscape:export-ydpi="600.26581" />
+    <path
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path4859"
+       d="m 163.4515,477.75947 2.57638,-0.85186"
+       style="fill:none;stroke:#4d4d4d;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/obj_vs_comp.png"
+       inkscape:export-xdpi="600.26581"
+       inkscape:export-ydpi="600.26581" />
+    <path
+       style="fill:none;stroke:#4d4d4d;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 162.17371,476.69464 0.80165,-2.55559"
+       id="path4861"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/obj_vs_comp.png"
+       inkscape:export-xdpi="600.26581"
+       inkscape:export-ydpi="600.26581" />
+    <path
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path4863"
+       d="m 163.38051,479.32122 1.58254,0.78088"
+       style="fill:none;stroke:#4d4d4d;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/obj_vs_comp.png"
+       inkscape:export-xdpi="600.26581"
+       inkscape:export-ydpi="600.26581" />
+    <path
+       style="fill:none;stroke:#4d4d4d;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 167.14291,477.90145 -0.33416,1.49076"
+       id="path4865"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/obj_vs_comp.png"
+       inkscape:export-xdpi="600.26581"
+       inkscape:export-ydpi="600.26581" />
+    <path
+       transform="matrix(0.14966703,0,0,0.14966703,80.741292,376.70716)"
+       d="m 353.81415,483.09067 a 11.602509,11.602509 0 1 1 -23.20502,0 11.602509,11.602509 0 1 1 23.20502,0 z"
+       sodipodi:ry="11.602509"
+       sodipodi:rx="11.602509"
+       sodipodi:cy="483.09067"
+       sodipodi:cx="342.21164"
+       id="path4867"
+       style="fill:#cccccc;fill-opacity:1;stroke:#4d4d4d;stroke-width:6.68149853;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       sodipodi:type="arc"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/obj_vs_comp.png"
+       inkscape:export-xdpi="600.26581"
+       inkscape:export-ydpi="600.26581" />
+    <path
+       inkscape:export-ydpi="600.26581"
+       inkscape:export-xdpi="600.26581"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/obj_vs_comp.png"
+       sodipodi:type="arc"
+       style="fill:#cccccc;fill-opacity:1;stroke:#4d4d4d;stroke-width:6.68149853;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="path4869"
+       sodipodi:cx="342.21164"
+       sodipodi:cy="483.09067"
+       sodipodi:rx="11.602509"
+       sodipodi:ry="11.602509"
+       d="m 353.81415,483.09067 a 11.602509,11.602509 0 1 1 -23.20502,0 11.602509,11.602509 0 1 1 23.20502,0 z"
+       transform="matrix(0.14966703,0,0,0.14966703,76.130662,372.75519)" />
+    <path
+       style="fill:none;stroke:#4d4d4d;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 128.52215,446.32504 1.93747,1.70373"
+       id="path4871"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/obj_vs_comp.png"
+       inkscape:export-xdpi="600.26581"
+       inkscape:export-ydpi="600.26581" />
+    <path
+       inkscape:export-ydpi="600.26581"
+       inkscape:export-xdpi="600.26581"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/obj_vs_comp.png"
+       sodipodi:type="arc"
+       style="fill:#cccccc;fill-opacity:1;stroke:#4d4d4d;stroke-width:6.68149853;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="path4873"
+       sodipodi:cx="342.21164"
+       sodipodi:cy="483.09067"
+       sodipodi:rx="11.602509"
+       sodipodi:ry="11.602509"
+       d="m 353.81415,483.09067 a 11.602509,11.602509 0 1 1 -23.20502,0 11.602509,11.602509 0 1 1 23.20502,0 z"
+       transform="matrix(0.14966703,0,0,0.14966703,147.65323,390.42136)" />
+    <path
+       transform="matrix(0.14966703,0,0,0.14966703,151.86867,394.24159)"
+       d="m 353.81415,483.09067 a 11.602509,11.602509 0 1 1 -23.20502,0 11.602509,11.602509 0 1 1 23.20502,0 z"
+       sodipodi:ry="11.602509"
+       sodipodi:rx="11.602509"
+       sodipodi:cy="483.09067"
+       sodipodi:cx="342.21164"
+       id="path4875"
+       style="fill:#cccccc;fill-opacity:1;stroke:#4d4d4d;stroke-width:6.68149853;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       sodipodi:type="arc"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/obj_vs_comp.png"
+       inkscape:export-xdpi="600.26581"
+       inkscape:export-ydpi="600.26581" />
+    <path
+       transform="matrix(0.14966703,0,0,0.14966703,150.81481,399.11569)"
+       d="m 353.81415,483.09067 a 11.602509,11.602509 0 1 1 -23.20502,0 11.602509,11.602509 0 1 1 23.20502,0 z"
+       sodipodi:ry="11.602509"
+       sodipodi:rx="11.602509"
+       sodipodi:cy="483.09067"
+       sodipodi:cx="342.21164"
+       id="path4877"
+       style="fill:#cccccc;fill-opacity:1;stroke:#4d4d4d;stroke-width:6.68149853;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       sodipodi:type="arc"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/obj_vs_comp.png"
+       inkscape:export-xdpi="600.26581"
+       inkscape:export-ydpi="600.26581" />
+    <path
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path4879"
+       d="m 198.91471,468.06249 2.57638,-0.85186"
+       style="fill:none;stroke:#4d4d4d;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/obj_vs_comp.png"
+       inkscape:export-xdpi="600.26581"
+       inkscape:export-ydpi="600.26581" />
+    <path
+       style="fill:none;stroke:#4d4d4d;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 197.63692,466.99766 0.80165,-2.55559"
+       id="path4881"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/obj_vs_comp.png"
+       inkscape:export-xdpi="600.26581"
+       inkscape:export-ydpi="600.26581" />
+    <path
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path4883"
+       d="m 198.84372,469.62424 1.58254,0.78088"
+       style="fill:none;stroke:#4d4d4d;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/obj_vs_comp.png"
+       inkscape:export-xdpi="600.26581"
+       inkscape:export-ydpi="600.26581" />
+    <path
+       style="fill:none;stroke:#4d4d4d;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 202.60612,468.20447 -0.33416,1.49076"
+       id="path4885"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/obj_vs_comp.png"
+       inkscape:export-xdpi="600.26581"
+       inkscape:export-ydpi="600.26581" />
+    <path
+       transform="matrix(0.14966703,0,0,0.14966703,147.65323,390.42136)"
+       d="m 353.81415,483.09067 a 11.602509,11.602509 0 1 1 -23.20502,0 11.602509,11.602509 0 1 1 23.20502,0 z"
+       sodipodi:ry="11.602509"
+       sodipodi:rx="11.602509"
+       sodipodi:cy="483.09067"
+       sodipodi:cx="342.21164"
+       id="path4887"
+       style="fill:#cccccc;fill-opacity:1;stroke:#4d4d4d;stroke-width:6.68149853;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       sodipodi:type="arc"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/obj_vs_comp.png"
+       inkscape:export-xdpi="600.26581"
+       inkscape:export-ydpi="600.26581" />
+    <path
+       inkscape:export-ydpi="600.26581"
+       inkscape:export-xdpi="600.26581"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/obj_vs_comp.png"
+       sodipodi:type="arc"
+       style="fill:#cccccc;fill-opacity:1;stroke:#4d4d4d;stroke-width:6.68149853;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="path4889"
+       sodipodi:cx="342.21164"
+       sodipodi:cy="483.09067"
+       sodipodi:rx="11.602509"
+       sodipodi:ry="11.602509"
+       d="m 353.81415,483.09067 a 11.602509,11.602509 0 1 1 -23.20502,0 11.602509,11.602509 0 1 1 23.20502,0 z"
+       transform="matrix(0.14966703,0,0,0.14966703,151.86867,394.24159)" />
+    <path
+       transform="matrix(0.14966703,0,0,0.14966703,146.07244,396.34931)"
+       d="m 353.81415,483.09067 a 11.602509,11.602509 0 1 1 -23.20502,0 11.602509,11.602509 0 1 1 23.20502,0 z"
+       sodipodi:ry="11.602509"
+       sodipodi:rx="11.602509"
+       sodipodi:cy="483.09067"
+       sodipodi:cx="342.21164"
+       id="path4891"
+       style="fill:#cccccc;fill-opacity:1;stroke:#4d4d4d;stroke-width:6.68149853;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       sodipodi:type="arc"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/obj_vs_comp.png"
+       inkscape:export-xdpi="600.26581"
+       inkscape:export-ydpi="600.26581" />
+    <path
+       inkscape:export-ydpi="600.26581"
+       inkscape:export-xdpi="600.26581"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/obj_vs_comp.png"
+       sodipodi:type="arc"
+       style="fill:#cccccc;fill-opacity:1;stroke:#4d4d4d;stroke-width:6.68149853;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="path4893"
+       sodipodi:cx="342.21164"
+       sodipodi:cy="483.09067"
+       sodipodi:rx="11.602509"
+       sodipodi:ry="11.602509"
+       d="m 353.81415,483.09067 a 11.602509,11.602509 0 1 1 -23.20502,0 11.602509,11.602509 0 1 1 23.20502,0 z"
+       transform="matrix(0.14966703,0,0,0.14966703,150.81481,399.11569)" />
+    <path
+       style="fill:none;stroke:#4d4d4d;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 198.91471,468.06249 2.57638,-0.85186"
+       id="path4895"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/obj_vs_comp.png"
+       inkscape:export-xdpi="600.26581"
+       inkscape:export-ydpi="600.26581" />
+    <path
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path4897"
+       d="m 197.63692,466.99766 0.80165,-2.55559"
+       style="fill:none;stroke:#4d4d4d;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/obj_vs_comp.png"
+       inkscape:export-xdpi="600.26581"
+       inkscape:export-ydpi="600.26581" />
+    <path
+       style="fill:none;stroke:#4d4d4d;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 198.84372,469.62424 1.58254,0.78088"
+       id="path4899"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/obj_vs_comp.png"
+       inkscape:export-xdpi="600.26581"
+       inkscape:export-ydpi="600.26581" />
+    <path
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path4901"
+       d="m 202.60612,468.20447 -0.33416,1.49076"
+       style="fill:none;stroke:#4d4d4d;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/obj_vs_comp.png"
+       inkscape:export-xdpi="600.26581"
+       inkscape:export-ydpi="600.26581" />
+    <path
+       transform="matrix(0.14966703,0,0,0.14966703,151.13443,409.49173)"
+       d="m 353.81415,483.09067 a 11.602509,11.602509 0 1 1 -23.20502,0 11.602509,11.602509 0 1 1 23.20502,0 z"
+       sodipodi:ry="11.602509"
+       sodipodi:rx="11.602509"
+       sodipodi:cy="483.09067"
+       sodipodi:cx="342.21164"
+       id="path4903"
+       style="fill:#cccccc;fill-opacity:1;stroke:#4d4d4d;stroke-width:6.68149853;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       sodipodi:type="arc"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/obj_vs_comp.png"
+       inkscape:export-xdpi="600.26581"
+       inkscape:export-ydpi="600.26581" />
+    <path
+       inkscape:export-ydpi="600.26581"
+       inkscape:export-xdpi="600.26581"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/obj_vs_comp.png"
+       sodipodi:type="arc"
+       style="fill:#cccccc;fill-opacity:1;stroke:#4d4d4d;stroke-width:6.68149853;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="path4905"
+       sodipodi:cx="342.21164"
+       sodipodi:cy="483.09067"
+       sodipodi:rx="11.602509"
+       sodipodi:ry="11.602509"
+       d="m 353.81415,483.09067 a 11.602509,11.602509 0 1 1 -23.20502,0 11.602509,11.602509 0 1 1 23.20502,0 z"
+       transform="matrix(0.14966703,0,0,0.14966703,146.5238,405.53976)" />
+    <path
+       style="fill:none;stroke:#4d4d4d;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 198.91529,479.10961 1.93747,1.70373"
+       id="path4907"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/obj_vs_comp.png"
+       inkscape:export-xdpi="600.26581"
+       inkscape:export-ydpi="600.26581" />
+    <path
+       inkscape:export-ydpi="600.26581"
+       inkscape:export-xdpi="600.26581"
+       inkscape:export-filename="/Users/maia/Work/openbus/draft/tutorial-tecgraf/img/obj_vs_comp.png"
+       sodipodi:type="arc"
+       style="fill:#cccccc;fill-opacity:1;stroke:#4d4d4d;stroke-width:6.68149853;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="path4909"
+       sodipodi:cx="342.21164"
+       sodipodi:cy="483.09067"
+       sodipodi:rx="11.602509"
+       sodipodi:ry="11.602509"
+       d="m 353.81415,483.09067 a 11.602509,11.602509 0 1 1 -23.20502,0 11.602509,11.602509 0 1 1 23.20502,0 z"
+       transform="matrix(0.14966703,0,0,0.14966703,148.71828,381.21317)" />
+  </g>
+  <style
+     type="text/css"
+     id="style6">.st1 {fill:#ff0000;stroke:#000000;stroke-linecap:round;stroke-linejoin:round;stroke-width:0.24}
+		.st2 {fill:#ffff99;stroke:#000000;stroke-linecap:round;stroke-linejoin:round;stroke-width:0.24}
+		.st3 {fill:#ffff99;stroke:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:0.24}
+		.st4 {stroke:#000000;stroke-linecap:round;stroke-linejoin:round;stroke-width:0.24}
+		.st5 {fill:none;fill-rule:evenodd;font-size:12;overflow:visible;stroke-linecap:square;stroke-miterlimit:3}</style>
+</svg>
