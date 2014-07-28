@@ -64,7 +64,6 @@ public class AssistantFailurePrinter implements OnFailureCallback {
 		_out.println("              Properties:");
 		for (ServiceProperty prop : properties)
 			_out.println("                "+prop.name+": "+prop.value);
-		/* TODO: uncomment this after JacORB bug on local calls is fixed.
 		_out.println("              Component ID:");
 		ComponentId compId = component.getComponentId();
 		_out.println("                comp. name: "+compId.name);
@@ -77,7 +76,6 @@ public class AssistantFailurePrinter implements OnFailureCallback {
 			component.getFacet(IMetaInterfaceHelper.id()));
 		for (FacetDescription facet : meta.getFacets())
 			_out.println("                "+facet.name+": "+facet.interface_name);
-		*/
 	}
 
 	public void onFindFailure(Assistant assistant, Throwable except) {

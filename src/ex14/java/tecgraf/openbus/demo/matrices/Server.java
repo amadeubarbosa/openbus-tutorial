@@ -74,7 +74,7 @@ class MatrixFactoryServant extends MatrixFactoryPOA {
 		try { transformation = _transformations.getTransformation(kind); }
 		catch(UnknownTransformation e) { throw new UnknownMatrixKind(kind); }
 
-		MatrixServant matrix = new MatrixServant(new Matrix(), _context);
+		MatrixServant matrix = new MatrixServant(new Matrix(transformation), _context);
 
 		try {
 			return SquareMatrixHelper.narrow(_poa().servant_to_reference(matrix));
@@ -93,8 +93,6 @@ public class Server {
 	private static final String privateKeyFile = "Matrices.key";
 	private static final String busHost = "localhost";
 	private static final short busPort = 20100;
-	private static final String tHost = "localhost";
-	private static final short tPort = 22222;
 
 	public static void main(String[] args) throws Exception {
 		OpenBusPrivateKey privateKey =

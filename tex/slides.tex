@@ -10,6 +10,7 @@
 %\usepackage[charter]{mathdesign}
 % \def\rmdefault{bch} % not scaled
 % \def\ttdefault{blg}
+\usepackage{textpos}
 
 \usepackage{url}
 \usepackage{graphicx}
@@ -92,6 +93,12 @@
 
 \date{17 de março de 2014}
 
+\addtobeamertemplate{frametitle}{
+  \begin{textblock*}{\paperwidth}(-10pt,0pt)
+    \includegraphics[width=.9\paperwidth,height=1cm]{img/tecgraf}
+  \end{textblock*}
+}
+
 % revisitando a agenda a cada mudança de seção
 \AtBeginSection[]
 {
@@ -143,7 +150,7 @@
       \item Processos
       \item Utilitários (compiladores, geradores, etc.)
     \end{itemize}
-    \item Implementados sobre o sistema operational.
+    \item Implementados sobre o sistema operacional.
     \item Formam uma infraestrutura de software para aplicações.
   \end{itemize}
 }
@@ -492,6 +499,11 @@
     \item VectorHolder.java
     \item \_SquareMatrixStub.java
   \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Estrutura do Código Gerado}
+  \includegraphics[width=\textwidth]{img/idluml}
 \end{frame}
 
 \begin{frame}
@@ -912,14 +924,15 @@
     \item Adapte o exemplo de matrizes (servidor e aplicação) para utilizar um ORB com suporte ao OpenBus.
     \item Para compilar a IDL:
     \begin{samplecode}[language=bash]
-java -cp $ODK_HOME/lib/jacorb-idl-3.3.jar org.jacorb.idl.parser matrices.idl
+java -cp $ODK_HOME/lib/jacorb-idl-compiler-3.4.jar org.jacorb.idl.parser matrices.idl
     \end{samplecode}
     \item Para compilar o código:
     \begin{samplecode}[language=bash]
-javac -cp "$ODK_HOME/lib/jacorb-3.3.jar\
-:$ODK_HOME/lib/openbus-sdk-core-2.0.0.3.jar\
-:$ODK_HOME/lib/openbus-sdk-legacy-2.0.0.3.jar\
-:$ODK_HOME/lib/scs-core-1.2.1.2.jar\
+javac -cp "$ODK_HOME/lib/jacorb-3.4.jar\
+:$ODK_HOME/lib/jacorb-omgapi-3.4.jar\
+:$ODK_HOME/lib/openbus-sdk-core-2.0-SNAPSHOT.jar\
+:$ODK_HOME/lib/openbus-sdk-legacy-2.0-SNAPSHOT.jar\
+:$ODK_HOME/lib/scs-core-1.2.1.1.jar\
 :$ODK_HOME/lib/slf4j-api-1.6.4.jar\
 :$ODK_HOME/lib/slf4j-jdk14-1.6.4.jar" \
     tecgraf/openbus/demo/matrices/Server.java \
@@ -957,18 +970,18 @@ catch (org.omg.CORBA.NO_PERMISSION e) {
 }
     \end{samplecode}
     {\footnotesize
-    \begin{tabular}{l|c|c|l}
-      Nome & vmcid & minor & Descrição \\
+    \begin{tabular}{l|c|c|r|l}
+      Nome & Valor & vmcid & minor & Descrição \\
       \hline
-      NoCredential      & 0x42555000 & 774 & chamada feita sem credencial \\
-      NoLogin           & 0x42555000 & 887 & conexão atual não está logada \\
-      InvalidChain      & 0x42555000 & 769 & cadeia de chamadas inválida \\
-      InvalidPublicKey  & 0x42555000 & 773 & alvo informou chave pública inválida \\
-      InvalidRemote     & 0x42555000 & 886 & alvo não respeita o protocolo \\
-      InvalidTarget     & 0x42555000 & 884 & alvo com login inválido \\
-      UnavailableBus    & 0x42555000 & 885 & alvo sem acesso ao barramento \\
-      UnknownBus        & 0x42555000 & 772 & alvo está em outro barramento \\
-      UnverifiedLogin   & 0x42555000 & 771 & alvo não pôde verificar o login \\
+      NoCredential      & 1112888070 & 0x42555000 & 774  & chamada feita sem credencial \\
+      NoLogin           & 1112888319 & 0x42555000 & 1023 & conexão atual não está logada \\
+      InvalidChain      & 1112888065 & 0x42555000 & 769  & cadeia de chamadas inválida \\
+      InvalidPublicKey  & 1112888069 & 0x42555000 & 773  & alvo informou chave pública inválida \\
+      InvalidRemote     & 1112888318 & 0x42555000 & 1022 & alvo não respeita o protocolo \\
+      InvalidTarget     & 1112888316 & 0x42555000 & 1020 & alvo com login inválido \\
+      UnavailableBus    & 1112888317 & 0x42555000 & 1021 & alvo sem acesso ao barramento \\
+      UnknownBus        & 1112888068 & 0x42555000 & 772  & alvo está em outro barramento \\
+      UnverifiedLogin   & 1112888067 & 0x42555000 & 771  & alvo não pôde verificar o login \\
     \end{tabular}
     }
 \end{frame}
@@ -1083,8 +1096,8 @@ conn.logout();
 \begin{frame}
   \frametitle{Exercício 06: Login com Senha}
   \inputjava[firstline=16,lastline=16]{old}{ex06}{matrices/Application}
-  \inputjava[firstline=17,lastline=25]{new}{ex06}{matrices/Application}
-  \inputjava[firstline=26,lastline=38]{old}{ex06}{matrices/Application}
+  \inputjava[firstline=17,lastline=26]{new}{ex06}{matrices/Application}
+  \inputjava[firstline=27,lastline=38]{old}{ex06}{matrices/Application}
 \end{frame}
 
 \begin{frame}
@@ -1153,8 +1166,8 @@ openssl req -new -x509 \
 \begin{frame}
   \frametitle{Exercício 07-B: Login por Certificado}
   \inputjava[firstline=60,lastline=60]{old}{ex07}{matrices/Server}
-  \inputjava[firstline=61,lastline=72]{new}{ex07}{matrices/Server}
-  \inputjava[firstline=73,lastline=80]{old}{ex07}{matrices/Server}
+  \inputjava[firstline=61,lastline=73]{new}{ex07}{matrices/Server}
+  \inputjava[firstline=74,lastline=80]{old}{ex07}{matrices/Server}
 \end{frame}
 
 \begin{frame}
@@ -1497,49 +1510,49 @@ LoginObserverHelper.narrow(
 
 \begin{frame}
   \frametitle{Exercício 13: Passando o POA para Criação de Observador}
-  \inputjava[firstline=184,lastline=199]{old}{ex13}{matrices/Server}
-  \inputjava[firstline=200,lastline=200]{new}{ex13}{matrices/Server}
-  \inputjava[firstline=201,lastline=206]{old}{ex13}{matrices/Server}
+  \inputjava[firstline=186,lastline=201]{old}{ex13}{matrices/Server}
+  \inputjava[firstline=202,lastline=202]{new}{ex13}{matrices/Server}
+  \inputjava[firstline=203,lastline=208]{old}{ex13}{matrices/Server}
 \end{frame}
 
 \begin{frame}
   \frametitle{Exercício 13: Observador que Descarta Matrizes}
-  \inputjava[firstline=71,lastline=73]{old}{ex13}{matrices/Server}
-  \inputjava[firstline=74,lastline=75]{new}{ex13}{matrices/Server}
-  \inputjava[firstline=76,lastline=77]{old}{ex13}{matrices/Server}
-  \inputjava[firstline=78,lastline=79]{new}{ex13}{matrices/Server}
-  \inputjava[firstline=80,lastline=81]{old}{ex13}{matrices/Server}
-  \inputjava[firstline=82,lastline=95]{new}{ex13}{matrices/Server}
+  \inputjava[firstline=68,lastline=70]{old}{ex13}{matrices/Server}
+  \inputjava[firstline=71,lastline=72]{new}{ex13}{matrices/Server}
+  \inputjava[firstline=73,lastline=74]{old}{ex13}{matrices/Server}
+  \inputjava[firstline=75,lastline=76]{new}{ex13}{matrices/Server}
+  \inputjava[firstline=77,lastline=78]{old}{ex13}{matrices/Server}
+  \inputjava[firstline=79,lastline=92]{new}{ex13}{matrices/Server}
 \end{frame}
 
 \begin{frame}
   \frametitle{Exercício 13: Criando Matriz que Notifica Descarte}
-  \inputjava[firstline= 97,lastline=108]{old}{ex13}{matrices/Server}
-  \inputjava[firstline=109,lastline=112]{new}{ex13}{matrices/Server}
+  \inputjava[firstline= 94,lastline=105]{old}{ex13}{matrices/Server}
+  \inputjava[firstline=106,lastline=109]{new}{ex13}{matrices/Server}
 \end{frame}
 
 \begin{frame}
   \frametitle{Exercício 13: Registrando Matriz para Descarte}
-  \inputjava[firstline=114,lastline=114]{new}{ex13}{matrices/Server}
-  \inputjava[firstline=115,lastline=115]{old}{ex13}{matrices/Server}
-  \inputjava[firstline=116,lastline=131]{new}{ex13}{matrices/Server}
-  \inputjava[firstline=132,lastline=134]{old}{ex13}{matrices/Server}
-  \inputjava[firstline=135,lastline=135]{new}{ex13}{matrices/Server}
-  \inputjava[firstline=136,lastline=137]{old}{ex13}{matrices/Server}
+  \inputjava[firstline=111,lastline=111]{new}{ex13}{matrices/Server}
+  \inputjava[firstline=112,lastline=112]{old}{ex13}{matrices/Server}
+  \inputjava[firstline=113,lastline=128]{new}{ex13}{matrices/Server}
+  \inputjava[firstline=129,lastline=131]{old}{ex13}{matrices/Server}
+  \inputjava[firstline=132,lastline=132]{new}{ex13}{matrices/Server}
+  \inputjava[firstline=133,lastline=134]{old}{ex13}{matrices/Server}
 \end{frame}
 
 \begin{frame}
   \frametitle{Exercício 13: Registrando Interesse no Login do Solicitante}
-  \inputjava[firstline=130,lastline=131]{new}{ex13}{matrices/Server}
-  \inputjava[firstline=132,lastline=134]{old}{ex13}{matrices/Server}
-  \inputjava[firstline=135,lastline=135]{new}{ex13}{matrices/Server}
-  \inputjava[firstline=136,lastline=137]{old}{ex13}{matrices/Server}
-  \inputjava[firstline=139,lastline=151]{new}{ex13}{matrices/Server}
+  \inputjava[firstline=127,lastline=128]{new}{ex13}{matrices/Server}
+  \inputjava[firstline=129,lastline=131]{old}{ex13}{matrices/Server}
+  \inputjava[firstline=132,lastline=132]{new}{ex13}{matrices/Server}
+  \inputjava[firstline=133,lastline=135]{old}{ex13}{matrices/Server}
+  \inputjava[firstline=136,lastline=148]{new}{ex13}{matrices/Server}
 \end{frame}
 
 \begin{frame}
   \frametitle{Exercício 13: Descarte da Matriz}
-  \inputjava[firstline=153,lastline=167]{new}{ex13}{matrices/Server}
+  \inputjava[firstline=150,lastline=170]{new}{ex13}{matrices/Server}
 \end{frame}
 
 \begin{frame}
@@ -1555,7 +1568,7 @@ LoginObserverHelper.narrow(
   \frametitle{Exercício 13: Notificação do Descarte pela Matriz}
   \inputjava[firstline=47,lastline=63]{old}{ex13}{matrices/Server}
   \inputjava[firstline=64,lastline=64]{new}{ex13}{matrices/Server}
-  \inputjava[firstline=65,lastline=68]{old}{ex13}{matrices/Server}
+  \inputjava[firstline=65,lastline=66]{old}{ex13}{matrices/Server}
 \end{frame}
 
 \subsection{Descoberta}
@@ -1807,14 +1820,14 @@ new ServiceProperty[] = {
 
 \begin{frame}
   \frametitle{Exercício 14: Buscando Ofertas de Interesse}
-  \inputjava[firstline=103,lastline=115]{old}{ex14}{matrices/Server}
-  \inputjava[firstline=116,lastline=122]{new}{ex14}{matrices/Server}
+  \inputjava[firstline=101,lastline=113]{old}{ex14}{matrices/Server}
+  \inputjava[firstline=114,lastline=120]{new}{ex14}{matrices/Server}
 \end{frame}
 
 \begin{frame}
   \frametitle{Exercício 14: Inspecionando Ofertas Encontradas}
-  \inputjava[firstline=124,lastline=136]{new}{ex14}{matrices/Server}
-  \inputjava[firstline=137,lastline=143]{old}{ex14}{matrices/Server}
+  \inputjava[firstline=122,lastline=134]{new}{ex14}{matrices/Server}
+  \inputjava[firstline=135,lastline=141]{old}{ex14}{matrices/Server}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -1826,9 +1839,9 @@ new ServiceProperty[] = {
 
 \begin{frame}
   \frametitle{Exercício 15: Fábrica não Recebe um Serviço para Utilizar}
-  \inputjava[firstline=134,lastline=151]{old}{ex15}{matrices/Server}
-  \inputjava[firstline=152,lastline=152]{new}{ex15}{matrices/Server}
-  \inputjava[firstline=153,lastline=161]{old}{ex15}{matrices/Server}
+  \inputjava[firstline=138,lastline=155]{old}{ex15}{matrices/Server}
+  \inputjava[firstline=156,lastline=156]{new}{ex15}{matrices/Server}
+  \inputjava[firstline=157,lastline=165]{old}{ex15}{matrices/Server}
 \end{frame}
 
 \begin{frame}
@@ -1839,19 +1852,24 @@ new ServiceProperty[] = {
 
 \begin{frame}
   \frametitle{Exercício 15: Fábrica com Operação de Acesso ao Serviço}
-  \inputjava[firstline=100,lastline=108]{old}{ex15}{matrices/Server}
-  \inputjava[firstline=109,lastline=109]{new}{ex15}{matrices/Server}
-  \inputjava[firstline=110,lastline=112]{old}{ex15}{matrices/Server}
+  \inputjava[firstline=106,lastline=114]{old}{ex15}{matrices/Server}
+  \inputjava[firstline=115,lastline=115]{new}{ex15}{matrices/Server}
+  \inputjava[firstline=116,lastline=118]{old}{ex15}{matrices/Server}
 \end{frame}
 
 \begin{frame}
   \frametitle{Exercício 15: Acesso Protegido ao Serviço}
-  \inputjava[firstline=67,lastline=78]{new}{ex15}{matrices/Server}
+  \inputjava[firstline=67,lastline=79]{new}{ex15}{matrices/Server}
 \end{frame}
 
 \begin{frame}
   \frametitle{Exercício 15: Buscando Novo Serviço Ofertado}
-  \inputjava[firstline=80,lastline=98]{new}{ex15}{matrices/Server}
+  \inputjava[firstline=81,lastline=94]{new}{ex15}{matrices/Server}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exercício 15: Realizando Última Tentativa}
+  \inputjava[firstline=96,lastline=104]{new}{ex15}{matrices/Server}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -1942,11 +1960,11 @@ org.omg.CORBA.Object obj = r.getConnectionsSize()>0  ?
 
 \begin{frame}
   \frametitle{Exercício 16: Criando Oferta de Serviço no Barramento}
-  \inputjava[firstline=145,lastline=152]{old}{ex16}{matrices/Server}
-  \inputjava[firstline=153,lastline=159]{new}{ex16}{matrices/Server}
-  \inputjava[firstline=160,lastline=160]{old}{ex16}{matrices/Server}
-  \inputjava[firstline=161,lastline=163]{new}{ex16}{matrices/Server}
-  \inputjava[firstline=164,lastline=167]{old}{ex16}{matrices/Server}
+  \inputjava[firstline=143,lastline=150]{old}{ex16}{matrices/Server}
+  \inputjava[firstline=151,lastline=157]{new}{ex16}{matrices/Server}
+  \inputjava[firstline=158,lastline=158]{old}{ex16}{matrices/Server}
+  \inputjava[firstline=159,lastline=161]{new}{ex16}{matrices/Server}
+  \inputjava[firstline=162,lastline=165]{old}{ex16}{matrices/Server}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -2104,8 +2122,8 @@ interface OfferRegistryObserver {
 
 \begin{frame}
   \frametitle{Exercício 20: Implementando a Callback de Login Inválido}
-  \inputjava[firstline=148,lastline=150]{old}{ex20}{matrices/Server}
-  \inputjava[firstline=151,lastline=170]{new}{ex20}{matrices/Server}
+  \inputjava[firstline=146,lastline=148]{old}{ex20}{matrices/Server}
+  \inputjava[firstline=149,lastline=168]{new}{ex20}{matrices/Server}
 \end{frame}
 
 \begin{frame}
@@ -2239,20 +2257,20 @@ public interface OnFailureCallback {
 
 \begin{frame}
   \frametitle{Exercício 21: Criando o Assistente com Chave Privada (Servidor)}
-  \inputjava[firstline=142,lastline=145]{old}{ex21}{matrices/Server}
-  \inputjava[firstline=146,lastline=152]{new}{ex21}{matrices/Server}
-  \inputjava[firstline=153,lastline=165]{old}{ex21}{matrices/Server}
+  \inputjava[firstline=140,lastline=143]{old}{ex21}{matrices/Server}
+  \inputjava[firstline=144,lastline=150]{new}{ex21}{matrices/Server}
+  \inputjava[firstline=151,lastline=163]{old}{ex21}{matrices/Server}
 \end{frame}
 
 \begin{frame}
   \frametitle{Exercício 21: Utilizando o Assistente (Servidor)}
-  \inputjava[firstline=157,lastline=166]{old}{ex21}{matrices/Server}
+  \inputjava[firstline=155,lastline=164]{old}{ex21}{matrices/Server}
+  \inputjava[firstline=165,lastline=165]{new}{ex21}{matrices/Server}
+  \inputjava[firstline=166,lastline=166]{old}{ex21}{matrices/Server}
   \inputjava[firstline=167,lastline=167]{new}{ex21}{matrices/Server}
-  \inputjava[firstline=168,lastline=168]{old}{ex21}{matrices/Server}
-  \inputjava[firstline=169,lastline=169]{new}{ex21}{matrices/Server}
-  \inputjava[firstline=170,lastline=173]{old}{ex21}{matrices/Server}
-  \inputjava[firstline=174,lastline=177]{new}{ex21}{matrices/Server}
-  \inputjava[firstline=178,lastline=179]{old}{ex21}{matrices/Server}
+  \inputjava[firstline=168,lastline=171]{old}{ex21}{matrices/Server}
+  \inputjava[firstline=172,lastline=175]{new}{ex21}{matrices/Server}
+  \inputjava[firstline=176,lastline=177]{old}{ex21}{matrices/Server}
 \end{frame}
 
 \begin{frame}

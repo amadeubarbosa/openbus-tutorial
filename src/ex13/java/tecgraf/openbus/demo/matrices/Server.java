@@ -62,9 +62,6 @@ class MatrixServant extends SquareMatrixPOA {
 	public void dispose() {
 		assertAuthorized();
 		_factory.disposeMatrix(this, _loginId);
-		try { _poa().deactivate_object(_object_id()); }
-		catch (ObjectNotActive e) {}
-		catch (WrongPolicy e) {}
 	}
 }
 
@@ -107,9 +104,9 @@ class MatrixFactoryServant extends MatrixFactoryPOA {
 		catch(UnknownTransformation e) { throw new UnknownMatrixKind(kind); }
 
 		String loginId = chain.caller().id;
-		MatrixServant matrix = new MatrixServant(new Matrix(), _context,
-		                                                       this,
-		                                                       loginId);
+		MatrixServant matrix = new MatrixServant(new Matrix(transformation), _context,
+		                                                                     this,
+		                                                                     loginId);
 
 		SquareMatrix result;
 		try {
@@ -136,17 +133,17 @@ class MatrixFactoryServant extends MatrixFactoryPOA {
 			throw new GeneralFailure("unexpected failure (wrong POA policy)");
 		}
 
-		try {
-			if (!_subscription.watchLogin(loginId))
-				throw new NO_PERMISSION("caller became invalid",
-				                        InvalidLoginCode.value,
-				                        CompletionStatus.COMPLETED_NO);
-		}
+		boolean watching = false;
+		try { watching = _subscription.watchLogin(loginId); }
 		catch(Exception e) {
 			disposeMatrix(matrix, loginId);
 			System.err.println("failure on watchin login: "+e);
 			throw new GeneralFailure("failure while watching login");
 		}
+		if (!watching) throw new NO_PERMISSION("caller became invalid",
+		                                       InvalidLoginCode.value,
+		                                       CompletionStatus.COMPLETED_NO);
+
 		return result;
 	}
 
@@ -154,14 +151,19 @@ class MatrixFactoryServant extends MatrixFactoryPOA {
 		boolean forgetLogin = false;
 		synchronized (_matricesOf) {
 			Map<MatrixServant ,byte[]> map = _matricesOf.get(loginId);
-			if (map != null && map.remove(servant) != null && map.isEmpty()) {
-				_matricesOf.remove(loginId);
+			if (map != null && map.remove(servant) != null) {
+				if (map.isEmpty()) _matricesOf.remove(loginId);
 				forgetLogin = true;
 			}
 		}
+
+		try { _poa().deactivate_object(_object_id()); }
+		catch (ObjectNotActive e) {}
+		catch (WrongPolicy e) {}
+
 		if (forgetLogin)
 			try { _subscription.forgetLogin(loginId); }
-			catch(ServiceFailure e) {
+			catch(Exception e) {
 				System.err.println("failure on forgeting login: "+e);
 			}
 	}

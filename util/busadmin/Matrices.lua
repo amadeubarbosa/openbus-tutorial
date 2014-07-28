@@ -2,7 +2,7 @@ local lfs = require "lfs"
 local os = require "os"
 
 local category = "TutorialEntities"
-local certpath = os.getenv("OPENBUS_TUTORIAL_CERTIFICATES") or "certificates/services"
+local certpath = os.getenv("OPENBUS_TUTORIAL_CERTIFICATES") or "certificates"
 local interface = "IDL:tecgraf/openbus/demo/matrices/MatrixFactory:1.0"
 
 Category {

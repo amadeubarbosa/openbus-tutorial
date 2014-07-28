@@ -66,15 +66,16 @@ class MatrixFactoryServant extends MatrixFactoryPOA {
 
 	private double[] getTransformation(String kind)
 		throws UnknownTransformation, GeneralFailure {
-		GeneralFailure error;
+		String error;
 
 		if (_transformations != null) {
 			try { return _transformations.getTransformation(kind); }
 			catch (org.omg.CORBA.SystemException e) {
-				error = new GeneralFailure("transformations service failure: "+e);
+				error = "transformations service failure: "+e;
+				System.err.println(error);
 			}
 		} else {
-			error = new GeneralFailure("unable to contact transformations service");
+			error = "unable to contact transformations service";
 		}
 
 		_transformations = null;
@@ -89,12 +90,17 @@ class MatrixFactoryServant extends MatrixFactoryPOA {
 					System.err.println("found service with missing facet!");
 				}
 				catch (Exception e) { System.err.println("offered service failure: "+e); }
-			if (_transformations != null)
-				return _transformations.getTransformation(kind);
 		}
 		catch (Exception e) { System.err.println("offer query failure: "+e); }
 
-		throw error;
+		if (_transformations != null) {
+			try { return _transformations.getTransformation(kind); }
+			catch (org.omg.CORBA.SystemException e) {
+				error = "transformations service failure: "+e;
+			}
+		}
+
+		throw new GeneralFailure(error);
 	}
 
 	public SquareMatrix newMatrix(String kind)
@@ -109,7 +115,7 @@ class MatrixFactoryServant extends MatrixFactoryPOA {
 		try { transformation = getTransformation(kind); }
 		catch(UnknownTransformation e) { throw new UnknownMatrixKind(kind); }
 
-		MatrixServant matrix = new MatrixServant(new Matrix(), _context);
+		MatrixServant matrix = new MatrixServant(new Matrix(transformation), _context);
 
 		try {
 			return SquareMatrixHelper.narrow(_poa().servant_to_reference(matrix));
@@ -128,8 +134,6 @@ public class Server {
 	private static final String privateKeyFile = "Matrices.key";
 	private static final String busHost = "localhost";
 	private static final short busPort = 20100;
-	private static final String tHost = "localhost";
-	private static final short tPort = 22222;
 
 	public static void main(String[] args) throws Exception {
 		OpenBusPrivateKey privateKey =
