@@ -1,0 +1,76 @@
+%
+%  SDK OpenBus 2.0
+%
+%  Copyright (c) 2012 Tecgraf/PUC-Rio. All rights reserved.
+%
+\documentclass{report}
+
+\usepackage{tutorial}
+
+\usepackage{fullpage}
+\usepackage{paralist}
+\usepackage{lmodern}
+%\usepackage[T1]{fontenc}
+
+%% Redefines the label 'Listing' for ..
+%\def\lstlistingname{Código}
+
+\codestyle{colorful}
+\codelanguage{java}
+\textdir{tex}
+
+% new commands
+\def\openbustutorialexid{}
+\def\openbustutorialexcls{}
+\newcommand{\exlabel}[1]{\label{lin:\openbustutorialexid:\openbustutorialexcls:#1}}
+%\newcommand{\exlabel}[1]{\label{lin:ex01:matrices/Application:#1}}
+\newcommand{\inputexidl}[4][]{
+	\begin{figure}
+		\caption{#4}\label{fig:#2:#3}
+		\def\openbustutorialexid{#2}
+		\def\openbustutorialexcls{#3}
+		\inputnumcode[language={[CORBA]IDL},#1]{#2/idl/#3.idl}
+	\end{figure}
+}
+\newcommand{\inputexsrc}[4][]{
+	\begin{figure}
+		\caption{#4}\label{fig:#2:#3}
+		\def\openbustutorialexid{#2}
+		\def\openbustutorialexcls{#3}
+		\inputnumcode[language=java,#1]{#2/java/tecgraf/openbus/demo/#3.java}
+	\end{figure}
+}
+
+\newcommand{\openbus}{\textsc{OpenBus}}
+\newcommand{\corba}{\textsc{CORBA}}
+\newcommand{\orb}{\textsc{ORB}}
+\newcommand{\jacorb}{\textsc{JacORB}}
+\newcommand{\scs}{\textsc{SCS}}
+\newcommand{\version}{2.0}
+
+\title{Tutorial do \openbus\ \version}
+\author{Tecgraf/PUC-Rio}
+
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+% TODO:
+APRESENTAR ESTRUTURA DO DOCUMENTO...
+
+\inputchapter{intro}{Introdução}
+\inputchapter{communication}{Comunicação}
+%\inputchapter{identification}{Identificação}
+%\inputchapter{discovery}{Descoberta}
+%\inputchapter{governance}{Governança}
+
+% \include{glossary}
+
+\bibliographystyle{plain}
+\bibliography{references}
+
+\end{document}

@@ -1,0 +1,216 @@
+Neste capítulo são apresentados diversos recursos oferecidos pela infraestrutura do \openbus{} para o desenvolvimento de integrações de sistemas através de exemplos de código que utilizam a biblioteca de acesso do \openbus{}.
+Todos os exemplos são elaborados de forma incremental para formar ao final uma integração completamente funcional sobre a infraestrutura do \openbus{}.
+
+\section{Introdução ao CORBA}
+
+A base da tecnologia \openbus{} é o padrão CORBA para desenvolvimento de sistemas distribuídos orientados a objetos.
+Para ilustrar o uso de CORBA tomemos como exemplo o programa apresentado na figura~\ref{fig:ex01:matrices/Application}.
+Esse programa utilizada uma biblioteca de multiplexação de matrizes (linha~\ref{lin:ex01:matrices/Application:matrix}) para calcular uma transformação (linha~\ref{lin:ex01:matrices/Application:multiply}) no vetor gerado pelo programa (linha~\ref{lin:ex01:matrices/Application:makevector}) que é exibida ao final (linha~\ref{lin:ex01:matrices/Application:print}).
+
+\inputexsrc{ex01}{matrices/Application}{Aplicação de multiplicação de matrizes.}
+
+A figura~\ref{fig:monolithic} ilustra a estrutura de um programa monolítico com o nosso programa de multipliciação de matrizes da figura~\ref{fig:ex01:matrices/Application}.
+No caso desse programa o cliente é o corpo principal do programa e o objeto sendo utilizado é a matriz criada na linha~\ref{lin:ex01:matrices/Application:matrix}.
+
+\inputimage{monolithic}{Estrutura de uma aplicação monolítica.}
+
+Agora suponhamos que a funcionalidade de multiplicação de matrizes não deva mais ser obtidia a partir de uma biblioteca local, mas sim como um serviço oferecido por um servidor remoto.
+Neste caso, uma abodagem seria utilizar um intermediador de chamadas de objetos (ORB -- \term{Object Request Broker}) para permitir fazer chamadas a objetos remotos através de uma rede por exemplo, como ilustrado na figura~\ref{fig:orbapp}.
+Na nomenclatura de CORBA, convenciona-se chamar de \term{servant} o objeto local que implementa um objeto distribuído, ou seja, acessível remotamente.
+
+\inputimage{orbapp}{Aplicação distribuída usando um ORB.}
+
+Contudo, é interessante notar que para essa abordagem ser possível é necessário que o ORB ofereça e implemente as mesmas interfaces específicas os objetos que devam se tornar remotos.
+Para resolver isso o CORBA adota uma solução como ilustrada na figura~\ref{fig:corba}, onde o ORB oferece uma implementação e interface única (em azul: \term{ORB} e \term{POA}).
+Para adaptar esse ORB único para diferentes aplicações é utilizado um gerador de código que tem como entrada uma descrição das interfaces dos objetos e gera um código na linguagem da aplicação que adapta o ORB às interfaces específicas dos objetos distribuídos (em verde: \term{Stub} e \term{Skeleton}).
+Essa desrição das interfaces é descrita numa linguagem definida por CORBA denominada IDL (\term{Interface Description Language}), que permite descrições de interfaces e tipos de forma independente de linguagens de programação.
+
+\inputimage{ior}{Visão geral de uma aplicação CORBA.}
+
+O ORB CORBA oferece elementos padrão denominados POA (\term{Portable Object Adaptor}) para gerência dos objetos distribuídos naquele ORB e dos servants que o implementam.
+Ao contrário de objetos locais que podem ser referenciados apenas por um endereço de memória, os objetos distribuídos em CORBA são referenciados através de uma estrutura denominada IOR (\term{Interoperable Object Reference}).
+O IOR tipicamente contem informações como o endereço da máquina e porta onde o ORB em que o objeto distribuído reside está e um identificador único daquele objeto no ORB denominado \term{Object ID}.
+O \term{Object ID} de cada objeto distribuído pode ser gerado automaticamente pelo ORB no registro do \term{servant}, ou pode ser fornecido pela aplicação.
+
+O \term{Skeleton} é o código gerado pelo compilador de IDL que adapta a interface especifica da aplicação provida pelo servant à implementação do ORB.
+No lado dos clientes que acessam os objetos distribuídos temos um objeto local que representa o objeto distribuído, denominado \term{Stub}.
+O \term{stub} também é implementado por código gerado pelo compilador de IDL e possui internamente uma referência (IOR) para o objeto distribuído que ele representa.
+
+Para transformar a aplicação da figura~\ref{fig:ex01:matrices/Application} numa aplicação distribuída usando CORBA devemos inicialmente definir uma IDL que descreva a interface da instância de \code{matrix} que se tornará o objeto distribuído.
+A figura~\ref{fig:ex02:matrices} ilustra uma descrição em IDL da interface do objeto \code{matrix} que é utilizado pelo programa da figura~\ref{fig:ex01:matrices/Application}.
+
+\inputexidl{ex02}{matrices}{IDL de matrizes de transformação.}
+
+%--- Java ----------------------------------------------------------------------
+A compilação da IDL que define uma interface de nome \code{Foo} gera tipicamente o seguinte conjunto de arquivos Java:
+
+\begin{center}
+	\begin{tabular}{ll}
+	Arquivo & Descrição \\
+	\hline
+	Foo.java & Interface com as operações de \code{Foo} e outras operações de objetos distribuídos CORBA. \\
+	FooOperations.java & Interface apenas com as operações de \code{Foo}. \\
+	FooPOA.java & Classe abstrata que deve ser estendida para implementar um servant que implemente as operações de \code{Foo}. \\
+	FooPOATie.java & Classe que implementa um servant de \code{Foo}, mas que delega as operações para um objeto que implemente \code{FooOperations}. \\
+	\_FooStub.java & Implementação interna dos objetos de \term{stub} de \code{Foo}. \\
+	\end{tabular}
+\end{center}
+
+A figura~\ref{fig:idluml} ilustra a esturuta do código Java gerado pela compilação de uma IDL descrevendo uma interface denominada \code{Foo}.
+As definições oferecidas pela implementação do ORB são exibidas em azul.
+As definições em verde são as geradas pelo compilador de IDL.
+As definições em amarelo são fornecidas pelo desenvolvidor da aplicação.
+As definições esbranquecidas não são manipuladas diretamente pela aplicação.
+
+\inputimage{idluml}{Estrutura do código Java gerado pela compilador de IDL.}
+
+Para compilar o arquivo IDL \code{matrices.idl} usando o compilador de IDL do JDK utilize o seguinte comando:
+
+\begin{samplecode}[language=bash]
+	idlj -fallTIE matrices.idl
+\end{samplecode}
+
+De posse do código gerado pelo compilador de IDL podemos desenvolver um servidor CORBA que exporta um objeto distribído que implemente a interface descrita na IDL, como ilustrado no código da figura~\ref{fig:ex02:matrices/Server}.
+A classe \code{MatrixServant} (linha~\ref{lin:ex02:matrices/Server:servant}) basicamente é definida apenas para declarar que a classe \code{Matrix} da nossa biblioteca de multiplicação de matrixes suporta a interface \code{SquareMatrix} declarada em IDL.
+Com essa classe \code{MatrixServant} podemos criar um objeto \code{SquareMatrixPOATie} que funcionará como um servant que delega suas chamadas para uma instância de \code{MatrixServant}.
+Como \code{MatrixServant} incorpora a implementação da classe \code{Matrix} da biblioteca local utilizada no nosso exemplo, teremos que um objeto distribuído implementando por um servant assim será efetivamente uma versão distribuída do objeto \code{matrix} da nossa versão monolítica da aplicação de exemplo.
+
+\inputexsrc{ex02}{matrices/Server}{Servidor CORBA de uma matriz de transformação.}
+
+Um servidor CORBA deve inicialmente inicializar um ORB (linha~\ref{lin:ex02:matrices/Server:initorb}), que aloca os recursos necessários para seu funcionamento, tal como uma porta TCP para receber chamadas remotas.
+Por essa razão, uma vez iniciado o ORB deve ser encerrado adequadamente ao final do seu uso (linha~\ref{lin:ex02:matrices/Server:shutorb}).
+
+Para criar um novo objeto distribuído usando o ORB é necessário antes obter um POA (linha~\ref{lin:ex02:matrices/Server:getpoa}).
+Nesse exemplo, utilizamos o \code{RootPOA}, que é um POA criado automaticamente pelo ORB na sua inicialização e disponibilizado através da operação \code{resolve\_initial\_references} do ORB.
+Como a operação \code{resolve\_initial\_references} devolve um objeto \code{org.omg.CORBA.Object}, é necessário realizar uma coerção para o tipo \code{org.omg.PortableServer.POA} antes de poder utilizá-lo.
+Essa coerção deve ser feita através de operações $<$\textit{Interface}$>$\code{Helper.narrow} provenientes da infraestrutura oferecida pelo CORBA\footnote{Ou pela implementação padrão do ORB ou código gerado pelo compilador de IDL}.
+As operações de coerção funcionam de forma similar ao operador de \term{typecasting} de Java, mas permitem a coerção adequada de objetos da infraestrutura de CORBA, em particular aqueles que implementam a interface \code{omg.orb.CORBA.Object}.
+
+Para que os objetos registrados num dado POA possam receber chamadas, o POA deve ser ativado (linha~\ref{lin:ex02:matrices/Server:activatepoa}).
+A operação \code{servant\_to\_reference} do POA (linha~\ref{lin:ex02:matrices/Server:regobj}) é usada para criar um objeto distribuído a partir do registro um servant no POA com um \term{Object ID} gerado automaticamente pelo ORB.
+Adicionalmente, essa operação também já devolve um \term{stub} que referencia o objeto distribuído criado.
+
+O que resta resolver nesse exemplo é como transmitir essa referência do objeto distribuído para o programa cliente.
+Uma maneira utilizar o suporte de serialização de referências de objetos distribuídos CORBA para texto, que é feito através da operação \code{object\_to\_string} (linha~\ref{lin:ex02:matrices/Server:printior}).
+Com esse texto é possível recriar a referência ao objeto distribuído em qualquer programa com suporte CORBA.
+Por fim, o programa do servidor fica aguardando uma entrada qualquer apenas para saber quando deve terminar seu funcionamento (linha~\ref{lin:ex02:matrices/Server:waitend}).
+
+O código da figura~\ref{fig:ex02:matrices/Application} ilustra o código alterado do exemplo da figura~\ref{fig:ex01:matrices/Application} para acessar o objeto distribuído disponibilizado pelo progama servidor da figura~\ref{fig:ex02:matrices/Server}.
+De forma similar ao programa servidor, o programa cliente também deve inicializar um ORB (linha~\ref{lin:ex02:matrices/Application:initorb}) e encerrá-lo ao final de seu uso (linha~\ref{lin:ex02:matrices/Application:shutorb}).
+O programa lê da entrada padrão (linha~\ref{lin:ex02:matrices/Application:readior}) um texto que deve conter a serialização da referência do objeto \code{SquareMatrix} que deve ser utilizado.
+Essa referência textual é então utilizada para criar um \term{stub} para o objeto distribuído usando a operação \code{string\_to\_object} (linha~\ref{lin:ex02:matrices/Application:createstub}).
+O restante do programa permance inalterado já que a interface do objeto distribuído é idêntica a interface do objeto \code{matrix} da versão original.
+
+\inputexsrc{ex02}{matrices/Application}{Aplicação CORBA que utiliza serviço de matriz de transformação.}
+%-------------------------------------------------------------------------------
+
+\section{Descrição de Interfaces em IDL}
+
+A linguagem de descrição de IDL de CORBA tem suporte a diversos tipos de dados para descrição dos valores manipulados pelas interfaces.
+A seguir são apresentados brevemente alguns dos principais recursos de descrição de tipos e interfaces da linguagem IDL de CORBA.
+
+\paragraph{Tipos Primitivos} são valores mais básicos que muitas vezes são combinados para formar outros tipos mais complexos. A tabela da figura~\ref{fig:idlprimitives} lista os tipos mais primitivos em IDL e como eles são mapeados para a tipos da linguagem Java.
+
+\begin{figure}
+	\caption{Mapeamento dos tipos primitivos de IDL para Java}\label{fig:idlprimitives}
+	\begin{tabular}{l|l|l}
+		Tipo IDL & Tipo Java & Descrição \\
+		\hline
+		boolean & boolean & \code{true} ou \code{false} \\
+		char & char & caracter de 1 byte \\
+		wchar & char & caracter de 2 bytes \\
+		octet & byte & inteiro em 1 byte \\
+		string & java.lang.String & cadeia de carac. de 1 byte \\
+		wstring & java.lang.String & cadeia de carac. de 2 bytes \\
+		short & short & inteiro de 2 bytes \\
+		unsigned short & short & int. não-neg. de 2 bytes \\
+		long & int & inteiro de 4 bytes \\
+		unsigned long & int & int. não-neg. de 4 bytes \\
+		long long & long & inteiro de 8 bytes \\
+		unsigned long long & long & int. não-neg. de 8 bytes \\
+		float & float & ponto-flut. de prec. simples \\
+		double & double & ponto-flut. de prec. dupla \\
+		fixed & java.math.BigDecimal & decimal em ponto fixo \\
+	\end{tabular}
+\end{figure}
+
+\paragraph{Enumeração} descrevem tipos cujo valores possíveis são restritos a um conjunto pequeno.
+\begin{samplecode}[language= {[CORBA]IDL} ]
+enum Color { red, green, blue };
+enum Size { small, medium, large };
+\end{samplecode}
+
+\paragraph{Arranjo} descrevem tipos cujo valores são sequências de tamanho fixo de valores de um mesmo tipo.
+\begin{samplecode}[language= {[CORBA]IDL} ]
+double Vetor3D[3];
+\end{samplecode}
+
+\paragraph{Sequência} descrevem tipos cujo valores são sequências de tamanho variados de valores de um mesmo tipo.
+\begin{samplecode}[language= {[CORBA]IDL} ]
+sequence<long> LongIntegers;
+sequence<Color> Colors;
+\end{samplecode}
+
+\paragraph{Estrutura} descrevem tipos cujo valores são estruturas compostas por um conjunto finito de campos de tipos determinados.
+\begin{samplecode}[language= {[CORBA]IDL} ]
+struct Foo {
+	long some_value;
+	double other_value;
+	string another_value;
+	Color yet_another_value;
+};
+\end{samplecode}
+
+\paragraph{União} são tipos cujo valores são estruturas com um único campo que pode ser de diferentes tipos dependendo do valor de um discriminante especial, que em geral é uma enumeração ou tipo numérico.
+Na prática, uma união é composta por dois valores, o valor do discriminante e o valor do campo que tem o tipo variado de acordo com o valor do discriminante.
+No exemplo abaixo, quando o valor do discriminante é \code{NUM\_VALUE} o campo da união é \code{num\_val} que assume valores do tipo \code{double}.
+\begin{samplecode}[language= {[CORBA]IDL} ]
+enum ValueKind { BOOL_VALUE, NUM_VALUE, TXT_VALUE };
+union Value switch (ValueKind) {
+	case BOOL_VALUE: boolean bool_val;
+	case NUM_VALUE: double num_val;
+	case TXT_VALUE: string txt_val;
+};
+\end{samplecode}
+
+\paragraph{Interface} descrevem tipos cujo valores são referências de objetos distribuídos que oferecem a interface descrita.
+\begin{samplecode}[language= {[CORBA]IDL} ]
+interface Hello {
+	attribute boolean quiet;
+	readonly attribute long count;
+	string say_hello_to(in string name);
+};
+\end{samplecode}
+
+\paragraph{Exceção} descrevem tipos cujo valores são exceções que podem ser lançadas por operações em interfaces de objetos distribuídos.
+\begin{samplecode}[language= {[CORBA]IDL} ]
+exception DivisionByZero {
+	long dividend;
+	long divisor;
+};
+interface IntegerMath {
+	long div(in long dividend, in long divisor, out long remainder)
+		raises(DivisionByZero);
+};
+\end{samplecode}
+
+\paragraph{Apelidos} descrevem nomes alternativos para definições de tipos.
+\begin{samplecode}[language= {[CORBA]IDL} ]
+typedef unsigned long Cardinal;
+\end{samplecode}
+
+\paragraph{Espaços de Nomes} descrevem espaços distintos para definições de novas declarações de forma que não conflitem com outras definições em outros espaços.
+Utiliza-se o prefixo \code{tecgraf::} para referenciar declarações feitas no espaço de nomes (módulo) com o nome \code{tecgraf}.
+\begin{samplecode}[language= {[CORBA]IDL} ]
+module tecgraf {
+	module openbus {
+		interface SquareMatrix {};
+	};
+};
+interface MyFactory {
+  tecgraf::openbus::SquareMatrix newMatrix();
+};
+\end{samplecode}
+
+\section{Ciclo de Vida de Objetos}
+

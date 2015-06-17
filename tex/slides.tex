@@ -6,26 +6,15 @@
   % or whatever (possibly just delete it)
 }
 
-\usepackage{inconsolata}
 %\usepackage[charter]{mathdesign}
 % \def\rmdefault{bch} % not scaled
 % \def\ttdefault{blg}
-\usepackage{textpos}
 
-\usepackage{url}
-\usepackage{graphicx}
-\usepackage{hyperref}
-\usepackage{listings}
-
-\usepackage{subfigure}
 \usepackage{beamerthemesplit}
-\usepackage[brazil]{babel}
-\usepackage[latin1]{inputenc}
-\usepackage[mathscr]{eucal}
-\usepackage{amsmath}
 
 \usepackage{multicol}
-\usepackage{mwlabinputs2}
+\usepackage{tutorial}
+
 \lstdefinestyle{normal}{
   basicstyle=\scriptsize\ttfamily,%
   keywordstyle=[1]\color[rgb]{0.2,0.2,0.8}\bfseries,%
@@ -38,7 +27,7 @@
   %rulesep=0pt,%
   %framerule=0pt,%
   %frame=single,%
-  tabsize=2
+  tabsize=2%
 }
 \lstdefinestyle{new}{
   style=normal,%
@@ -54,22 +43,19 @@
   commentstyle=\color[rgb]{0.8,0.8,1}\itshape,%
   stringstyle=\color[rgb]{0.5,0.8,0.5}\itshape%
 }
-
 \codestyle{normal}
 \codelanguage{java}
 
-\newcommand{\code}[1]{\texttt{#1}}
-\newcommand{\term}[1]{\textit{#1}}
-
+\newcommand{\exlabel}[1]{} % ignore this command, it is used in 'book.tex'
 \newcommand{\inputlua}[4][]
   {\lstinputlisting[
-    language=lua,style=#2,#1]{src/#3/lua/openbus/demo/#4.lua}}
+    language=lua,escapechar=\$,style=#2,#1]{src/#3/lua/openbus/demo/#4.lua}}
 \newcommand{\inputidl}[4][]
   {\lstinputlisting[
-    language={[CORBA]IDL},style=#2,#1]{src/#3/idl/#4.idl}}
+    language={[CORBA]IDL},escapechar=\$,style=#2,#1]{src/#3/idl/#4.idl}}
 \newcommand{\inputjava}[4][]
   {\lstinputlisting[
-    language=java,style=#2,#1]{src/#3/java/tecgraf/openbus/demo/#4.java}}
+    language=java,escapechar=\$,style=#2,#1]{src/#3/java/tecgraf/openbus/demo/#4.java}}
 
 %%%% INICIO %%%%%%%%%%%%%%%%%%%%%%
 

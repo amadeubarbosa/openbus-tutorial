@@ -1,0 +1,245 @@
+A atual natureza ubíqua da tecnologia da informação resulta que a maioria das empresas contam com uma variedade de sistemas computacionais para realizar suas atividades.
+Tais sistemas são geralmente especializados em tarefas específicas, como a manipulação de tipos específico de dados ou aplicação de certas regras de negócio.
+A medida que os sistemas evoluem e incorporam mais aspectos das atividades que realizam, é comum que eles começem a incorporar funcionalidades que se sobrepõem a de outros sistemas já existente.
+Quando o desenvolvimento desses sistemas ocorre de forma independente um do outro, eventualmente os sistemas passam a manter duplicadas independentes de coleções de dados e implementações de regras de negócios.
+Em última análise, isso tende a causar problemas, tais como replicação e inconsistência de dados e regras, multiplicidade de representações de dados, fluxos de trabalho não-automáticas e passíveis de erros, entre outros.
+Integração de sistemas busca redesenhar ou adaptar sistemas independentes para comunicar e cooperar uns com os outros, a fim de evitar automaticamente ou minimizar esses problemas compartilhando recursos de dados e implementações de regras de negócio.
+
+Em essência, o requisito mais básico para a integração do sistema é uma espécie de suporte à comunicação, de modo que os sistemas possam interagir uns com os outros.
+As abordagens mais comuns adoptadas nesta matéria podem ser resumidas em quatro estilos principais de integração \cite{hohpe2004enterprise}:
+
+\begin{itemize}
+  \item\textbf{Transferência de arquivo:}
+  sistemas exportam dados em arquivos que são disponibilizados para outros sistemas.
+  Isto pode ser feito automaticamente ou manualmente com auxílio de sistemas de usuários.
+  \item\textbf{Compartilhamento de Base de Dados:}
+  sistemas compartilham dados usando algum repositório de dados compartilhados, como um sistema de gerenciamento de banco de dados (DBMS) ou sistema de arquivos compartilhado.
+  \item\textbf{Troca de Mensagens:}
+  sistemas trocam mensagens de forma síncrona, assíncrona ou ambos, para trocar dados e colaborar uns com os outros.
+  \item\textbf{Chamada Remota de Processo (RPC):}
+  sistemas oferecem uma interface remota estruturada composta por operações ou procedimentos que outros sistemas podem invocar para solicitar dados ou serviços.
+\end{itemize}
+
+Para cada um desses estilos de integração há diferentes tecnologias que podem ser adotadas, mas em geral não são integralmente compatíveis entre si.
+Portanto a proposta de se utilizar diferentes tecnologias de comunicação na integração de diferentes sistemas pode se mostrar inviável quando cresce o número de integrações entre sistemas com tecnologias diferentes e incompaíveis.
+
+Uma estratégia para promover a integração de sistemas é através do uso de barramentos de comunicação, middlewares ou frameworks de integração (EAI - Enterprise Application Integration), que visam definir uma tecnologia comum pela qual todas as partes poderiam se integrar.
+Nesse modelo, cada aplicação se conecta ao barramento, segundo um protocolo próprio deste barramento, e carrega ou exporta dados para outras aplicações também conectadas ao barramento.
+
+%O \openbus{} é composto por:
+%
+%\begin{itemize}
+%  \item infraestrutura que oferece comunicação remota eficiente entre as pontas, catálogo de serviços, mecanismo para auditoria nas transações distribuídas, controle de acesso e diferentes níveis de segurança;
+%  \item bibliotecas de desenvolvimento (em diferentes linguagens) para a criação de novos serviços a serem integrados através do OpenBus;
+%  \item um conjunto de aplicações de exemplo;
+%  \item utilitários de apoio à implantação de ambos: o middleware e novos serviços desenvolvidos para esse.
+%\end{itemize}
+%
+%A infraestrutura mínima do \openbus{} é representada pelo seu núcleo principal, que é composto por um barramento de comunicação e serviços essenciais, denominados serviços núcleo.
+%Além do núcleo do barramento, a arquitetura \openbus{} também define um conjunto de elementos adicionais que fornecem outras facilidades importantes, tais como bibliotecas e serviços extras.
+%Essencialmente o OpenBus é dividido em três partes:
+%\begin{description}
+%  \item[Núcleo do barramento (Core):] 
+%  Composto por um barramento de comunicação e serviços essenciais, denominados serviços núcleo. Os serviços núcleo são oferecidos pelo próprio barramento e tipicamente acessados através da API da Biblioteca de Acesso.
+%  \item[Serviços Extras:] 
+%  Serviços que acrescentam funcionalidades para auxiliar a integração entre serviços e aplicações, mas que não são parte do núcleo do barramento. 
+%  \item[Biblioteca de Acesso:] 
+%  Biblioteca de programação que implementa a API do OpenBus. O projeto OpenBus oferece implementações dessa biblioteca nas linguagens Lua, Java, C++ e C\#.
+%\end{description}
+%
+%O \openbus{} se baseia em duas tecnologias complementares para constituir sua infraestrutura básica de integração de sistemas.
+%São elas:
+%%
+%\begin{description}
+%  \item[\corba{}]
+%  \foreign{Common Object Requester Broker Architecture}~\cite{omg08corbaspec} é um padrão da indústria que especifica um middleware para sistemas distribuídos heterogêneos orientados a objetos.
+%  \corba{} define o modelo básico de comunicação usado nas integrações de sistemas feitas com o \openbus{}.
+%  \corba{} tem suporte para inúmeras linguagens de programação e plataformas computacionais, que nos permite integrar com o \openbus{} uma grande variedade de sistemas.
+%  \item[\scs{}]
+%  \foreign{Software Component System}~\cite{web:SCS} é um modelo simples e flexível de componentes de software baseado em \corba{} que permite estruturar sistemas usando uma arquitetura baseada em componentes.
+%  O \scs{} é usado no \openbus{} tanto como um modelo arquitetural básico para a infraestrutura básica oferecida como também para estruturar a forma como as integrações são feitas.
+%\end{description}
+%
+%%%% MOVER??
+%Uma característica importante do barramento \openbus{} é que ele mantém compatibilidade com a API da versão imediatamente anterior. 
+%Ou seja, mesmo que a versão do barramento evolua, os sistemas (serviços, aplicações e usuários) ainda conseguem acessar o barramento utilizando bibliotecas de acesso de uma versão anterior.
+%O \openbus{} utiliza um esquema de versionamento com quatro números, no formato A.B.C.D.
+%Sendo assim, o barramento 2.0 permite a realização de acesso utilizando as bibliotecas de acesso de versão 1.5.x, onde x pode assumir qualquer valor de C.D.
+%
+%Este documento foca-se em apresentar a Biblioteca de Acesso.
+%Para maiores informações sobre o barramento, consulte as demais fontes de documentação do projeto. \cite{web:OPENBUS,ob2.0core,ob2.0protospec,ob2.0install}
+%A Biblioteca de Acesso faz parte do kit de desenvolvimento (SDK) do OpenBus, que é disponibilizado para as linguagens de programação Lua, Java, C++ e C\#, e em geral é composto por:
+%\begin{itemize}
+%  \item Compilador de IDL.
+%  \item Biblioteca de acesso.
+%  \item Classes utilitárias.
+%  \item Documentação.
+%  \item Aplicações de demonstração.
+%\end{itemize}
+
+O \openbus{} é um middleware de integração de sistemas computacionais corporativos através de uma arquitetura orientada a serviços (SOA).
+O middleware \openbus{} é formado por um conjunto de diferentes produtos, que vão desde bibliotecas de programação, serviços e utilitários, para compor uma infraestrutura básica de apoio ao desenvolvimento de integrações de diferentes sistemas computacionais através de funcionalidades como comunicação distribuída, descoberta de serviços, autenticação de acesso, etc.
+O \openbus{} é projetado para apoiar a integração de sistemas computacionais genéricos e desenvolvidos e mantidos separamente, utilizando diferentes linguagens de programção (Java, C++, C\# e Lua) e plataformas comptucionais (GNU/Linux, Oracle Solaris, Microsoft Windows, Apple Mac OS X ou outras).
+Adicionalmente, o \openbus{} provê mecanismos de governança sobre certos aspectos das integrações tais como permissionamento de acesso e oferta de serviços, que podem ser utilizados para impor regras básicas para as integrações.
+Esse recurso é particularmente importante para integração de sistemas sob o domínio de uma única corporação ou instituição que pretende estabeler regras e limites as possíves integrações através da infraestrutura oficial.
+
+As principais funcionalidades do \openbus{} podem ser agrupadas em quatro categorias principais, como é apresentado nas seções seguintes.
+
+%\inputimage{theneed}{Uma Proposta para Integração de Serviços}
+
+\section{Comunicação Flexível}\label{sec:req-comm}
+
+O \openbus{} é idealizado para ser utilizado no desenvolvimento da integração dos mais diversos tipos de sistemas.
+Por essa razão, é necessário que a tecnologia de comunicação permita uma ampla variedade de usos e aplicações.
+O \openbus{} adota como tecnologia de comunicação o \term{Common Object Requester Broker Architecture} (CORBA~\cite{omg08corbaspec}), que é um padrão da indústria que especifica um middleware para sistemas distribuídos heterogêneos orientados a objetos que oferece uma solução de comunicação distribuída que atende bem a esse requisito.
+Em particular, o padrão CORBA é aberto e tem diferentes implementações disponíveis para uso em uma variedade de linguagem de programação e plataformas de execução.
+Adicionalmente, o padrão CORBA é projetado para atender uma ampla variedade de usos e arquiteturas distribuídas.
+
+O padrão CORBA também tem um suporte bem amplo para descrição de diversas estruturas de dados, que permite que as aplicações possam descrever os dados trocados de forma estruturada e adequada ao seu domínio.
+Finalmente, o projeto do padrão CORBA também tem um foco grande em permitir implementações eficientes, em particular, em relação à geração, interpretação e tamanho dos dados transmitidos pela rede.
+
+\section{Acesso Identificado}\label{sec:req-identity}
+
+Em geral os serviços oferecidos pelos sistemas computacionais de uma cooporação são estrategicamente valiosos.
+Comumente tais serviços permitem acesso a dados sensíveis ou recursos confidenciais ou restritos.
+Mesmo dentro de uma corporação, nem sempre o acesso aos serviços deve ser liberado a todos os funcionários.
+Por essa razão, a infraestrutura de intergração tem que fornecer algum mecanismo que permita que controlar o acesso aos sistemas integrados que oferecem serviços.
+O \openbus{} permite isso através da identificação dos acessos, ou seja, todo acesso feito a sistemas através da infraestrutura do \openbus{} é identificado, de forma que quando um serviço recebe uma solicitação através do \openbus{} ele é capaz de identificar quem solicita e então aceitar ou recusar a solicitação com base nessa identidade.
+
+Adicionalmente, o \openbus{} também permite a delegação dessa identificação, ou seja, permitir realizar novas solicitações com a identidade uma solicitação prévia recebida.
+Isso é necessário quando é preciso indicar que uma solicitação é uma consequência de uma outra solicitação proveniente de outra origem.
+Dessa forma, se um sistema \term{A} faz uma solicitação num sistema \term{B}, esse último deverá poder fazer uma solicitação junto a um terceiro sistema \term{C} informando que a solicitação foi originada por \term{A}.
+Utilizando esse mecanismo de delegação o sistema \term{C} será capaz de avaliar o acesso ao serviço com base não só na identidade do sistema \term{B}, mas também de outros sistemas envolvidos indiretamente na solicitação, como é o caso do sistema \term{A}.
+
+\section{Descoberta de Serviços}\label{sec:req-discovery}
+
+Outro recurso essencial na integração de sistemas é a descoberta dos serviços ofertados pelos sistemas.
+O \openbus{} oferece isso através de uma API para registro e descoberta de ofertas de serviço no ambiente de integração.
+Através dessa API é possível descobrir quais serviços disponíveis e suas características, tais como suas interfaces e a identidade de quem ofertou o serviço.
+Basicamente o mecanismo de descoberta de serviços do \openbus{} funciona como o repositório de serviços oficialmente sancionados para uso pelos sistemas integrados.
+Por essa razão, há um rígido controle sobre quais serviços podem ser ofertados e por quem.
+
+O \openbus{} adota um modelo de componentes de software como o modelo básico dos serviços ofertados.
+Ou seja, os serviços oferecido por sistemas integrados através do \openbus{} são modelados como componentes de software de acordo com o padrão SCS, como será visto na seção~\ref{sec:scs}.
+A modelagem usando componentes de software permite uma melhor estruturação dos serviços ofertados.
+
+\section{Governança Centralizada}\label{sec:req-gov}
+
+De uma forma geral, é necessário ter controle sobre os sistemas executando dentro do domínio de uma instituição, assim como impor certas regras e padrões.
+Isso pode ser necessário por diversas razões, tais como impor aderência às estratégias da instituição, garantir práticas que otimizem os processos da instituição, ou mesmo monitorar o desempenho dos sistemas dentro das instituição.
+Por essas razões o \openbus{} oferece mecanismos para controlar e gerir as integrações feitas através da sua infraestrutura.
+Esse controle é denominado \term{governança}.
+
+A governança do \openbus{} permite que uma equipe de gerência de integrações possa controlar e monitorar os acessos ao ambiente de integração.
+Além disso, a gorvernança também permite que a equipe de gerência defina as interfaces de serviço que podem ser ofertadas e por quais sistemas.
+Esse último recurso é importante para garantir que as integrações sigam padrões pre-determinados.
+
+\section{Visão Geral}
+
+Nesta seção procuramos apresentar uma visão geral de como se realizam integrações através do barramento \openbus{} e os conceitos principais associados.
+Tomaremos como exemplo para ilustrar o uso do \openbus{} um cenário composto por quatro sistemas a serem integrados:
+\begin{itemize}
+	\item Base de Dados: sistema que provê serviço de armazenamento e acesso de dados da instituição.
+	\item Busca de Dados: sistema que provê serviço de buscas na base de dados da instituição.
+	\item Proc. de Dados: sistema que provê um serviço de processamento dos dados da instituição segundo regras de negócio da empresa.
+	\item Aplicação Cliente: aplicação utilizada para buscar e processar dados da institiuição através dos serviços oferecidos pelos sistemas acima.
+\end{itemize}
+
+% barramento e conexões
+Toda integração através do \openbus{} se baseia num componente principal denominado \term{barramento}.
+O barramento é abstratamente visto como um ambiente restrito para interação entre sistemas identificados.
+Para ter acesso a um barramento, o sistema precisa inicialmente estabelecer uma \term{conexão} com o mesmo.
+Essa abstração de conexão é utilizada para controlar certos aspectos do uso do barramento, tal como a identidade com que as solicitações são feitas.
+Um mesmo sistema pode tipicamente estabecer múltiplas conexões, tanto para um mesmo barramento como para diferentes instânticas de barramentos \openbus{}.
+
+% entidades
+Cada conexão com um barramento deve ser autenticada em nome de uma \term{entidade}.
+Uma entidade é um conceito bem abstrato no \openbus{}.
+De uma forma geral, uma entidade é um nome que identifica algo que pode acessar o barramento.
+A definição precisa de cada entidade é dada pela equipe de governança do barramento, que é responsável por definir as entidades.
+Tipicamente, entidades se referem a usuários humanos que utilizam aplicações para acessar o barramento ou instâncias particulares de sistemas computacionais que acessam o barramento.
+Alternativamente, a equipe de governança uma mesma entidade pode designar uma única entidade para todo um grupo de acessos, fazendo com que vários usuários e sistemas sejam identificados da mesma forma através dessa entidade única.
+Em geral, tratar muitos acessos como uma mesma entidade limita o nível de controle que a equipe de governança poderá ter sobre esses acessos.
+Recomenda-se que acessos provenientes de origens diferentes sejam identificados como entidades distintas.
+
+% autenticação
+O \openbus{} oferece algumas formas de autenticação para identificação de uma entidade, em particular, autenticação por senha ou por certificado de chave pública.
+A autenticação serve para validar a identidade de uma entidade.
+Como resultado da autenticação de uma conexão é gerado um \term{login} no barramento, que representa um acesso identificado ao barramento.
+Todo login tem um identificador único e fica associado à entidade autenticada.
+Uma vez autenticada, a conexão fica associada a um \term{login}.
+A conexão só fica ativa enquanto o login estiver válido.
+Um login pode ser invalidado explicitamente pela equipe de governança do barramento ou devido a falhas de comunicação do sistema com o barramento.
+Caso o login de uma conexão seja invalidado, a conexão pode ser autenticada novamente para obter um novo login.
+A figura~\ref{fig:bus_02} ilustra quatro sistemas conectados e autenticados a um barramento como diferentes entidades (Fulano, Cluster, Busca, Dados):
+
+%\begin{center}
+%	\begin{tabular}{ll}
+%		Sistema & Entidade \\
+%		\hline
+%		Base de Dados & Dados \\
+%		Busca de Dados & Busca \\
+%		Proc. de Dados & Cluster \\
+%		Aplicação Cliente & Fulano
+%	\end{tabular}
+%\end{center}
+
+\inputimage{bus_02}{Sistemas com conexões autenticadas a um barramento.}
+
+% serviços e ofertas
+Uma vez conectados ao barramento, as partes que são provedores de serviços da integração devem publicar seus serviços no barramento através de uma \term{oferta de serviço}.
+Dessa forma os serviços podem ser buscados e utilizados por outros sistemas conectados ao barramento.
+O \openbus{} define que os serviços devem ser oferecidos como um componente SCS, que é o formato padrão para publicação de serviços.
+Todos os serviços ofertados no barramento possuem um conjunto de propriedades que os descrevem.
+Algumas dessas propriedades são geradas automaticamente pelo barramento, porém as entidades provedores de serviço podem acrescentar um conjunto de propriedades a serem associadas ao serviço ofertado no momento da publicação dos mesmos.
+A figura~\ref{fig:bus_06} ilustra os serviços publicados no barramento, onde a caixa representa a formatação dos serviços como componentes SCS, e a etiqueta representa as propriedades associadas ao serviço ofertado.
+
+\inputimage{bus_06}{Publicação de serviços no barramento.}
+
+% cadeias de chamadas e autorização
+Com todas as partes conectadas ao barramento e todos os serviços necessários publicados, pode-se então dar início as interações que de fato realizam a integração entre os sistemas envolvidos.
+As interações acontecem através de chamadas aos serviços disponíveis no barramento.
+Todas as chamadas feitas através do barramento são identificadas em nome da entidade associada a conexão do sistema que inicia a chamada.
+Por exemplo, a figura~\ref{fig:bus_07} ilustra um cenário onde o sistema \term{Aplicação Cliente} realiza uma chamada ao serviço do sistema \term{Proc. de Dados} solicitando o processamento de um determinado conjunto de dados.
+Essa chamada traz embutida a identificação da entidade \term{Fulano} na forma de uma \term{cadeia de chamada}.
+Uma cadeia de chamada é uma sequencia de informações de login dos sistemas envolvidos numa chamada.
+Com base nas informações da cadeia de chamada o sistema \term{Proc. de Dados} avalia se a entidade originadora tem autorização para realizar aquela chamada e então pode aceitar o negar a chamada.
+
+\inputimage{bus_07}{Cliente solicita processamento de dados.}
+
+% armazenamento de cadeias de chamadas
+As cadeias de chamada podem ser armazenadas e funcionam como uma prova de que um sistema realizou uma chamada a um serviço ofertado.
+Adicionalmente, de posse de uma cadeia recebida pelo próprio sistema, este sistema poderá realizar chamadas dentro dessa cadeia, através do processo denominado de \term{junção}.
+A junção deve ser utilizada sempre que uma nova chamada for conceitualmente uma prolongação ou continuação de outra chamada anterior, tal como compondo uma única transação.
+Ao fazer a junção a uma cadeia recebida, todas as chamadas seguintes são feitas incluindo não só a identidade do sistema que faz a chamada, mas também todas as identidades da cadeia original.
+Dessa forma, a cadeia embutida numa chamada feita após uma junção inclui múltiplas identidades de forma que quem recebe a chamada pode avaliar se aceita a chamada com base nas identidades de todas os sistemas envolvidos naquela chamada.
+A figura~\ref{fig:bus_09} ilustra uma chamada do sistema \term{Proc. de Dados} feita numa junção com a cadeia recebida de uma chamada anterior do sistema \term{Aplicação Cliente}.
+
+\inputimage{bus_09}{Requisição por busca dos dados requeridos para processamento.}
+
+A figura~\ref{fig:bus_10} ilustra outra junção posterior envolvendo três entidades numa única chamada.
+
+\inputimage{bus_10}{Requisição por obtenção de dados armazenados.}
+
+\section{Visão Interna}
+
+Internamente um barramento \openbus{} é formado por uma arquitetura orientada a serviços (SOA - Service Oriented Architecture), conforme ilustrado na figura~\ref{fig:bussoa}.
+Os principais compoentes dessa arquitetura são as bibliotecas de acesso (\term{Access Lib.}) que são utilizadas pelos sistemas para implementar o protocolo de acesso do OpenBus.
+A biblioteca de acesso é basicamente formada por uma implementação de ORB CORBA com algumas estensões particulares do \openbus{}~\footnote{Estensões são implementadas como interceptadores portáveis do padrão CORBA (CORBA Portable Interceptors).}.
+
+\inputimage{bussoa_07}{Requisição por obtenção de dados armazenados.}
+
+De uma forma geral, a biblioteca de acesso permite comunicação direta entre os sistemas envolvidos, pois as chamadas são invocações CORBA acrescidas de credenciais de autenticação.
+Contudo, eventualmente a biblioteca de acesso faz uso de serviços oferecidos pelo núcleo do barramento, tanto para obteção de informções para geração de credenciais como para validação da autenticidade de credenciais.
+Outros serviços oferecidos pelo núcleo são utilizados para oferecer recursos como inspeçãode logins e registro e descoberta de serviços ofertados pelos sistemas.
+
+O barramento também um conjunto de serviços de governaça que são utilizados por ferrramentas específicas do \openbus{}, tais como \term{busadmin} e \term{BusExplorer}, que são utilizados pela equipe de governança do barramento para controlar a configuração de governaça do barramento.
+
+Finalmente, um barramento \openbus{} também é composto por serviços legados, que implementam uma versão anterior dos serviços oferecidos pelo núcleo.
+Esses serviços legados são utilizados para permitir que versões anteriores da biblioteca de acesso possam funcionar no barramento.
+Essa manutenção do suporte a uma versão anterior do protocolo \openbus{} num mesmo barramento é importante para permitir evolução gradual dos sistemas participantes numa integração, pois enquanto um sistema pode passar a utilizar uma versão nova do protocolo a integração com os demais sistemas continua a funcionar mesmo que esses ainda utilizem uma versão anterior do protocolo.
+
+%Todas as interações que ocorrem através do barramento, são realizadas respeitando o protocolo definido pelo OpenBus.
+%Sendo assim, em todas as invocações são anexados às chamadas um conjunto de informações que definem as identificaçãoes das entidades envolvidas em cada requisição, denominadas cadeia de chamadas.
+%Toda entidade que atende uma requisição pode inspecionar as informações desta cadeia de chamadas para implementar suas regras de permissionamento (autorização), registrar informações de auditoria, ou qualquer outro uso que for pertinente.
+%As figuras~\ref{fig:bus_07}, \ref{fig:bus_09}, \ref{fig:bus_10} e \ref{fig:bus_11} ilustram os passos \ref{itm:1st}, \ref{itm:2nd}, \ref{itm:3rd} e \ref{itm:4th} respectivamente enumerados anteriormente.
