@@ -23,7 +23,6 @@
 \def\openbustutorialexid{}
 \def\openbustutorialexcls{}
 \newcommand{\exlabel}[1]{\label{lin:\openbustutorialexid:\openbustutorialexcls:#1}}
-%\newcommand{\exlabel}[1]{\label{lin:ex01:matrices/Application:#1}}
 \newcommand{\inputexidl}[4][]{
 	\begin{figure}
 		\caption{#4}\label{fig:#2:#3}
@@ -38,6 +37,14 @@
 		\def\openbustutorialexid{#2}
 		\def\openbustutorialexcls{#3}
 		\inputnumcode[language=java,#1]{#2/java/tecgraf/openbus/demo/#3.java}
+	\end{figure}
+}
+\newcommand{\inputexrange}[6][]{
+	\begin{figure}
+		\caption{#6}\label{fig:#2:#3:#4:#5}
+		\def\openbustutorialexid{#2}
+		\def\openbustutorialexcls{#3}
+		\inputnumcode[language=java,firstline=#4,lastline=#5,#1]{#2/java/tecgraf/openbus/demo/#3.java}
 	\end{figure}
 }
 

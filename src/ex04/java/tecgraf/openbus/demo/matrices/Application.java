@@ -8,10 +8,10 @@ public class Application {
 	public static void main(String[] args) throws Exception {
 		ORB orb = ORB.init(args, null);
 		try {
-			MatrixFactory factory = MatrixFactoryHelper.narrow(orb.string_to_object(
+			MatrixFactory factory = MatrixFactoryHelper.narrow(orb.string_to_object($\exlabel{getfactory}$
 				new BufferedReader(new InputStreamReader(System.in)).readLine()));
 
-			SquareMatrix matrix = factory.newMatrix("reverse");
+			SquareMatrix matrix = factory.newMatrix("reverse");$\exlabel{getmatrix}$
 			try {
 				double vector[] = new double[matrix.cardinality()];
 				for (int i=0; i<vector.length; ++i) vector[i] = i+1;
@@ -22,7 +22,7 @@ public class Application {
 					System.out.print(result[i] + " ");
 				System.out.println();
 			}
-			finally { matrix.dispose(); }
+			finally { matrix.dispose(); }$\exlabel{freematrix}$
 		}
 		finally { orb.shutdown(true); }
 	}

@@ -13,8 +13,8 @@ module matrices {
 
 	interface SquareMatrix {
 		readonly attribute Cardinal cardinality;
-		Vector multiply(in Vector v) raises (WrongCardinality);
-		void dispose();
+		Vector multiply(in Vector v) raises (WrongCardinality);$\exlabel{raiseexcept}$
+		void dispose();$\exlabel{disposeop}$
 	};
 
 	typedef string MatrixKind;
@@ -22,7 +22,7 @@ module matrices {
 	exception UnknownMatrixKind { MatrixKind kind; };
 	exception GeneralFailure { string message; };
 
-	interface MatrixFactory {
+	interface MatrixFactory {$\exlabel{factoryiface}$
 		SquareMatrix newMatrix(in MatrixKind kind) raises (UnknownMatrixKind,
 		                                                   GeneralFailure);
 	};

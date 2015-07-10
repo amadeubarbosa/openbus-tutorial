@@ -8,7 +8,7 @@ import org.omg.PortableServer.POAPackage.ServantNotActive;
 import org.omg.PortableServer.POAPackage.WrongPolicy;
 import tecgraf.openbus.demo.matrices.Matrix;
 
-class MatrixServant extends SquareMatrixPOA {
+class MatrixServant extends SquareMatrixPOA {$\exlabel{servantclass}$
 	private Matrix _matrix;
 
 	public MatrixServant(Matrix matrix) { _matrix = matrix; }
@@ -17,12 +17,12 @@ class MatrixServant extends SquareMatrixPOA {
 
 	public double[] multiply(double[] v) throws WrongCardinality {
 		if (v.length != cardinality())
-			throw new WrongCardinality(v.length, cardinality());
+			throw new WrongCardinality(v.length, cardinality());$\exlabel{raiseexcept}$
 		return _matrix.multiply(v);
 	}
 
 	public void dispose() {
-		try { _poa().deactivate_object(_object_id()); }
+		try { _poa().deactivate_object(_object_id()); }$\exlabel{deactivateobject}$
 		catch (ObjectNotActive e) {}
 		catch (WrongPolicy e) {}
 	}
@@ -33,10 +33,10 @@ class MatrixFactoryServant extends MatrixFactoryPOA {
 		throws UnknownMatrixKind, GeneralFailure {
 		if (!kind.equals("reverse")) throw new UnknownMatrixKind(kind);
 
-		MatrixServant matrix = new MatrixServant(new Matrix());
+		MatrixServant matrix = new MatrixServant(new Matrix());$\exlabel{matrixservant}$
 
 		try {
-			return SquareMatrixHelper.narrow(_poa().servant_to_reference(matrix));
+			return SquareMatrixHelper.narrow(_poa().servant_to_reference(matrix));$\exlabel{matrixobject}$
 		}
 		catch (ServantNotActive e) {
 			throw new GeneralFailure("failure while registering matrix servant");

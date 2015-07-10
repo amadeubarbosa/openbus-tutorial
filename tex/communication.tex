@@ -30,7 +30,7 @@ Essa desrição das interfaces é descrita numa linguagem definida por CORBA denomi
 O ORB CORBA oferece elementos padrão denominados POA (\term{Portable Object Adaptor}) para gerência dos objetos distribuídos naquele ORB e dos servants que o implementam.
 Ao contrário de objetos locais que podem ser referenciados apenas por um endereço de memória, os objetos distribuídos em CORBA são referenciados através de uma estrutura denominada IOR (\term{Interoperable Object Reference}).
 O IOR tipicamente contem informações como o endereço da máquina e porta onde o ORB em que o objeto distribuído reside está e um identificador único daquele objeto no ORB denominado \term{Object ID}.
-O \term{Object ID} de cada objeto distribuído pode ser gerado automaticamente pelo ORB no registro do \term{servant}, ou pode ser fornecido pela aplicação.
+O \term{Object ID} de cada objeto distribuído pode ser gerado automaticamente pelo ORB no registro do servant, ou pode ser fornecido pela aplicação.
 
 O \term{Skeleton} é o código gerado pelo compilador de IDL que adapta a interface especifica da aplicação provida pelo servant à implementação do ORB.
 No lado dos clientes que acessam os objetos distribuídos temos um objeto local que representa o objeto distribuído, denominado \term{Stub}.
@@ -70,10 +70,11 @@ Para compilar o arquivo IDL \code{matrices.idl} usando o compilador de IDL do JD
 	idlj -fallTIE matrices.idl
 \end{samplecode}
 
-De posse do código gerado pelo compilador de IDL podemos desenvolver um servidor CORBA que exporta um objeto distribído que implemente a interface descrita na IDL, como ilustrado no código da figura~\ref{fig:ex02:matrices/Server}.
+De posse do código gerado pelo compilador de IDL podemos desenvolver um servidor CORBA que exporta um objeto distribuído que implemente a interface descrita na IDL, como ilustrado no código da figura~\ref{fig:ex02:matrices/Server}.
 A classe \code{MatrixServant} (linha~\ref{lin:ex02:matrices/Server:servant}) basicamente é definida apenas para declarar que a classe \code{Matrix} da nossa biblioteca de multiplicação de matrixes suporta a interface \code{SquareMatrix} declarada em IDL.
-Com essa classe \code{MatrixServant} podemos criar um objeto \code{SquareMatrixPOATie} que funcionará como um servant que delega suas chamadas para uma instância de \code{MatrixServant}.
-Como \code{MatrixServant} incorpora a implementação da classe \code{Matrix} da biblioteca local utilizada no nosso exemplo, teremos que um objeto distribuído implementando por um servant assim será efetivamente uma versão distribuída do objeto \code{matrix} da nossa versão monolítica da aplicação de exemplo.
+Com essa classe \code{MatrixServant} podemos criar um objeto \code{SquareMatrixPOATie}, que é uma classe de conveniência gerada pelo compilador de IDL (opção \code{-fallTIE}) que implementa um servant da interface \code{SquareMatrix} mas que delega toda sua implementação para um objeto que implementa as operações dessa interface (\code{SquareMatrixOperations}).
+Portanto, a instância de \code{SquareMatrixPOATie} criada na linha~\ref{lin:ex02:matrices/Server:poatie} funcionará como um servant que delega suas chamadas para uma instância de \code{MatrixServant}.
+Como \code{MatrixServant} incorpora a implementação da classe \code{Matrix} da biblioteca local utilizada no nosso exemplo, teremos que o objeto distribuído será efetivamente uma versão distribuída do objeto \code{matrix} da nossa versão monolítica da aplicação de exemplo.
 
 \inputexsrc{ex02}{matrices/Server}{Servidor CORBA de uma matriz de transformação.}
 
@@ -214,3 +215,87 @@ interface MyFactory {
 
 \section{Ciclo de Vida de Objetos}
 
+Assim como os objetos distribuídos de CORBA podem ser criados, eles também podem ser descartados de forma que não possam mais ser chamados remotamente.
+É importante descartar objetos que não são mais utilizados pois os objetos distribuídos em geral ocupam algum recurso do ORB enquanto existentes.
+CORBA não define um mecanismo de coleta ou descarte automático de objetos, portanto é necessário descartá-los explicitamente.
+Por outro lado, CORBA define inúmeras formas de gerência do ciclo de vida de objetos.
+Contudo, neste documento não faremos uma explanação extensiva sobre isso.
+Ao invés disso apresentaremos um modelos mais simples e usuam em que os objetos são criados e descartados explicitamente pela aplicação.
+
+Para ilustrar isso consideremos agora que o nosso servidor deve exportar não apenas um objeto matriz, mas sim um objeto que funciona como uma fábrica de matrizes, que são criadas através de chamadas dos clientes.
+A interface desse serviço de fábrica de matrizes é ilustrada na figura~\ref{fig:ex04:matrices}.
+Nessa IDL também introduzimos algumas alterações na interface \code{SquareMatrix} de matrizes, que agora passa a lançar a exceção \code{WrongCardinality} para indicar um erro quando o tamanho do \code{Vector} não corresponde à cardinalidade da matriz (linha~\ref{lin:ex04:matrices:raiseexcept}).
+Adicionalmente, a interface \code{SquareMatrix} apresenta a operação \code{dispose}, que deve ser chamada pelo cliente que cria uma matriz quando a mesma não é mais utilizada e pode ser descartada (linha~\ref{lin:ex04:matrices:disposeop}).
+A nova interface \code{MatrixFactory} é a interface a ser implementada pelo objeto de fábrica de matrizes (linha~\ref{lin:ex04:matrices:factoryiface}).
+
+\inputexidl{ex04}{matrices}{IDL de fábrica de matrizes de transformação.}
+
+Agora podemos compilar essa nova IDL, usando por exemplo o compilador de IDL do próprio JDK através do seguinte comando:
+
+\begin{samplecode}[language=bash]
+	idlj -fallTIE matrices.idl
+\end{samplecode}
+
+Como resultado o compilador de IDL gerará código fonte Java que implementam definições em Java equivalentes as definições em IDL.
+Em particular, temos classes que implementam as exceções declaradas em IDL.
+Logo para lançar uma exceção CORBA definida em IDL basta criamos uma instância da classe Java gerada correspondente.
+%A seguir há uma lista dos arquivos gerados pelo compilador de IDL do JDK~\footnote{Os arquivos com nomes que começam com \code{\_} podem ser gerados com outros nomes dependendo da versão do compilador.}:
+%
+%\begin{itemize}
+% \item CardinalHelper.java
+% \item MatrixIdHelper.java
+% \item MatrixFactory.java
+% \item MatrixFactoryHelper.java
+% \item MatrixFactoryHolder.java
+% \item MatrixFactoryOperations.java
+% \item MatrixFactoryPOA.java
+% \item MatrixFactoryPOATie.java
+% \item ServiceFailure.java
+% \item ServiceFailureHelper.java
+% \item ServiceFailureHolder.java
+% \item SquareMatrix.java
+% \item SquareMatrixHelper.java
+% \item SquareMatrixHolder.java
+% \item SquareMatrixOperations.java
+% \item SquareMatrixPOA.java
+% \item SquareMatrixPOATie.java
+% \item UnknownMatrixKind.java
+% \item UnknownMatrixKindHelper.java
+% \item UnknownMatrixKindHolder.java
+% \item VectorHelper.java
+% \item VectorHolder.java
+% \item WrongCardinality.java
+% \item WrongCardinalityHelper.java
+% \item WrongCardinalityHolder.java
+% \item \_MatrixFactoryStub.java
+% \item \_SquareMatrixStub.java
+%\end{itemize}
+
+Para implementarmos essa nova IDL, um primeiro ponto a considerarmos é que agora a interface \code{SquareMatrix} não é mais inteiramente compatível com a interface local da classe \code{Matrix}, já que a exceção \code{WrongCardinality} nunca é lançada pela classe.
+Para lançarmos essa exceção adotaremos uma abordagem ligeiramente diferente na implementação.
+Ao invés de utilizarmos a classe \code{SquareMatrixPOATie} como um envoltório que adapta a classe \code{Matrix} para funcionar como um servant, agora implementaremos esse envoltório na classe \code{MatrixServant} extendendo a classe gerada \code{SquareMatrixPOA}, como ilustrado na figura~\ref{fig:ex04:matrices/Server:10:30}.
+A classe \code{MatrixServant} recebe um objeto \code{Matrix} no construtor e delega todas as chamadas a dele, tal como a classe gerada \code{SquareMatrixPOATie} faz.
+Contudo, nessa implementação de envoltório podemos lançar a exceção \code{WrongCardinality} na operação \code{multiply} se necessário (linha~\ref{lin:ex04:matrices/Server:raiseexcept}), assim como implementar operações adicionais, como é o caso da operação \code{dispose}.
+A implementação da operação \code{dispose} utiliza operações herdadas da classe gerada \code{SquareMatrixPOA} para obter o POA em que a matrix foi registrada e o identificador de objeto da matrix naquele POA para poder desátivá-lo (linha~\ref{lin:ex04:matrices/Server:deactivateobject}).
+
+\inputexrange{ex04}{matrices/Server}{10}{30}{Envoltório do objeto \code{Matrix} que o adapta a interface CORBA.}
+
+A mesma abordagem é utilizada na implementação da fáblica de matrizes como é ilustrado na figura~\ref{fig:ex04:matrices/Server:31:48}.
+A classe \code{MatrixFactoryServant} extende a classe gerada \code{MatrixFactoryPOA}.
+Mas nesse caso a implementação da operação \code{newMatrix} é implementada pela própria classe ao invés de delegar para um outro objeto como é feito no caso da classe \code{MatrixServant}.
+
+\inputexrange{ex04}{matrices/Server}{31}{48}{Implementação de fábrica de matrizes.}
+
+Para efetivamente criar um novo objeto \code{SquareMatrix} primeramente criamos o seu servant (linha~\ref{lin:ex04:matrices/Server:matrixservant}).
+Utilizamos a operação \code{\_poa} herdada da classe \code{MatrixFactoryPOA} para obter o mesmo POA em que a fábrica foi registrada, e utilizamos esse POA para registrar a matriz sendo criada (linha~\ref{lin:ex04:matrices/Server:matrixobject}).
+
+Para concluir nossa implementação do serviço de fábrica de matrizes, apenas alteramos a função \code{main} do servidor para criar e imprimir o IOR de uma fábrica de matrizes ao invés de uma única matriz, tal como ilustrado na figura~\ref{fig:ex04:matrices/Server:50:66}.
+
+\inputexrange{ex04}{matrices/Server}{50}{66}{Servidor do serviço de fábrica de matrizes.}
+
+A aplicação cliente deve também ser alterada para fazer uso da fábrica de matrizes, como ilustrado na figura~\ref{fig:ex04:matrices/Application:8:28}.
+Agora o IOR lido da entrada padrão é uma referência para um objeto \code{MatrixFactory} ao invés de \code{SquareMatrix} (linha~\ref{lin:ex04:matrices/Application:getfactory}).
+Para obtermos um objeto \code{SquareMatrix} chamamos a operação \code{newMatrix} do objeto da fábrica (linha~\ref{lin:ex04:matrices/Application:getmatrix}).
+Ao final, descartamos a matrix através da operação \code{dispose} (linha~\ref{lin:ex04:matrices/Application:freematrix}).
+
+\inputexrange{ex04}{matrices/Application}{8}{28}{Utilização da fábrica de matrizes.}
