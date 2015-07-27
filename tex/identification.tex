@@ -1,0 +1,126 @@
+Neste capítulo são apresentados diversos recursos oferecidos pela infraestrutura do \openbus{} para o desenvolvimento de integrações de sistemas através de exemplos de código que utilizam a biblioteca de acesso do \openbus{}.
+Todos os exemplos são elaborados de forma incremental para formar ao final uma integração completamente funcional sobre a infraestrutura do \openbus{}.
+
+\section{OpenBus SDK}
+
+O \openbus{} oferece um kit de desenvolvimento de software (SDK) com ferramentas para facilitar o desenvolvimento e integrações via \openbus{}.
+O \openbus{} SDK é composto por:
+
+\begin{itemize}
+	\item Compilador de IDL.
+	\item Biblioteca de acesso.
+	\item Classes utilitárias.
+	\item Documentação.
+	\item Aplicações de demonstração.
+\end{itemize}
+
+O compilador de IDL disponibilizado é provido por pela implementação de ORB utilizada pelo SDK.
+Por exemplo, no OpenBus SDK para Java o ORB utilizado é o JacORB.
+
+O principal componente do SDK é a biblioteca de acesso.
+Essa biblioteca permite a criação e utilização de ORB CORBA estendido com os recursos adicionais introduzidos pelo \openbus{}.
+A principal função dessa biblioteca é facilitar o acesso a esses recursos particulares do \openbus{} através de uma API simples e flexível.
+
+O SDK também inclui classes utilitárias para cenários de uso específicos do \openbus{}, tal como o \term{Assistente}, que automatiza tarefas rotineiras no caso de integrações mais simples.
+O Assistente é discutido na seção \ref{sec:assistant}.
+
+O SDK também inclui arquivos de documentação e aplicações de demonstração.
+
+\section{Iniciando o ORB}
+
+Um ORB OpenBus é iniciado através da operação \code{initORB}, cuja assinatura é apresentada baixo.
+
+\begin{samplecode}
+  public class ORBInitializer {
+    public static ORB initORB();
+    public static ORB initORB(String[] args);
+    public static ORB initORB(String[] args, Properties props);
+  }
+\end{samplecode}
+
+A operação \code{initORB} tem o mesmo funcionamento da operação \code{CORBA::init} do padrão CORBA, exceto que ela inicia e retorna um ORB com os recursos adicionais do \openbus{}.
+Por exemplo, podemos fazer os programas dos execícios anteriores utilizarem um ORB OpenBus apenas trocando a chamada de \code{CORBA::init} para \code{ORBInitlializer::initORB}, como ilustrado na figura~\ref{fig:ex05:matrices/Server}.
+Contudo, para tanto é necessário compilar o programa com as bibliotecas e ferramentas disponibilizadas pelo SDK.
+Em particular, é necessário utilizar o compilador de IDL do SDK e as bibliotecas disponibilizadas.
+
+\inputexsrc{ex05}{matrices/Server}{Servidor com ORB OpenBus.}
+
+Para compilar a IDL \code{matrices.idl} utilizando o compilador de IDL do OpenBus SDK para Java utilize o seguinte comando:
+
+\begin{samplecode}[language=bash]
+java -cp $ODK_HOME/lib/jacorb-idl-compiler-3.4.jar org.jacorb.idl.parser matrices.idl
+\end{samplecode}
+
+Para compilar os programas para utilizarem a biblioteca de acesso, utilize o seguinte comando:
+
+\begin{samplecode}[language=bash]
+javac -cp "$ODK_HOME/lib/jacorb-3.4.jar\
+:$ODK_HOME/lib/jacorb-omgapi-3.4.jar\
+:$ODK_HOME/lib/openbus-sdk-core-2.0-SNAPSHOT.jar\
+:$ODK_HOME/lib/openbus-sdk-legacy-2.0-SNAPSHOT.jar\
+:$ODK_HOME/lib/scs-core-1.2.1.1.jar\
+:$ODK_HOME/lib/slf4j-api-1.6.4.jar\
+:$ODK_HOME/lib/slf4j-jdk14-1.6.4.jar" \
+    tecgraf/openbus/demo/matrices/Server.java \
+    tecgraf/openbus/demo/matrices/Application.java
+\end{samplecode}
+
+Por fim, para executar esses processos você pode fazer:
+
+\begin{samplecode}[language=bash]
+java -Djava.endorsed.dirs=$ODK_HOME/lib \
+  tecgraf.openbus.demo.matrices.Server > ref.ior
+java -Djava.endorsed.dirs=$ODK_HOME/lib \
+  tecgraf.openbus.demo.matrices.Application < ref.ior
+\end{samplecode}
+
+Contudo, os programas agora devem lançar uma exceção de \code{CORBA::NO\_PERMISSION}.
+Isso acontece porque um ORB OpenBus só permite chamadas através de um barramento, que só podem ser feitas após a autenticação da aplicação em nome de uma entidade.
+
+O ORB OpenBus notifica diversas situações anômalas nas chamadas remotas através da exceção \code{CORBA::NO\_PERMSSION}, contendo códigos numéricos específicos que identificam o cenário exato da exceção, conforme ilustrado na tabela abaixo:
+
+{\footnotesize
+\begin{tabular}{l|c|c|r|l}
+  Nome & Valor & vmcid & minor & Descrição \\
+  \hline
+  NoCredential      & 1112888070 & 0x42555000 & 774  & chamada feita sem credencial \\
+  NoLogin           & 1112888319 & 0x42555000 & 1023 & conexão atual não está logada \\
+  InvalidChain      & 1112888065 & 0x42555000 & 769  & cadeia de chamadas inválida \\
+  InvalidPublicKey  & 1112888069 & 0x42555000 & 773  & alvo informou chave pública inválida \\
+  InvalidRemote     & 1112888318 & 0x42555000 & 1022 & alvo não respeita o protocolo \\
+  InvalidTarget     & 1112888316 & 0x42555000 & 1020 & alvo com login inválido \\
+  UnavailableBus    & 1112888317 & 0x42555000 & 1021 & alvo sem acesso ao barramento \\
+  UnknownBus        & 1112888068 & 0x42555000 & 772  & alvo está em outro barramento \\
+  UnverifiedLogin   & 1112888067 & 0x42555000 & 771  & alvo não pôde verificar o login \\
+\end{tabular}
+}
+
+Assim como a exceção \code{CORBA::NO\_PERMISSION}, as chamadas remotas de CORBA podem lançar outras exceções para indicar outras condições anômalas, tipicamente relacionadas a problemas de comunicação em rede, tais como listadas na tabela abaixo:
+
+\begin{tabular}{l|l}
+  Nome                      & Descrição \\
+  \hline
+  CORBA::UNKNOWN            & erro que não pode ser mapeado para CORBA \\
+  \hline
+  CORBA::OBJECT\_NOT\_EXIST & objeto referenciado não existe \\
+  CORBA::TRANSIENT          & falha transiente, tente novamente \\
+  CORBA::COMM\_FAILURE      & falha de comunicação \\
+  \hline
+  CORBA::MARSHAL            & erro na codificação dos valores \\
+  CORBA::NO\_IMPLEMENT      & implementação da operação indisponível \\
+  CORBA::BAD\_OPERATION     & operação chamada é inválida \\
+  \hline
+  CORBA::BAD\_INV\_ORDER    & invocação fora de ordem \\
+  CORBA::BAD\_PARAM         & parâmetro inválido \\
+\end{tabular}
+
+\section{O Contexto OpenBus}
+
+Todo ORB OpenBus tem associado um objeto especial denominado de contexto.
+Esse objeto contexto permite definir informações de autenticação e identificação de chamadas para o contexto de execução atual.
+O contexto de execução atual em geral se reflete na thread (linha de execução) atual do programa.
+Em geral, utilizamos o contexto para definir certos aspectos de como as chamadas feitas pela thread atual serão feitas através do barramento OpenBus.
+
+Através do contexto também podemos cria e manipular conexões com o barramento.
+Esses objetos conexão são usados para representar formas de acesso a um barramento, que basicamente se resume a identidade com que se acessa o barramento.
+Muitas vezes um dado sistema só cria uma única conexão e a utiliza para acessar o barramento sempre da mesma forma, ou seja, com a mesma identidade.
