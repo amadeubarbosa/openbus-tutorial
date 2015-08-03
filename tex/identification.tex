@@ -84,7 +84,7 @@ O ORB OpenBus notifica diversas situações anômalas nas chamadas remotas através 
   Nome & Valor & vmcid & minor & Descrição \\
   \hline
   NoCredential      & 1112888070 & 0x42555000 & 774  & chamada feita sem credencial \\
-  NoLogin           & 1112888319 & 0x42555000 & 1023 & conexão atual não está logada \\
+  NoLogin           & 1112888319 & 0x42555000 & 1023 & sem conexão autenticada no barramento \\
   InvalidChain      & 1112888065 & 0x42555000 & 769  & cadeia de chamadas inválida \\
   InvalidPublicKey  & 1112888069 & 0x42555000 & 773  & alvo informou chave pública inválida \\
   InvalidRemote     & 1112888318 & 0x42555000 & 1022 & alvo não respeita o protocolo \\
@@ -119,8 +119,82 @@ Assim como a exceção \code{CORBA::NO\_PERMISSION}, as chamadas remotas de CORBA 
 Todo ORB OpenBus tem associado um objeto especial denominado de contexto.
 Esse objeto contexto permite definir informações de autenticação e identificação de chamadas para o contexto de execução atual.
 O contexto de execução atual em geral se reflete na thread (linha de execução) atual do programa.
-Em geral, utilizamos o contexto para definir certos aspectos de como as chamadas feitas pela thread atual serão feitas através do barramento OpenBus.
+Basicamente utilizamos o contexto para definir a identidade com que as chamadas feitas usando a thread atual serão feitas através do barramento OpenBus.
+O contexto OpenBus do ORB é obtido da seguinte forma:
 
-Através do contexto também podemos cria e manipular conexões com o barramento.
-Esses objetos conexão são usados para representar formas de acesso a um barramento, que basicamente se resume a identidade com que se acessa o barramento.
+\begin{samplecode}[language=java]
+org.omg.CORBA.ORB orb = ORBInitializer.initORB();
+tecgraf.openbus.OpenBusContext context =
+  (tecgraf.openbus.OpenBusContext)
+    orb.resolve_initial_references("OpenBusContext");
+\end{samplecode}
+
+Através do contexto criamos e manipular conexões com o barramento.
+A interface do objeto de contexto do OpenBus é apresentada seguir:
+
+\begin{samplecode}[language=java]
+public interface OpenBusContext {
+  ...
+  Connection createConnection(String bus_host, int bus_port);
+  Connection createConnection(String bus_host, int bus_port,
+                              Properties props) throws InvalidPropertyValue;
+
+  Connection setDefaultConnection(Connection conn);
+  Connection getDefaultConnection();
+
+  Connection setCurrentConnection(Connection conn);
+  Connection getCurrentConnection();
+  ...      
+}
+\end{samplecode}
+
+\section{Manipulando Conexões}
+
+A criação de novas conexões é feita através da operação \code{createConnection}, que recebe o endereço da máquina e o número da porta onde os serviços básicos daquele barramento executam.
+Opicionalmente a operação \code{createConnection} recebe uma lista de propriedades que podem ser usadas para definir outros aspectos da conexão, tal como suporte à interoperabilidade com outros serviços que utilizem versões legadas do OpenBus e parâmetros de ajuste de desempenho.
+
+Os objetos conexão são usados para representar formas de acesso a um barramento, que basicamente se resume a identidade com que se acessa o barramento.
 Muitas vezes um dado sistema só cria uma única conexão e a utiliza para acessar o barramento sempre da mesma forma, ou seja, com a mesma identidade.
+Nesse caso utilizamos a operação \code{setDefaultConnection} para definir a conexão padrão a ser utilizadas nas chamadas através daquele ORB.
+Alternativamente, podemos usar a operação \code{setCurrentConnection} para definir uma conexão específica para o contexto atual (linha de execução), sobreescrevendo a conexão padrão para aquela linha de execução.
+
+Para utilizarmos por padrão uma conexão para o barramento cujos serviços básicos executam na máquina \code{bushost} e na porta 20000, podemos utilizar o seguinte código:
+
+\begin{samplecode}[language=java]
+Connection conn = context.createConnection("host", 20000);
+context.setDefaultConnection(conn);
+\end{samplecode}
+
+\section{Autenticação por Senha}
+
+Para serem utilizadas na chamadas as conexões devem primeiramente serem autenticadas em nome de uma entidade.
+Uma forma de fazer isso é através da operação \code{loginByPassword} da conexão, informando o nome da entidade e a senha.
+Ao executar essa operação com sucesso, a conexão está autenticada e poderá ser usada para fazer chamadas usando como identidade o nome da entidade autenticada.
+A seguir são apresentadas algumas das operações da conexão relacionadas a autenticação:
+
+\begin{samplecode}[language=java]
+public interface Connection {
+  ...
+  org.omg.CORBA.ORB orb();
+  String busid();
+  LoginInfo login();
+
+  void loginByPassword(String entity, byte[] password) throws AlreadyLoggedIn,
+                                                              AccessDenied,
+                                                              ServiceFailure;
+
+  boolean logout() throws ServiceFailure;
+  ...
+}
+\end{samplecode}
+
+A operação \code{logout} é usada para encerrar a autenticação da conexão e revogar o seu login, tornando inválidas todas as futuras chamadas pelo barramento utilizando essa identidade (login).
+Enquanto a conexão estiver autenticada ela possui um login associado cuja informações podem ser obtiidas através da operação \code{login}.
+Caso a conexão tenha sua autenticação (login) revogada ou nunca tenha sido autenticada, a operação \code{login} devolve um valor nulo.
+A seguir é apresentado um trecho de código que se autentica no barramento com o nome de entidade \code{SomeoneUser} e imprime o identificador de login gerado no processo de autenticação.
+
+\begin{samplecode}[language=java]
+conn.loginByPassword("SomeoneUser", ("Someone").getBytes());
+System.out.println("Meu login é "+conn.login().id);
+conn.logout();
+\end{samplecode}
