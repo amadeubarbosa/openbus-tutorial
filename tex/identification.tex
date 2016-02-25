@@ -39,21 +39,21 @@ Um ORB OpenBus é iniciado através da operação \code{initORB}, cuja assinatura é 
 \end{samplecode}
 
 A operação \code{initORB} tem o mesmo funcionamento da operação \code{CORBA::init} do padrão CORBA, exceto que ela inicia e retorna um ORB com os recursos adicionais do \openbus{}.
-Por exemplo, podemos fazer os programas dos execícios anteriores utilizarem um ORB OpenBus apenas trocando a chamada de \code{CORBA::init} para \code{ORBInitlializer::initORB}, como ilustrado na figura~\ref{fig:ex05:matrices/Server}.
+Por exemplo, podemos fazer os programas dos execícios anteriores utilizarem um ORB OpenBus apenas trocando a chamada de \code{CORBA::init} para \code{ORBInitlializer::initORB}, como ilustrado na figura~\ref{fig:ex05:matrices/Server:52:66} (linha~\ref{lin:ex05:matrices/Server:initorb}).
 Contudo, para tanto é necessário compilar o programa com as bibliotecas e ferramentas disponibilizadas pelo SDK.
 Em particular, é necessário utilizar o compilador de IDL do SDK e as bibliotecas disponibilizadas.
 
-\inputexsrc{ex05}{matrices/Server}{Servidor com ORB OpenBus.}
+\inputexrange{ex05}{matrices/Server}{52}{66}{Servidor com ORB OpenBus.}
 
 Para compilar a IDL \code{matrices.idl} utilizando o compilador de IDL do OpenBus SDK para Java utilize o seguinte comando:
 
-\begin{samplecode}[language=bash]
+\begin{samplecode}[language=bash,escapechar=]
 java -cp $ODK_HOME/lib/jacorb-idl-compiler-3.4.jar org.jacorb.idl.parser matrices.idl
 \end{samplecode}
 
 Para compilar os programas para utilizarem a biblioteca de acesso, utilize o seguinte comando:
 
-\begin{samplecode}[language=bash]
+\begin{samplecode}[language=bash,escapechar=]
 javac -cp "$ODK_HOME/lib/jacorb-3.4.jar\
 :$ODK_HOME/lib/jacorb-omgapi-3.4.jar\
 :$ODK_HOME/lib/openbus-sdk-core-2.0-SNAPSHOT.jar\
@@ -67,7 +67,7 @@ javac -cp "$ODK_HOME/lib/jacorb-3.4.jar\
 
 Por fim, para executar esses processos você pode fazer:
 
-\begin{samplecode}[language=bash]
+\begin{samplecode}[language=bash,escapechar=]
 java -Djava.endorsed.dirs=$ODK_HOME/lib \
   tecgraf.openbus.demo.matrices.Server > ref.ior
 java -Djava.endorsed.dirs=$ODK_HOME/lib \
@@ -161,13 +161,13 @@ Alternativamente, podemos usar a operação \code{setCurrentConnection} para defin
 Para utilizarmos por padrão uma conexão para o barramento cujos serviços básicos executam na máquina \code{bushost} e na porta 20000, podemos utilizar o seguinte código:
 
 \begin{samplecode}[language=java]
-Connection conn = context.createConnection("host", 20000);
+Connection conn = context.createConnection("bushost", 20000);
 context.setDefaultConnection(conn);
 \end{samplecode}
 
 \section{Autenticação por Senha}
 
-Para serem utilizadas na chamadas as conexões devem primeiramente serem autenticadas em nome de uma entidade.
+Para serem utilizadas em chamadas, as conexões devem primeiramente serem autenticadas em nome de uma entidade.
 Uma forma de fazer isso é através da operação \code{loginByPassword} da conexão, informando o nome da entidade e a senha.
 Ao executar essa operação com sucesso, a conexão está autenticada e poderá ser usada para fazer chamadas usando como identidade o nome da entidade autenticada.
 A seguir são apresentadas algumas das operações da conexão relacionadas a autenticação:
@@ -188,13 +188,146 @@ public interface Connection {
 }
 \end{samplecode}
 
+A operação \code{orb} devolve o ORB a ser usado nas chamadas com essa conexão.
 A operação \code{logout} é usada para encerrar a autenticação da conexão e revogar o seu login, tornando inválidas todas as futuras chamadas pelo barramento utilizando essa identidade (login).
-Enquanto a conexão estiver autenticada ela possui um login associado cuja informações podem ser obtiidas através da operação \code{login}.
-Caso a conexão tenha sua autenticação (login) revogada ou nunca tenha sido autenticada, a operação \code{login} devolve um valor nulo.
+Enquanto a conexão estiver autenticada ela possui um login associado, cujas informações podem ser obtidas através da operação \code{login}.
+Similarmente, a operação \code{busid} informa o identificador do barramento em que conexão estiver autenticada.
+Caso a conexão tenha sua autenticação (login) revogada ou nunca tenha sido autenticada, as operações \code{login} e \code{busid} devolvem valores nulos.
 A seguir é apresentado um trecho de código que se autentica no barramento com o nome de entidade \code{SomeoneUser} e imprime o identificador de login gerado no processo de autenticação.
 
 \begin{samplecode}[language=java]
 conn.loginByPassword("SomeoneUser", ("Someone").getBytes());
-System.out.println("Meu login é "+conn.login().id);
+System.out.println("Meu login em "+conn.busid()+" é "+conn.login().id);
 conn.logout();
 \end{samplecode}
+
+Para adaptar uma aplicação CORBA para fazer chamadas através do barramento, tal como a nossa aplicação de matrizes, basta fazermos algumas pequenas mudanças, como ilustrado na figura~\ref{fig:ex06:matrices/Application:16:46}.
+Primeiramente, passaremos a utilizar um ORB iniciado pela biblioteca do SDK (linha~\ref{lin:ex06:matrices/Application:initorb}).
+A partir do ORB obtemos o objeto de contexto do OpenBus associado àquele ORB, para que possamos definir o contexto de identificação das chamadas OpenBus através daquele ORB (linha~\ref{lin:ex06:matrices/Application:getcontext}).
+A partir do contexto podemos criar uma conexão para um barramento específico informando a máquina e porta dos serviços núcleo do barramento desejado (linha~\ref{lin:ex06:matrices/Application:createconn}).
+Como nossa aplicação é simples o suficiente para que todas as chamadas sejam feitas para um único barramento e usando uma mesma identidade sempre, definimos essa conexão como a conexão default a ser utilizada em todas as comunicações através aquele ORB (linha~\ref{lin:ex06:matrices/Application:setdefconn}).
+Contudo, antes realizar chamadas através dessa conexão é necessário autenticá-la em nome de alguma entidade, por exemplo através de uma senha usando a operação \code{loginByPassword} (linha~\ref{lin:ex06:matrices/Application:loginconn}).
+Também é importante chamar a operação \code{logout} quando a conexão não for mais utilizada para facilitar com que os recursos alocados para manutenção da autenticação sejam liberados (linha~\ref{lin:ex06:matrices/Application:logoutconn}).
+
+\inputexrange{ex06}{matrices/Application}{16}{46}{Aplicação de matrizes com login por senha.}
+
+\section{Autenticação por Certificado}
+
+Alternativamente, a conexão também pode ser autenticada através de uma chave privada correspondente a um certificado registrado no barramento.
+Essa forma de autenticação é tipicamente mais adequada para autenticação de sistemas, visto que para uma instalação de sistema guardar uma chave gerada computacionalmente é equivalente a guardar uma senha elaborada por um humano.
+Contudo, uma chave pode ser bem mais segura que uma senha se gerada de forma adequada como veremos mais a frente.
+A seguir são apresentadas algumas as operações relacionadas a autenticação via chave e certificado.
+
+\begin{samplecode}[language=java]
+public class OpenBusPrivateKey {
+  static public PrivateKey createPrivateKeyFromBytes(
+    byte[] privateKeyBytes) throws NoSuchAlgorithmException,
+                                   InvalidKeySpecException;
+  static public PrivateKey createPrivateKeyFromFile(
+    String privateKeyFile) throws IOException,
+                                  NoSuchAlgorithmException,
+                                  InvalidKeySpecException;
+}
+
+public interface Connection {
+  void loginByCertificate(String entity, PrivateKey privateKey)
+    throws AlreadyLoggedIn, AccessDenied, MissingCertificate, ServiceFailure;
+  ...
+\end{samplecode}
+
+A classe \code{OpenBusPrivateKey} oferece funções utilitárias para facilitar a leitura de chaves privadas a partir de um arquivo ou se um array de bytes.
+Alternativamente, é possível utilizar as próprias classes do Java para obter a chave ser utilizada na autenticação por chave e certificado.
+A operação \code{loginByCertificate} recebe o nome da entidade a ser autenticada e a chave privada correspondente ao certificado registrado no barramento para essa entidade.
+Por essa razão, é necessário gerar e registrar no barramento um certificado e chave para cada sistema que utilize essa forma de autenticação.
+Isso pode ser feito utilizando o utilitário de linha de comando do projeto de código aberto OpenSSL, que vem instalado em muitas plataformas e também é disponibilizado pelo OpenBus.
+Por exemplo, para gerar um par de chave (\code{private.key}) e certificado auto-assinado (\code{system.crt}) para uso na autenticação no OpenBus, é possível utilizar os seguintes comandos do OpenSSL:
+
+\begin{samplecode}[language=bash]
+openssl genrsa -out tmp.key 2048
+openssl pkcs8 -topk8 -nocrypt -in tmp.key \
+        -out private.key -outform DER
+openssl req -new -x509 \
+        -key private.key -keyform DER \
+        -out system.crt -outform DER
+\end{samplecode}
+
+Tal como uma senha, é importante garantir que a chave privada gerada só possa ser lida pelo sistema que se autenticará com ela, para evitar que outros possam se autenticar usando a chave.
+Por isso, sugere-se apagar o arquivo \code{tmp.key} gerado e só dar permissão de leitura ao arquivo \code{private.key} para o usuário do sistema que executará o sistema a ser autenticado.
+Finalmente envie o certificado público gerado \code{system.crt} para o gerente do barramento para que ele seja registrado para autenticação da entidade com que o sistema será autenticado.
+Veremos na seção~\ref{sec:addcertificate} como um administrador registra um certificado de autenticação no barramento.
+Uma vez feito isso, podemos adaptar nosso servidor de matrizes para que ele se autentique ao barramento usando a chave privada gerada \code{private.key}, conforme ilustrado na figura~\ref{fig:ex07:matrices/Server:60:87}.
+Inicialmente fazemos a leitura da chave private usando a função utilitária \code{createPrivateKeyFromFile} (linha~\ref{lin:ex07:matrices/Server:readkey}).
+Em seguida, tal como no exemplo da figura~\ref{fig:ex06:matrices/Application:16:46}, inicamos um ORB com suporte ao OpenBus (linha~\ref{lin:ex07:matrices/Server:initorb}), obtemos o objeto de contexto do ORB (linha~\ref{lin:ex07:matrices/Server:getcontext}), criamos uma conexão para um barramento específico (linha~\ref{lin:ex07:matrices/Server:createconn}) e definimos essa conexão como a conexão default a ser utilizada em todas as comunicações através aquele ORB (linha~\ref{lin:ex07:matrices/Server:setdefconn}).
+Contudo, a autenticação é feita através da chave privada usando a operação \code{loginByCertificate} (linha~\ref{lin:ex06:matrices/Server:loginconn}).
+Novamente, como no exemplo da figura~\ref{fig:ex07:matrices/Server:60:80}, é importante chamar a operação \code{logout} quando a conexão não for mais utilizada para facilitar com que os recursos alocados para manutenção da autenticação sejam liberados (linha~\ref{lin:ex07:matrices/Server:logoutconn}).
+
+\inputexrange{ex07}{matrices/Server}{60}{87}{Servidor de matrizes com login por certificado.}
+
+\section{Autenticação Compartilhada}
+
+Em alguns cenários, pode ser necessário que um sistema compartilhe sua autenticação com outro sistema.
+Por exemplo, se uma aplicação autenticada como um usuário precisar disparar outra aplicação em nome desse usuário sem que seja necessário pedir a senha do usuário novamente.
+Para esses casos o OpenBus permite gerar um token para o compartilhamento de uma autenticação.
+O token só pode ser gerado através de conexões autenticadas e só pode ser usado uma única vez para autenticar outra conexão com autenticação da conexão original usada para geração do token.
+O token também tem um tempo de validade curto, que é configurado pelo gerente do barramento.
+A seguir são apresentadas as operações para manipulação de tokens de autenticação compartilhada.
+
+\begin{samplecode}[language=java]
+public interface Connection {
+  ...
+  SharedAuthSecret startSharedAuth() throws ServiceFailure;
+
+  void loginBySharedAuth(SharedAuthSecret secret)
+    throws AlreadyLoggedIn,
+           InvalidLoginProcess,
+           AccessDenied,
+           ServiceFailure;
+  ...
+
+public interface OpenBusContext {
+  byte[] encodeSharedAuth(SharedAuthSecret secret);
+  SharedAuthSecret decodeSharedAuth(byte[] encoded)
+    throws InvalidEncodedStream;
+  ...
+\end{samplecode}
+
+A operação \code{startSharedAuth} da conexão é utilizada para criar um novo token de autenticação compartilhada (\code{SharedAuthSecret}).
+De posse de um token, é possível utilizá-lo na chamada de \code{loginBySharedAuth} para autenticar uma conexão que ainda não esteja autenticada.
+Adicionalmente, o objeto de contexto também oferece operações para serialização num array de bytes (\code{encodeSharedAuth}) e recuperação a partir desse array de bytes (\code{decodeSharedAuth}) de um token de autenticação compartilhada.
+O código abaixo ilustra a utilização dessas operações para compartilhar uma autenticação entre duas conexões.
+
+\begin{samplecode}[language=java]
+  SharedAuthSecret secret = conn1.startSharedAuth();
+  writeToPrivateFile("token.dat", context.encodeSharedAuth(secret));
+  ...
+  byte[] encoded = readFromPrivateFile("token.dat");
+  conn2.loginBySharedAuth(context.decodeSharedAuth(encoded));
+\end{samplecode}
+
+\section{Identificação da Origem das Chamadas}
+
+O OpenBus só permite chamadas autenticadas nas comunicações através do barramento.
+Contudo, uma vez autenticado com qualquer entidade, qualquer sistema é capaz de iniciar qualquer chamada através do barramento.
+É responsabilidade de cada implementação de serviço que recebe uma chamada avaliar a identidade da origem da chamada e avaliar se a chamada pode prosseguir ou se deve ser interrompida através do lançamento de uma exceção por exemplo.
+A informação sobre a identidade da oridem de uma chamada em execução pode ser obtida através da operação \code{getCallerChain} do objeto de contexto, cuja interface é apresentada abaixo.
+
+\begin{samplecode}[language=java]
+public interface OpenBusContext {
+  ...
+  CallerChain getCallerChain();
+  ...      
+}
+
+public interface CallerChain {
+  String busid();
+  String target();
+  LoginInfo[] originators();
+  LoginInfo caller();
+}
+\end{samplecode}
+
+A operação \code{getCallerChain} devolve um objeto com as informações de identidade de todos os participantes da cadeia de chamadas que originou a chamada atual.
+Dizemos que é uma cadeia de chamadas, pois a chamada pode fazer parte de outras operações executadas de forma aninhadas em outros sistemas, onde cada sistema responsável cada chamada nessa cadeia pode ter uma identidade diferente.
+A operação \code{caller} devolve as informações de login, tal como identificador do login e nome da entidade de autenticação, do sistema que realizou a chamada sendo despachada.
+Já a operação \code{originators} devolve uma lista de informações de login de outros sistemas que originaram indiretamente a chamada, tipicamente pelo recebimento de outras chamadas que originaram a chamada atual.
+As operações \code{busid} e \code{target} devolvem os identificadores do barramento e do login da conexão através do qual a chamada foi recebida, o que é útil em aplicações que fazem uso de múltiplas conexões com múltiplos barramentos ou identidades.

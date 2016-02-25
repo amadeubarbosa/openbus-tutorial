@@ -50,7 +50,7 @@ class MatrixFactoryServant extends MatrixFactoryPOA {
 
 public class Server {
 	public static void main(String[] args) throws Exception {
-		ORB orb = ORBInitializer.initORB(args);
+		ORB orb = ORBInitializer.initORB(args);$\exlabel{initorb}$
 		try {
 			POA poa = POAHelper.narrow(orb.resolve_initial_references("RootPOA"));
 			poa.the_POAManager().activate();

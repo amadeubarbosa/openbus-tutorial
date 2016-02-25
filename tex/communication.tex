@@ -221,7 +221,7 @@ Assim como os objetos distribuídos de CORBA podem ser criados, eles também podem
 CORBA não define um mecanismo de coleta ou descarte automático de objetos, portanto é necessário descartá-los explicitamente.
 Por outro lado, CORBA define inúmeras formas de gerência do ciclo de vida de objetos.
 Contudo, neste documento não faremos uma explanação extensiva sobre isso.
-Ao invés disso apresentaremos um modelos mais simples e usuam em que os objetos são criados e descartados explicitamente pela aplicação.
+Ao invés disso apresentaremos um modelos mais simples e usual em que os objetos são criados e descartados explicitamente pela aplicação.
 
 Para ilustrar isso consideremos agora que o nosso servidor deve exportar não apenas um objeto matriz, mas sim um objeto que funciona como uma fábrica de matrizes, que são criadas através de chamadas dos clientes.
 A interface desse serviço de fábrica de matrizes é ilustrada na figura~\ref{fig:ex04:matrices}.
@@ -237,7 +237,7 @@ Agora podemos compilar essa nova IDL, usando por exemplo o compilador de IDL do 
 	idlj -fallTIE matrices.idl
 \end{samplecode}
 
-Como resultado o compilador de IDL gerará código fonte Java que implementam definições em Java equivalentes as definições em IDL.
+Como resultado o compilador de IDL gerará código fonte Java que implementam definições em Java equivalentes às definições em IDL.
 Em particular, temos classes que implementam as exceções declaradas em IDL.
 Logo para lançar uma exceção CORBA definida em IDL basta criamos uma instância da classe Java gerada correspondente.
 %A seguir há uma lista dos arquivos gerados pelo compilador de IDL do JDK~\footnote{Os arquivos com nomes que começam com \code{\_} podem ser gerados com outros nomes dependendo da versão do compilador.}:

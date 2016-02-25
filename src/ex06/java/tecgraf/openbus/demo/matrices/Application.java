@@ -14,15 +14,15 @@ public class Application {
 	private static final short busPort = 20100;
 
 	public static void main(String[] args) throws Exception {
-		ORB orb = ORBInitializer.initORB(args);
+		ORB orb = ORBInitializer.initORB(args);$\exlabel{initorb}$
 		try {
 			OpenBusContext context = (OpenBusContext)
-				orb.resolve_initial_references("OpenBusContext");
+				orb.resolve_initial_references("OpenBusContext");$\exlabel{getcontext}$
 
-			Connection conn = context.createConnection(busHost, busPort);
-			context.setDefaultConnection(conn);
+			Connection conn = context.createConnection(busHost, busPort);$\exlabel{createconn}$
+			context.setDefaultConnection(conn);$\exlabel{setdefconn}$
 
-			conn.loginByPassword(entity, password.getBytes());
+			conn.loginByPassword(entity, password.getBytes());$\exlabel{loginconn}$
 			try {
 				MatrixFactory factory = MatrixFactoryHelper.narrow(orb.string_to_object(
 					new BufferedReader(new InputStreamReader(System.in)).readLine()));
@@ -40,7 +40,7 @@ public class Application {
 				}
 				finally { matrix.dispose(); }
 			}
-			finally { conn.logout(); }
+			finally { conn.logout(); }$\exlabel{logoutconn}$
 		}
 		finally { orb.shutdown(true); }
 	}

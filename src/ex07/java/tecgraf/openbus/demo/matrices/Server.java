@@ -59,17 +59,17 @@ public class Server {
 
 	public static void main(String[] args) throws Exception {
 		OpenBusPrivateKey privateKey =
-			OpenBusPrivateKey.createPrivateKeyFromFile(privateKeyFile);
+			OpenBusPrivateKey.createPrivateKeyFromFile(privateKeyFile);$\exlabel{readkey}$
 
-		ORB orb = ORBInitializer.initORB(args, null);
+		ORB orb = ORBInitializer.initORB(args, null);$\exlabel{initorb}$
 		try {
 			OpenBusContext context = (OpenBusContext)
-				orb.resolve_initial_references("OpenBusContext");
+				orb.resolve_initial_references("OpenBusContext");$\exlabel{getcontext}$
 
-			Connection conn = context.createConnection(busHost, busPort);
-			context.setDefaultConnection(conn);
+			Connection conn = context.createConnection(busHost, busPort);$\exlabel{createconn}$
+			context.setDefaultConnection(conn);$\exlabel{setdefconn}$
 
-			conn.loginByCertificate(entity, privateKey);
+			conn.loginByCertificate(entity, privateKey);$\exlabel{loginconn}$
 			try {
 				POA poa = POAHelper.narrow(orb.resolve_initial_references("RootPOA"));
 				poa.the_POAManager().activate();
@@ -81,7 +81,7 @@ public class Server {
 
 				System.in.read();
 			}
-			finally { conn.logout(); }
+			finally { conn.logout(); }$\exlabel{logoutconn}$
 		}
 		finally { orb.shutdown(true); }
 	}
