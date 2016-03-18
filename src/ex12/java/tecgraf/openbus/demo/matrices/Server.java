@@ -56,7 +56,7 @@ class MatrixFactoryServant extends MatrixFactoryPOA {
 
 	public MatrixFactoryServant(TransformationRepository transformations,
 	                            OpenBusContext context) {
-		_transformations = transformations;
+		_transformations = transformations;$\exlabel{saveref}$
 		_context = context;
 	}
 
@@ -67,12 +67,12 @@ class MatrixFactoryServant extends MatrixFactoryPOA {
 		if (!entity.equals("MatricesUser"))
 			throw new NO_PERMISSION("unauthorized caller ("+entity+")");
 
-		_context.joinChain();
+		_context.joinChain();$\exlabel{joinchain}$
 		double[] transformation;
-		try { transformation = _transformations.getTransformation(kind); }
+		try { transformation = _transformations.getTransformation(kind); }$\exlabel{callservice}$
 		catch(UnknownTransformation e) { throw new UnknownMatrixKind(kind); }
 
-		MatrixServant matrix = new MatrixServant(new Matrix(transformation), _context);
+		MatrixServant matrix = new MatrixServant(new Matrix(transformation), _context);$\exlabel{creatematrix}$
 
 		try {
 			return SquareMatrixHelper.narrow(_poa().servant_to_reference(matrix));
@@ -113,10 +113,10 @@ public class Server {
 
 				TransformationRepository transformations =
 					TransformationRepositoryHelper.narrow(
-						orb.string_to_object( "corbaloc::"+tHost+":"+tPort+"/Transformations"));
+						orb.string_to_object( "corbaloc::"+tHost+":"+tPort+"/Transformations"));$\exlabel{getref}$
 
 				org.omg.CORBA.Object obj = poa.servant_to_reference(
-					new MatrixFactoryServant(transformations, context));
+					new MatrixFactoryServant(transformations, context));$\exlabel{passref}$
 
 				System.out.println(orb.object_to_string(obj));
 

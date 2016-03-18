@@ -148,7 +148,7 @@ public interface OpenBusContext {
 }
 \end{samplecode}
 
-\section{Manipulando Conexões}
+\section{Manipulando Conexões} \label{sec:ConnManage}
 
 A criação de novas conexões é feita através da operação \code{createConnection}, que recebe o endereço da máquina e o número da porta onde os serviços básicos daquele barramento executam.
 Opicionalmente a operação \code{createConnection} recebe uma lista de propriedades que podem ser usadas para definir outros aspectos da conexão, tal como suporte à interoperabilidade com outros serviços que utilizem versões legadas do OpenBus e parâmetros de ajuste de desempenho.
@@ -258,8 +258,8 @@ Veremos na seção~\ref{sec:addcertificate} como um administrador registra um cert
 Uma vez feito isso, podemos adaptar nosso servidor de matrizes para que ele se autentique ao barramento usando a chave privada gerada \code{private.key}, conforme ilustrado na figura~\ref{fig:ex07:matrices/Server:60:87}.
 Inicialmente fazemos a leitura da chave private usando a função utilitária \code{createPrivateKeyFromFile} (linha~\ref{lin:ex07:matrices/Server:readkey}).
 Em seguida, tal como no exemplo da figura~\ref{fig:ex06:matrices/Application:16:46}, inicamos um ORB com suporte ao OpenBus (linha~\ref{lin:ex07:matrices/Server:initorb}), obtemos o objeto de contexto do ORB (linha~\ref{lin:ex07:matrices/Server:getcontext}), criamos uma conexão para um barramento específico (linha~\ref{lin:ex07:matrices/Server:createconn}) e definimos essa conexão como a conexão default a ser utilizada em todas as comunicações através aquele ORB (linha~\ref{lin:ex07:matrices/Server:setdefconn}).
-Contudo, a autenticação é feita através da chave privada usando a operação \code{loginByCertificate} (linha~\ref{lin:ex06:matrices/Server:loginconn}).
-Novamente, como no exemplo da figura~\ref{fig:ex07:matrices/Server:60:80}, é importante chamar a operação \code{logout} quando a conexão não for mais utilizada para facilitar com que os recursos alocados para manutenção da autenticação sejam liberados (linha~\ref{lin:ex07:matrices/Server:logoutconn}).
+Contudo, a autenticação é feita através da chave privada usando a operação \code{loginByCertificate} (linha~\ref{lin:ex07:matrices/Server:loginconn}).
+Novamente, como no exemplo da figura~\ref{fig:ex07:matrices/Server:60:87}, é importante chamar a operação \code{logout} quando a conexão não for mais utilizada para facilitar com que os recursos alocados para manutenção da autenticação sejam liberados (linha~\ref{lin:ex07:matrices/Server:logoutconn}).
 
 \inputexrange{ex07}{matrices/Server}{60}{87}{Servidor de matrizes com login por certificado.}
 
@@ -331,3 +331,136 @@ Dizemos que é uma cadeia de chamadas, pois a chamada pode fazer parte de outras 
 A operação \code{caller} devolve as informações de login, tal como identificador do login e nome da entidade de autenticação, do sistema que realizou a chamada sendo despachada.
 Já a operação \code{originators} devolve uma lista de informações de login de outros sistemas que originaram indiretamente a chamada, tipicamente pelo recebimento de outras chamadas que originaram a chamada atual.
 As operações \code{busid} e \code{target} devolvem os identificadores do barramento e do login da conexão através do qual a chamada foi recebida, o que é útil em aplicações que fazem uso de múltiplas conexões com múltiplos barramentos ou identidades.
+
+Para ilustrar isso, consideremos alternar o nosso servidor de matrizes para que ele só aceite chamadas provenientes de sistemas autenticados com a entidade \code{MatricesUser}.
+A figura~\ref{fig:ex09:matrices/Server:53:81} ilustra a implementação da fábrica de matrizes fazendo uso da identificação da origem das chamadas para recusar chamadas de origens não autenticadas.
+Inicialmente, obtemos o objeto de contexto do OpenBus para o ORB que recebeu a chamada (linha~\ref{lin:ex09:matrices/Server:getctxt}).
+A partir da operação \code{getCallerChain} do objeto de contexto obtermos todas as identidades originadoras daquela cadeia de chamadas, e a operação \code{caller} devolve a identidade de quem efetivamente fez a chamada atual (linha~\ref{lin:ex09:matrices/Server:getcaller}).
+Na linha~\ref{lin:ex09:matrices/Server:checkcaller} testamos se a entidade de origem da chamada não é a esperada e lançamos uma exceção de \code{NO\_PERMISSION} para impedir que achamada prossiga (linha~\ref{lin:ex09:matrices/Server:noperm}).
+
+\inputexrange{ex09}{matrices/Server}{53}{81}{Fábrica de matrizes com identificação de chamada.}
+
+Adotamos essa abordagem para adaptar as implementações das operações dos objetos de matrizes, como ilustrado na figura~\ref{fig:ex09:matrices/Server:18:51}.
+Na linha~\ref{lin:ex09:matrices/Server:authimpl} declaramos uma operação privada que faz a validação da origem da chamada tal como na figura~\ref{fig:ex09:matrices/Server:53:81}.
+Em seguida, chamamos essa operação de validação nas implementações das operações \code{multiply} (linha~\ref{lin:ex09:matrices/Server:authmultiply}) e \code{dispose} (linha~\ref{lin:ex09:matrices/Server:authdispose}) para garantir que elas só executem por completo quando iniciadas por um sistema devidamente autenticado.
+
+\inputexrange{ex09}{matrices/Server}{18}{51}{Operações das matrizes com identificação de chamada.}
+
+Fica como exercício para o leitor adaptar a aplicação cliente para que ela tente executar uma operação com a identidade errada para validar a implementação do servidor com identificação da origem da chamada.
+
+\paragraph{Dica:}
+\begin{itemize}
+  \item Utilize a operação \code{setCurrentConnection} do \code{OpenBusContext} para definir a segunda conexão como a conexão corrente antes de fazer a chamada \code{SquareMatrix::multiply}.
+  \item Não faça logout na primeira conexão para poder utilizá-la para chamar \code{SquareMatrix::dispose} antes de terminar a execução.
+\end{itemize}
+
+\section{Inspeção da Cadeia de Chamadas}
+
+Da mesma forma que é possível recusar chamadas com base na identidade da entidade que o sistema que faz a chamada está autenticado, também é possível levar em consideração outras identidades na cadeia de chamadas.
+Para ilustrar isso, consideremos agora um serviço adicional para fornecer dados para criação das matrizes, cuja interface é ilustrada na figura~\ref{fig:ex11:transformations}.
+A operação \code{listTransformations} (linha~\ref{lin:ex11:transformations:listtypes}) devolve a lista de todas os tipos de matrizes que o serviço pode fornecer dados, e a operação \code{getTransformation} (linha~\ref{lin:ex11:transformations:getdata}) permite obter os dados da matriz na forma de uma sequencia de valores que compõe a matriz.
+O intuito desse novo serviço é ser utilizado pelo serviço de fábrica de matrizes na construção de novas matrizes.
+Dessa forma, quando a aplicação cliente utiliza a fábrica de matrizes para criar um novo objeto, a fábrica acessa o provedor de dados para obter os dados para criação da nova matriz.
+Nesse cenário, o provedor de dados pode avaliar se aceita a chamada não apenas com base na identidade do serviço de fábrica de matrizes, mas também levando em conta a identidade da aplicação cliente que solicitou a criação de uma nova matriz.
+
+\inputexidl{ex11}{transformations}{IDL de provedor de dados de matrizes.}
+
+Como exemplo disso, considere a figura~\ref{fig:ex26:transformations/Server:35:81} que ilustra parte da implementação desse serviço adicional.
+A operação privada \code{assertAuthorized} (linha~\ref{lin:ex26:transformations/Server:auxfunc}) obtém a cadeia de chamada (linha~\ref{lin:ex26:transformations/Server:getchain}) e a partir dela obtém a identidade de quem realizou a chamada (linha~\ref{lin:ex26:transformations/Server:getcaller}).
+Adicionalmente, também é obitida a lista de demais originadores participando nessa cadeia de chamadas (linha~\ref{lin:ex26:transformations/Server:listorigins}).
+É então feita uma validação da identidade de quem realizou a chamada (linha~\ref{lin:ex26:transformations/Server:checkcaller}), que se espera que seja a entidade do serviço de fábrica de matrizes.
+Também é feita uma verificação de que há apenas uma única entidade adicional envolvida na chamada (linha~\ref{lin:ex26:transformations/Server:countorigins}), que deveria ser a entidade da aplicação cliente que originou a criação da nova matriz.
+Por fim, a operação \code{assertAuthorized} recupera essa identidade (linha~\ref{lin:ex26:transformations/Server:getorigin}) e a valida (linha~\ref{lin:ex26:transformations/Server:checkorigin}).
+
+\inputexrange{ex26}{transformations/Server}{35}{81}{Serviço de provedor de dados de matrizes.}
+
+\section{Junção de Cadeias de Chamada}
+
+Para realizar uma chamada combinando sua identidade com outra, é necessário obter uma cadeia de chamadas contendo as demais identidades e então fazer uma junção da sua identidade com essa cadeia.
+Isso é feito através de operações do objeto de contexto como ilustrado abaixo.
+
+\begin{samplecode}
+  public interface OpenBusContext {
+    ...
+
+    void joinChain(CallerChain chain);
+    void joinChain();
+
+    void exitChain();
+
+    CallerChain getJoinedChain();
+
+    ...      
+  }
+\end{samplecode}
+
+A operação \code{joinChain} permite definir a cadeia a ser mesclada com a identidade atual (que é definida pela conexão atual, como visto na seção~\ref{sec:ConnManage}) para compor todas as chamadas sendo feitas no contexto atual (linha de execução).
+Ou seja, todas as chamadas remotas seguintes são feitas usando a identidade da conexão atual (\code{caller}) em conjunto com todas as identidades da cadeia passada para operação \code{joinChain} (\code{originators}).
+A operação \code{joinChain} sendo chamada sem nenhum parâmetro é equivalente a \code{OpenBusContext.joinChain(OpenBusContext.getCallerChain())}.
+A operação \code{exitChain} remove a cadeia de chamadas definida para o contexto atual, e é equivalente a \code{OpenBusContext.joinChain(null)}.
+Por fim, a operação \code{getJoinedChain} é usada para obter a cadeia de chamadas definida para o contexto atual.
+
+A figura~\ref{fig:ex12:matrices/Server:89:129} ilustra a adaptação do servidor de matrizes para obter uma refência para o serviço de provedor de dados (linha~\ref{lin:ex12:matrices/Server:getref}) e repassá-la para a fábrica de matrizes (linha~\ref{lin:ex12:matrices/Server:passref}).
+
+\inputexrange{ex12}{matrices/Server}{89}{129}{Servidor de fábrica de matrizes obtendo referência para serviço de dados.}
+
+A figura~\ref{fig:ex12:matrices/Server:53:87} ilustra as alterações na fábrica de matrizes para armazenar a referência do serviço (linha~\ref{lin:ex12:matrices/Server:saveref}) e utilizá-la para obter os dados (linha~\ref{lin:ex12:matrices/Server:callservice}) para criação de uma matriz (linha~\ref{lin:ex12:matrices/Server:creatematrix}).
+Contudo, para que o acesso ao serviço de dados seja realizado com as identidades necessárias para que seja autorizado, é necessário antes fazer a junção da cadeia de chamadas correspondente à chamada atual, o que é feito através da operação \code{joinChain} (linha~\ref{lin:ex12:matrices/Server:joinchain}).
+
+\inputexrange{ex12}{matrices/Server}{53}{87}{Fábrica de matrizes utilizando serviço de dados.}
+
+\section{Observadores de Login}
+
+Os sistemas que acessam o barramento possuem um login que eventualmente se torna inválido caso o sistema seja encerrado ou perca acesso ao barramento.
+Devido a isso, observar o login de determinados sistemas pode ser muito útil na gerênicia dos recursos alocados pelo sistema.
+Por exemplo, o nosso servidor de matrizes permite que os sistemas que o accessem possam criação de objetos de matrizes, que ficam válidos permanentemente.
+Logo, se alguns sistemas criam matrizes e terminam sem destruir a matriz, isso poderia gerar muitos objetos matriz no servidor que esgotem os recursos do servidor.
+Uma forma de contornar isso é atrelar a vida dos objetos de matriz ao tempo que o login do sistema que criou a matriz permanece válido.
+Dessa forma, é possível garantir que a destruição das matrizes ocorreria pelo menos quando o sistema que as cria deixa de acessar o barramento.
+Do lado dos clientes, basta que se realoque os recursos (\ie\ recriar as matrizes) sempre que precisar relogar.
+
+Para dar suporte a isso, o OpenBus oferece um serviço de observação de login acessível através da operação \code{OpenBusContext.getLoginRegistry}, cuja interface é describa abaixo em IDL de CORBA.
+
+\begin{samplecode}[language= {[CORBA]IDL} ]
+  interface OpenBusContext {
+    LoginRegistry getLoginRegistry();
+    ...      
+  };
+
+  interface LoginRegistry {
+    LoginObserverSubscription subscribeObserver(in LoginObserver callback)
+      raises (ServiceFailure);
+    ...
+  };
+
+  interface LoginObserver {
+    void entityLogout (in LoginInfo login);
+  };
+
+  interface LoginObserverSubscription {
+
+    boolean watchLogin(in Identifier loginId)
+      raises (ServiceFailure);
+
+    void forgetLogin(in Identifier loginId)
+      raises (ServiceFailure);
+
+    void watchLogins(in IdentifierSeq loginIds)
+      raises (InvalidLogins, ServiceFailure);
+
+    void forgetLogins(in IdentifierSeq loginIds)
+      raises (ServiceFailure);
+
+    LoginInfoSeq getWatchedLogins();
+
+    void remove()
+      raises (ServiceFailure);
+
+  };
+\end{samplecode}
+
+A operação \code{subscribeObserver} permite registrar um objeto observador a ser notificado sempre que determinados logins se tornarem inválidos através da operação \code{entityLogout}.
+O resultado dessa operação é um objeto que permite definir os logins de interesse cuja invalidação deve ser notificada ao objeto observador.
+As operações \code{watchLogin} e \code{watchLogins} permitem adicionar logins de interesse.
+Enquanto as operações \code{forgetLogin} e \code{forgetLogins} permitem remover os logins de interesse adicionados.
+A operação \code{getWatchedLogins} devolve os logins de interesse atuais, e a operação \code{remove} cancela o registro do objeto observador e todos seus logins de interesse, evitando que futuras notificações a esse observador sejam feitas.

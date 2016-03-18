@@ -22,9 +22,9 @@ Na nomenclatura de CORBA, convenciona-se chamar de \term{servant} o objeto local
 \inputimage{orbapp}{Aplicação distribuída usando um ORB.}
 
 Contudo, é interessante notar que para essa abordagem ser possível é necessário que o ORB ofereça e implemente as mesmas interfaces específicas os objetos que devam se tornar remotos.
-Para resolver isso o CORBA adota uma solução como ilustrada na figura~\ref{fig:corba}, onde o ORB oferece uma implementação e interface única (em azul: \term{ORB} e \term{POA}).
+Para resolver isso o CORBA adota uma solução como ilustrada na figura~\ref{fig:ior}, onde o ORB oferece uma implementação e interface única (em azul: \term{ORB} e \term{POA}).
 Para adaptar esse ORB único para diferentes aplicações é utilizado um gerador de código que tem como entrada uma descrição das interfaces dos objetos e gera um código na linguagem da aplicação que adapta o ORB às interfaces específicas dos objetos distribuídos (em verde: \term{Stub} e \term{Skeleton}).
-Essa desrição das interfaces é descrita numa linguagem definida por CORBA denominada IDL (\term{Interface Description Language}), que permite descrições de interfaces e tipos de forma independente de linguagens de programação.
+Essa desrição das interfaces é feita numa linguagem definida por CORBA denominada IDL (\term{Interface Description Language}), que permite descrições de interfaces e tipos de forma independente de linguagens de programação.
 
 \inputimage{ior}{Visão geral de uma aplicação CORBA.}
 

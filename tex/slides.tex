@@ -1316,7 +1316,7 @@ byte[] decoded = DatatypeConverter.parseBase64Binary(encoded);
     \item Verifique que a chamada usando a segunda conexão é negada com a exceção correta.
     \item Dica:
     \begin{itemize}
-      \item Utilize a operção \code{setCurrentConnection} do \code{OpenBusContext} para definir a segunda conexão como a conexão corrente antes de fazer a chamada \code{SquareMatrix::multiply}.
+      \item Utilize a operação \code{setCurrentConnection} do \code{OpenBusContext} para definir a segunda conexão como a conexão corrente antes de fazer a chamada \code{SquareMatrix::multiply}.
       \item Não faça logout na primeira conexão para poder utilizá-la para chamar \code{SquareMatrix::dispose} antes de terminar a execução.
     \end{itemize}
   \end{itemize}

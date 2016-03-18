@@ -10,8 +10,8 @@ module transformations {
 	exception UnknownTransformation { TransformationId id; };
 
 	interface TransformationRepository {
-		TransformationIdSeq listTransformations();
-		Transformation getTransformation(in TransformationId id)
+		TransformationIdSeq listTransformations();$\exlabel{listtypes}$
+		Transformation getTransformation(in TransformationId id)$\exlabel{getdata}$
 			raises (UnknownTransformation);
 	};
 

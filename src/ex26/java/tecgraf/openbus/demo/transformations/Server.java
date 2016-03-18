@@ -38,23 +38,23 @@ class TransformationRepository_Impl extends TransformationRepositoryPOA
 	private String _originatorSuffix;
 	private Map<String, double[]> _transformations;
 
-	private String getOriginator() {
+	private void assertAuthorized() {$\exlabel{auxfunc}$
 		try {
 			OpenBusContext context = (OpenBusContext)
 				_orb().resolve_initial_references("OpenBusContext");
-			CallerChain chain = context.getCallerChain();
-			String caller = chain.caller().entity;
+			CallerChain chain = context.getCallerChain();$\exlabel{getchain}$
+			String caller = chain.caller().entity;$\exlabel{getcaller}$
 			LoginInfo[]
-				originators = chain.originators();
-			if (caller.endsWith(_callerSuffix)) {
-				if (originators.length == 1) {
-					return originators[0].entity;
-				} else {
-					throw new NO_PERMISSION("no authorized originator");
+				originators = chain.originators();$\exlabel{listorigins}$
+			if (caller.endsWith(_callerSuffix)) {$\exlabel{checkcaller}$
+				if (originators.length == 1) {$\exlabel{countorigins}$
+					String originator = originators[0].entity;$\exlabel{getorigin}$
+					if (!originator.endsWith(_originatorSuffix))$\exlabel{checkorigin}$
+						throw new NO_PERMISSION("unauthorized originator ("+originator+")");
 				}
-			} else {
-				throw new NO_PERMISSION("unauthorized caller ("+caller+")");
+				else throw new NO_PERMISSION("no authorized originator");
 			}
+			else throw new NO_PERMISSION("unauthorized caller ("+caller+")");
 		}
 		catch (InvalidName e) {
 			throw new NO_PERMISSION("unverified caller (no context)");
@@ -73,9 +73,7 @@ class TransformationRepository_Impl extends TransformationRepositoryPOA
 	}
 	public double[] getTransformation(String id)
 		throws UnknownTransformation {
-		String originator = getOriginator();
-		if (!originator.endsWith(_originatorSuffix))
-			throw new NO_PERMISSION("unauthorized originator ("+originator+")");
+		assertAuthorized();$\exlabel{callaux}$
 		double[] transformation = _transformations.get(id);
 		if (transformation == null) throw new UnknownTransformation(id);
 		return transformation;

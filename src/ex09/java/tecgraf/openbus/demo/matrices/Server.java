@@ -20,7 +20,7 @@ class MatrixServant extends SquareMatrixPOA {
 
 	public MatrixServant(Matrix matrix) { _matrix = matrix; }
 
-	private void assertAuthorized() {
+	private void assertAuthorized() {$\exlabel{authimpl}$
 		try {
 			OpenBusContext context = (OpenBusContext)
 				_orb().resolve_initial_references("OpenBusContext");
@@ -36,14 +36,14 @@ class MatrixServant extends SquareMatrixPOA {
 	public int cardinality() { return _matrix.cardinality(); }
 
 	public double[] multiply(double[] v) throws WrongCardinality {
-		assertAuthorized();
+		assertAuthorized();$\exlabel{authmultiply}$
 		if (v.length != cardinality())
 			throw new WrongCardinality(v.length, cardinality());
 		return _matrix.multiply(v);
 	}
 
 	public void dispose() {
-		assertAuthorized();
+		assertAuthorized();$\exlabel{authdispose}$
 		try { _poa().deactivate_object(_object_id()); }
 		catch (ObjectNotActive e) {}
 		catch (WrongPolicy e) {}
@@ -55,10 +55,10 @@ class MatrixFactoryServant extends MatrixFactoryPOA {
 		throws UnknownMatrixKind, GeneralFailure {
 		try {
 			OpenBusContext context = (OpenBusContext)
-				_orb().resolve_initial_references("OpenBusContext");
-			String entity = context.getCallerChain().caller().entity;
-			if (!entity.equals("MatricesUser"))
-				throw new NO_PERMISSION("unauthorized caller ("+entity+")");
+				_orb().resolve_initial_references("OpenBusContext");$\exlabel{getctxt}$
+			String entity = context.getCallerChain().caller().entity;$\exlabel{getcaller}$
+			if (!entity.equals("MatricesUser"))$\exlabel{checkcaller}$
+				throw new NO_PERMISSION("unauthorized caller ("+entity+")");$\exlabel{noperm}$
 		}
 		catch (InvalidName e) {
 			throw new GeneralFailure("unexpected failure (no OpenBus context)");
