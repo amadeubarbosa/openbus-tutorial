@@ -40,8 +40,8 @@ class MatrixServant extends SquareMatrixPOA {
 	                     MatrixFactoryServant factory, String loginId) {
 		_matrix = matrix;
 		_context = context;
-		_factory = factory;
-		_loginId = loginId;
+		_factory = factory;$\exlabel{savefactory}$
+		_loginId = loginId;$\exlabel{savelogin}$
 	}
 
 	private void assertAuthorized() {
@@ -61,7 +61,7 @@ class MatrixServant extends SquareMatrixPOA {
 
 	public void dispose() {
 		assertAuthorized();
-		_factory.disposeMatrix(this, _loginId);
+		_factory.disposeMatrix(this, _loginId);$\exlabel{disposematrix}$
 	}
 }
 
@@ -72,19 +72,19 @@ class MatrixFactoryServant extends MatrixFactoryPOA {
 	private LoginObserverSubscription _subscription;
 
 	public MatrixFactoryServant(TransformationRepository transformations,
-	                            OpenBusContext context, POA poa)
-		throws ServantNotActive , WrongPolicy , ServiceFailure {
+	                            OpenBusContext context, POA poa)$\exlabel{poaarg}$
+		throws ServantNotActive , WrongPolicy , ServiceFailure {$\exlabel{newexcepts}$
 		_transformations = transformations;
 		_context = context;
-		_matricesOf = new HashMap<String,Map<MatrixServant,byte[]>>();
-		_subscription = context.getLoginRegistry().subscribeObserver(
-			LoginObserverHelper.narrow(poa.servant_to_reference(new LoginObserverPOA () {
+		_matricesOf = new HashMap<String,Map<MatrixServant,byte[]>>();$\exlabel{ownertable}$
+		_subscription = context.getLoginRegistry().subscribeObserver($\exlabel{subscribeobs}$
+			LoginObserverHelper.narrow(poa.servant_to_reference(new LoginObserverPOA () {$\exlabel{newobs}$
 				public void entityLogout(LoginInfo login) {
 					Map<MatrixServant ,byte[]> map;
 					synchronized (_matricesOf) { map = _matricesOf.remove(login.id); }
 					if (map != null)
 						for (byte[] oid : map.values())
-							try { _poa().deactivate_object(oid); }
+							try { _poa().deactivate_object(oid); }$\exlabel{deactivatematrix}$
 							catch (ObjectNotActive e) {}
 							catch (WrongPolicy e) {}
 				}
@@ -103,21 +103,21 @@ class MatrixFactoryServant extends MatrixFactoryPOA {
 		try { transformation = _transformations.getTransformation(kind); }
 		catch(UnknownTransformation e) { throw new UnknownMatrixKind(kind); }
 
-		String loginId = chain.caller().id;
+		String loginId = chain.caller().id;$\exlabel{getlogin}$
 		MatrixServant matrix = new MatrixServant(new Matrix(transformation), _context,
 		                                                                     this,
-		                                                                     loginId);
+		                                                                     loginId);$\exlabel{informlogin}$
 
 		SquareMatrix result;
 		try {
-			byte[] oid = _poa().activate_object(matrix);
+			byte[] oid = _poa().activate_object(matrix);$\exlabel{activatematrix}$
 			synchronized (_matricesOf) {
 				Map<MatrixServant ,byte[]> map = _matricesOf.get(loginId);
 				if (map == null) {
 					map = new HashMap<MatrixServant,byte[]>();
 					_matricesOf.put(loginId , map);
 				}
-				map.put(matrix, oid);
+				map.put(matrix, oid);$\exlabel{registermatrix}$
 			}
 			result = SquareMatrixHelper.narrow(_poa().id_to_reference(oid));
 		}
@@ -125,24 +125,27 @@ class MatrixFactoryServant extends MatrixFactoryPOA {
 			throw new GeneralFailure("failure while activating matrix servant");
 		}
 		catch (ObjectNotActive e) {
-			disposeMatrix(matrix, loginId);
+			disposeMatrix(matrix, loginId);$\exlabel{disposematrix1}$
 			throw new GeneralFailure("failure while registering matrix servant");
 		}
 		catch (WrongPolicy e) {
-			disposeMatrix(matrix, loginId);
+			disposeMatrix(matrix, loginId);$\exlabel{disposematrix2}$
 			throw new GeneralFailure("unexpected failure (wrong POA policy)");
 		}
 
 		boolean watching = false;
-		try { watching = _subscription.watchLogin(loginId); }
+		try { watching = _subscription.watchLogin(loginId); }$\exlabel{watchlogin}$
 		catch(Exception e) {
-			disposeMatrix(matrix, loginId);
+			disposeMatrix(matrix, loginId);$\exlabel{disposematrix3}$
 			System.err.println("failure on watchin login: "+e);
 			throw new GeneralFailure("failure while watching login");
 		}
-		if (!watching) throw new NO_PERMISSION("caller became invalid",
-		                                       InvalidLoginCode.value,
-		                                       CompletionStatus.COMPLETED_NO);
+		if (!watching) {$\exlabel{watchfail}$
+			disposeMatrix(matrix, loginId);$\exlabel{disposematrix4}$
+			throw new NO_PERMISSION("caller became invalid",
+			                        InvalidLoginCode.value,
+			                        CompletionStatus.COMPLETED_NO);
+		}
 
 		return result;
 	}

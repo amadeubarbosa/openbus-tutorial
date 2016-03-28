@@ -412,12 +412,12 @@ Contudo, para que o acesso ao serviço de dados seja realizado com as identidades
 \section{Observadores de Login}
 
 Os sistemas que acessam o barramento possuem um login que eventualmente se torna inválido caso o sistema seja encerrado ou perca acesso ao barramento.
-Devido a isso, observar o login de determinados sistemas pode ser muito útil na gerênicia dos recursos alocados pelo sistema.
+Devido a isso, observar o login de determinados sistemas pode ser muito útil na gerência dos recursos alocados pelo sistema.
 Por exemplo, o nosso servidor de matrizes permite que os sistemas que o accessem possam criação de objetos de matrizes, que ficam válidos permanentemente.
 Logo, se alguns sistemas criam matrizes e terminam sem destruir a matriz, isso poderia gerar muitos objetos matriz no servidor que esgotem os recursos do servidor.
 Uma forma de contornar isso é atrelar a vida dos objetos de matriz ao tempo que o login do sistema que criou a matriz permanece válido.
 Dessa forma, é possível garantir que a destruição das matrizes ocorreria pelo menos quando o sistema que as cria deixa de acessar o barramento.
-Do lado dos clientes, basta que se realoque os recursos (\ie\ recriar as matrizes) sempre que precisar relogar.
+Do lado dos clientes, basta que se realoque os recursos (recriar as matrizes) sempre que precisar relogar.
 
 Para dar suporte a isso, o OpenBus oferece um serviço de observação de login acessível através da operação \code{OpenBusContext.getLoginRegistry}, cuja interface é describa abaixo em IDL de CORBA.
 
@@ -464,3 +464,31 @@ O resultado dessa operação é um objeto que permite definir os logins de interess
 As operações \code{watchLogin} e \code{watchLogins} permitem adicionar logins de interesse.
 Enquanto as operações \code{forgetLogin} e \code{forgetLogins} permitem remover os logins de interesse adicionados.
 A operação \code{getWatchedLogins} devolve os logins de interesse atuais, e a operação \code{remove} cancela o registro do objeto observador e todos seus logins de interesse, evitando que futuras notificações a esse observador sejam feitas.
+
+Para adaptar nossa implementação do servidor de matrizes para descartar automaticamente as matrizes, faremos com que esse servidor registre um observador e sempre que uma matriz for criada, o login de quem a cria é adicionado ao observador para que ele seja notificado quando o login expirar.
+Isso é ilustrado na figura~\ref{fig:ex13:matrices/Server:68:79}.
+Agora, o construtor do objeto da fábrica recebe um POA que é onde o observador é registrado (linha~\ref{lin:ex13:matrices/Server:poaarg}).
+De forma complementar, o construtor passa a lançar exceções relativas ao registro de objetos CORBA no POA, mas que não devem ocorrer na prática, a menos por um erro de implementação (linha~\ref{lin:ex13:matrices/Server:newexcepts}).
+Nesse construtor é criado um mapa para associar cada nome de entidade a todas os objetos matriz criados por ela (linha~\ref{lin:ex13:matrices/Server:ownertable}).
+Cada entrada do mapa inclui um segundo mapa que associa cada matriz criada ao \term{object ID} que identifica o objeto CORBA correspondente.
+Essa informação será utilizada na desativação dos objetos CORBA correspondentes às matrizes criadas por uma entidade quando a notificação do seu logout for recebida pelo observador (linha~\ref{lin:ex13:matrices/Server:deactivatematrix}).
+
+\inputexrange{ex13}{matrices/Server}{68}{92}{Observador que descarta matrizes.}
+
+A figura~\ref{fig:ex13:matrices/Server:105:151} ilustra como alteramos a operação de criação de matrizes para registrar as matrizes para o devido descarte em decorrência da notificação de logout.
+Primeiramente, o construtor dos objetos de matriz passa a receber a fábrica e o login de quem requisitou sua criação (linha~\ref{lin:ex13:matrices/Server:informlogin}).
+Isso será usado para que a matriz possa se retirar do mapa de matrizes da fábrica quando ela for descartada como ilustrado na figura~\ref{fig:ex13:matrices/Server:153:173}.
+Uma vez criado o objeto da matriz, ele é ativado como objeto CORBA (linha~\ref{lin:ex13:matrices/Server:activatematrix}) e adicionado ao mapa de matrizes (linha~\ref{lin:ex13:matrices/Server:registermatrix}).
+Caso alguma exceção seja lançada durante o registro da matriz no POA, então a mesma é removida do mapa de matrizes criadas (linhas~\ref{lin:ex13:matrices/Server:disposematrix1} e \ref{lin:ex13:matrices/Server:disposematrix2}).
+Após o registro do objeto CORBA, o login que solicita a criação da matriz passa a ser observado (linha~\ref{lin:ex13:matrices/Server:watchlogin}), de forma que a matriz possa ser descartada quando esse login ficar inválido.
+Caso ocorra uma exceção na observação do login, a matriz é descartada e uma exceção é sinalizada para o cliente indicando que não foi possível criar a matriz (linha~\ref{lin:ex13:matrices/Server:disposematrix3}).
+De forma similar, se a operação \code{watchLogin} devolver o valor \code{false}, indicando que o login sendo observado já está inválido (linha~\ref{lin:ex13:matrices/Server:watchfail}), então a matriz também é descartada (linha~\ref{lin:ex13:matrices/Server:disposematrix4}) e uma exceção é sinalizada para o cliente.
+
+\inputexrange{ex13}{matrices/Server}{105}{151}{Registrando matriz para descarte.}
+
+\inputexrange{ex13}{matrices/Server}{153}{173}{Operação de descarte da matriz.}
+
+Por fim, a figura~\ref{fig:ex13:matrices/Server:33:66} ilustra a nova implementação da classe \code{MatrixServant} em que o construtor recebe uma referência para o objeto de fábrica e o login que solicitou a criação da matriz(linha~\ref{lin:ex13:matrices/Server:savefactory} e \ref{lin:ex13:matrices/Server:savelogin}).
+Essas informações são utilizadas na operação \code{dispose} da matriz para descartá-la da fábrica (linha~\ref{lin:ex13:matrices/Server:disposematrix}) e assim evitar que seja descartada automaticamente em virtude do logout do cliente.
+
+\inputexrange{ex13}{matrices/Server}{33}{66}{Matriz que notifica descarte.}
