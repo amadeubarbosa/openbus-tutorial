@@ -68,9 +68,9 @@ class MatrixFactoryServant extends MatrixFactoryPOA {
 		throws UnknownTransformation, GeneralFailure {
 		String error;
 
-		if (_transformations != null) {
-			try { return _transformations.getTransformation(kind); }
-			catch (org.omg.CORBA.SystemException e) {
+		if (_transformations != null) {$\exlabel{savedref}$
+			try { return _transformations.getTransformation(kind); }$\exlabel{userserv1}$
+			catch (org.omg.CORBA.SystemException e) {$\exlabel{serverr}$
 				error = "transformations service failure: "+e;
 				System.err.println(error);
 			}
@@ -81,12 +81,12 @@ class MatrixFactoryServant extends MatrixFactoryPOA {
 		_transformations = null;
 		try {
 			ServiceOfferDesc[] offers =
-				_context.getOfferRegistry().findServices(_transfServiceProps);
-			for (ServiceOfferDesc offer : offers)
+				_context.getOfferRegistry().findServices(_transfServiceProps);$\exlabel{findserv}$
+			for (ServiceOfferDesc offer : offers)$\exlabel{iterateserv}$
 				try {
 					_transformations = TransformationRepositoryHelper.narrow(
 						offer.service_ref.getFacet(TransformationRepositoryHelper.id()));
-					if (_transformations != null) break;
+					if (_transformations != null) break;$\exlabel{servfound}$
 					System.err.println("found service with missing facet!");
 				}
 				catch (Exception e) { System.err.println("offered service failure: "+e); }
@@ -94,7 +94,7 @@ class MatrixFactoryServant extends MatrixFactoryPOA {
 		catch (Exception e) { System.err.println("offer query failure: "+e); }
 
 		if (_transformations != null) {
-			try { return _transformations.getTransformation(kind); }
+			try { return _transformations.getTransformation(kind); }$\exlabel{userserv2}$
 			catch (org.omg.CORBA.SystemException e) {
 				error = "transformations service failure: "+e;
 			}
