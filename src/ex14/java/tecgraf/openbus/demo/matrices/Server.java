@@ -111,7 +111,7 @@ public class Server {
 				POA poa = POAHelper.narrow(orb.resolve_initial_references("RootPOA"));
 				poa.the_POAManager().activate();
 
-				ServiceOfferDesc[] offers = context.getOfferRegistry().findServices(
+				ServiceOfferDesc[] offers = context.getOfferRegistry().findServices($\exlabel{findserv}$
 					new ServiceProperty[] {
 						new ServiceProperty("domain", "Tutorial"),
 						new ServiceProperty("openbus.offer.entity", "Transformations"),
@@ -123,14 +123,14 @@ public class Server {
 				for (ServiceOfferDesc offer : offers)
 					try {
 						transformations = TransformationRepositoryHelper.narrow(
-							offer.service_ref.getFacet(TransformationRepositoryHelper.id()));
-						if (transformations != null) break;
+							offer.service_ref.getFacet(TransformationRepositoryHelper.id()));$\exlabel{getfacet}$
+						if (transformations != null) break;$\exlabel{servfound}$
 						System.err.println("found service with missing facet!");
 					}
-					catch (Exception e) { System.err.println("offered service failure: "+e); }
-				if (transformations == null) {
+					catch (Exception e) { System.err.println("offered service failure: "+e); }$\exlabel{catchex}$
+				if (transformations == null) {$\exlabel{checkserv}$
 					System.err.println("no suitable service found");
-					return;
+					return;$\exlabel{endexec}$
 				}
 
 				org.omg.CORBA.Object obj = poa.servant_to_reference(

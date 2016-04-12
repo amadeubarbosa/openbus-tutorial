@@ -100,7 +100,7 @@ class MatrixFactoryServant extends MatrixFactoryPOA {
 			}
 		}
 
-		throw new GeneralFailure(error);
+		throw new GeneralFailure(error);$\exlabel{raiseex}$
 	}
 
 	public SquareMatrix newMatrix(String kind)

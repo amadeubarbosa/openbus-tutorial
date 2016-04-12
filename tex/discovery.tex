@@ -1,0 +1,253 @@
+Neste capítulo são apresentaos os recursos oferecidos pela infraestrutura do \openbus{} para o registro e descoberta de ofertas de serviços oferecidos pelos sistemas integrados através do barramento.
+Como no capítulo anterior, os exemplos são elaborados como incrementos dos últimos exemplos para formar ao final uma integração completamente funcional sobre a infraestrutura do \openbus{}.
+
+\section{SCS: Sistema de Componentes de Software}
+
+O \openbus{} é fortemente baseado no SCS, um modelo de de componentes de software distribuídos para CORBA.
+Um componente de software é um bloco básico para composição de um software.
+Os componentes SCS são idealmente utilizados para compor as integrações de sistemas através de um barramento OpenBus.
+
+Os componentes de software podem ser vistos como módulos funcionalmente coesos que interagem com demais componentes através de \term{portas}, que possuem um nome único no componente e implementem uma interface definida em IDL de CORBA.
+Há dois tipos de portas:
+\term{facetas} são portas que ofertam um serviço provido pelo componente através da interface da porta;
+\term{receptáculos} são portas onde facetas podem ser acopladas para oferecer um serviço para o componente.
+Uma faceta só pode ser acoplata a um receptáculo com a mesma interface.
+As facetas determinam quais os serviços oferecidos por um dado componente, enquanto os receptáculos definem as dependências externas do componente.
+
+Além dessas interfaces de serviço oferecidas e exigidas, um componente SCS também apresenta interfaces básicas para configuração e controle do mesmo.
+A figura~\ref{fig:scs_comp} ilustra a estrutura de um componente de software SCS típico.
+O modelo SCS define três interfaces básicas que são obrigatórias e são utilizadas para manipulação do componente, suas facetas e receptáculos.
+
+\inputimage{scs_comp}{Estrutura de um componente no modelo SCS.}
+
+\subsection{Faceta IComponent}
+
+O ponto inicial de acesso a um componente é a faceta básica denominada \code{IComponent} que implementa a interface \code{::scs::core::IComponent} descrita abaixo.
+
+\begin{samplecode}[language= {[CORBA]IDL} ]
+  struct ComponentId {
+    string name;
+    octet major_version;
+    octet minor_version;
+    octet patch_version;
+    string platform_spec;
+  };
+
+  exception StartupFailed {};
+  exception ShutdownFailed {};
+
+  interface IComponent {
+    ComponentId getComponentId();
+
+    Object getFacet(in string interfaceId);
+    Object getFacetByName(in string name);
+
+    void startup() raises (StartupFailed);
+    void shutdown() raises (ShutdownFailed);
+  };
+\end{samplecode}
+
+A operação \code{getComponentId} devolve algumas meta-informações sobre o componente, tal como a versão da sua implementação e a plataforma que ele executa.
+A semântica precisa dessas informações é definida pelo desenvolvedor do componente.
+
+As operações \term{getFacet} e \term{getFaceByName} são utilizadas para obter a referência de uma faceta do componente.
+A operação \term{getFacet} devolve uma faceta cuja interface tenha o identificador dado pelo parâmetro \term{interfaceId}, ou \term{null} caso o componente não tenha nenhuma faceta com aquela interface.
+Já a operação \term{getFacetByName} devolve a faceta com o nome dado pelo parâmetro \code{name}, ou \term{null} caso o componente não tenha nenhuma faceta com aquele nome.
+
+As operações \term{startup} e \term{shutdown} são usadas para controlar o ciclo de vida do componente.
+A operação \term{startup} inicia o funcionamento do componente, já a operaçao \term{shutdown} encerra o funcionamento do componente.
+Nem sempre o componente pode ser reiniciado após a chamada da operação \term{shutdown}.
+Isso dependende da implementação específica do componente.
+
+\subsection{Faceta IMetaInterface}
+
+A segunda faceta básica do modelo SCS é denominada \term{IMetaInterface}, que é utilizada para inspecionar as portas do componente.
+A interface implementada por essa faceta é ilustrada abaixo.
+
+\begin{samplecode}[language= {[CORBA]IDL} ]
+  typedef sequence<string> NameList;
+  typedef unsigned long ConnectionId;
+
+  struct FacetDescription {
+    string name;
+    string interface_name;
+    Object facet_ref;
+  };
+  typedef sequence<FacetDescription> FacetDescriptions;
+
+  struct ConnectionDescription {
+    ConnectionId id;
+    Object objref;
+  };
+  typedef sequence<ConnectionDescription> ConnectionDescriptions;
+
+  struct ReceptacleDescription {
+    string name;
+    string interface_name;         
+    boolean is_multiplex;
+    ConnectionDescriptions connections;
+  };
+  typedef sequence<ReceptacleDescription> ReceptacleDescriptions;
+
+  exception InvalidName { string name; };
+
+  interface IMetaInterface {
+    FacetDescriptions getFacets();
+    FacetDescriptions getFacetsByName(in NameList names)
+      raises (InvalidName);
+    ReceptacleDescriptions getReceptacles();
+    ReceptacleDescriptions getReceptaclesByName(in NameList names)
+      raises (InvalidName);
+  };
+\end{samplecode}
+
+A operação \term{getFacets} devolve a descrição de todas as facetas do componente, que incluem o nome, identificador da interface e a referência da faceta.
+A operação \term{getFacetsByName} funciona tal como a \term{getFacets}, mas só devolve descrições das facetas com os nomes informados no parâmetro \code{names}.
+
+A operação \term{getReceptacles} devolve a descrição de todas os receptáculos do componente, que incluem o nome, identificador da interface, uma indicação se aceita mais de uma faceta conectada simultanemanete, e a lista de todas as referências das facetas conectadas ao receptáculo.
+A operação \term{getReceptaclesByName} funciona tal como a \term{getReceptacles}, mas só devolve descrições dos receptáculos com os nomes informados no parâmetro \code{names}.
+
+\subsection{Faceta IReceptacles}
+
+A terceira faceta básica do modelo SCS é denominada \term{IReceptacles}, que é utilizada para conectar facetas aos receptáculos do componente.
+A interface implementada por essa faceta é ilustrada abaixo.
+
+\begin{samplecode}[language= {[CORBA]IDL} ]
+  typedef unsigned long ConnectionId;
+
+  exception InvalidName { string name; };
+  exception InvalidConnection {};
+  exception AlreadyConnected {};
+  exception ExceededConnectionLimit {};
+  exception NoConnection {};
+
+  interface IReceptacles {
+    ConnectionId connect (in string receptacle, in Object obj)
+      raises (InvalidName, InvalidConnection, AlreadyConnected,
+              ExceededConnectionLimit);
+    void disconnect (in ConnectionId id)
+      raises (InvalidConnection, NoConnection);
+    ConnectionDescriptions getConnections (in string receptacle)
+      raises (InvalidName);
+  };
+\end{samplecode}  
+
+A operação \code{connect} é utilizada para conectar a referência de faceta dada pelo parâmetro \code{obj} ao receptáculo de nome dado pelo parâmetro \code{receptacle}.
+Essa operação devolve um identificador dessa conexão estabelecida.
+Esse identificador pode ser posteriormente usado na operação \code{disconnect} para desfazer a conexão.
+
+Finalmente, a operação \code{getConnections} devolve uma lista de todas as conexões estabelecidas naquele recpetáculo.
+
+\section{Ofertas de Serviço}
+
+Uma oferta de serviço é um anúncio de um serviço disponível no barramento.
+Os sistemas que acessam o barramento podem consultar as ofertas de serviço para encontrar um serviço desejado.
+Cada serviço ofertado num barramento \openbus{} é um componente SCS, que pode oferecer diferentes facetas que em conjunto representam o serviço.
+Toda oferta de serviço tem um confunto de propriedades que a descreve, assim como o serviço ofertado.
+As propriedades da oferta são uma sequência de pares nome e valor.
+É possível ter mais de uma propriedade com o mesmo nome.
+
+Há dois tipos de propriedade de oferta:
+\term{automáticas} são propriedades cujo nome começa com o prefixo \code{openbus.} e o valor é definido pela infraestrutura do \openbus{} e não podem ser alteradas ou definidas pelos sistemas;
+\term{adicionais} são propriedades definidas por quem oferta o serviço e podem ser posteriormente alteradas.
+Recomenda-se que as propriedades adicionais não começem com o prefixo \code{openbus.} pois esses nomes são reservados para futuras propriedades automáticas.
+A seguir listamos todas as propriedades adicionais definidas pelo \openbus{}.
+
+\begin{tabular}{l|l}
+  Nome da Propridade & Descrição \\
+  \hline
+  \code{openbus.offer.id} & Ident. único da oferta. \\
+  \code{openbus.offer.login} & Ident. do login com que a oferta foi registrada. \\
+  \code{openbus.offer.entity} & Ident. da entidade que registrou a oferta. \\
+  \code{openbus.offer.timestamp} & Número indicando o momento do registro da oferta. \\
+  \code{openbus.offer.year} & Ano em que a oferta foi registrada. \\
+  \code{openbus.offer.month} & Número do mês em que a oferta foi registrada. \\
+  \code{openbus.offer.day} & Dia do mês que a oferta foi registrada. \\
+  \code{openbus.offer.hour} & Hora do dia em que a oferta foi registrada. \\
+  \code{openbus.offer.minute} & Minuto do dia em que a oferta foi registrada. \\
+  \code{openbus.offer.second} & Segundo do dia em que a oferta foi registrada. \\
+  \code{openbus.component.name} & Nome do componente SCS que implementa o serviço. \\
+  \code{openbus.component.version.major} & Versão maior do componente SCS. \\
+  \code{openbus.component.version.minor} & Versão menor do componente SCS. \\
+  \code{openbus.component.version.patch} & Versão de correção do componente SCS. \\
+  \code{openbus.component.platform} & Especificação da plataforma do componente SCS. \\
+  \code{openbus.component.facet} & Nome de faceta oferecida pelo componente SCS. \\
+  \code{openbus.component.interface} & RepID de interface implem. pela faceta do comp. SCS.
+\end{tabular}
+
+\section{Busca de Ofertas de Serviço}
+
+Todas as ofertas de serviço ficam acessíveis através do registro de ofertas, que pode ser obtido através da operação \code{getOfferRegistry} do objeto de contexto do \openbus{}, tal como ilustrado no codigo abaixo.
+
+\begin{samplecode}[language=java]
+  interface OpenBusContext {
+    ...
+    OfferRegistry getOfferRegistry();
+    ...      
+  }
+\end{samplecode}
+
+A interface \code{OfferRegistry} permite a consulta das ofertas de serviço através das operações ilustradas no código abaixo.
+
+\begin{samplecode}[language= {[CORBA]IDL} ]
+  struct ServiceProperty {
+    string name;
+    string value;
+  };
+  typedef sequence<ServiceProperty> ServicePropertySeq;
+
+  typedef scs::core::IComponent OfferedService;
+
+  struct ServiceOfferDesc {
+    OfferedService service_ref;
+    ServicePropertySeq properties;
+    ServiceOffer ref;
+  };
+  typedef sequence<ServiceOfferDesc> ServiceOfferDescSeq;
+
+  interface OfferRegistry {
+    ...
+    ServiceOfferDescSeq findServices(
+      in ServicePropertySeq properties) raises (ServiceFailure);
+    ServiceOfferDescSeq getAllServices() raises (ServiceFailure);
+    ...
+  };
+\end{samplecode}
+
+A operação \code{getAllServices} devolve uma lista completa de todas as ofertas de serviço atualmente registradas no barramento.
+Já a operação \code{findServices} permite buscar as ofertas que apresentem um conjunto de propriedades específico definido pelo parâmetro \code{properties}.
+A descrição de cada oferta informa a referência à faceta \code{IComponent} do component SCS do serviço ofertado (campo \code{service_ref}), a lista de todas as propriedades da oferta do serviço (campo \code{proprieties}), e finalmente uma referência a um objeto que representa a oferta (campo \code{ref}).
+Essa última referência é usada para controlar a oferta, tal como alterar suas propriedades ou remover a oferta, como será apresentado mais a frente.
+
+Para ilustrar a utilização do registro de ofertas para buscar serviços, consideremos alterar o nosso servidor de exemplo para passar a utilizar um serviço que forneça os dados das matrizes de transformação através de uma faceta que implemente a interface \code{TransformationRepository}.
+Para tanto, também vamos considerar que esse serviço seja ofertado pela entidade \code{Transformations} e seja ofertado com a propriedade de nome \code{Domain} com o valor \code{"Tutorial"}.
+
+A figura~\ref{fig:ex14:matrices/Server:97:146} ilustra o código do servidor alterado para buscar o serviço de dados de matrizes através da operação \code{findServices} (linha~\ref{lin:ex14:matrices/Server:findserv}).
+Uma vez feita a busca, iteramos sobre todas as ofertas encontradas para tentar obter a faceta de interesse através da operação \code{getFacet} da referência do componente do serviço (linha~\ref{lin:ex14:matrices/Server:getfacet}).
+Se alguma exceção ocorrer durante o acesso ao serviço ofertado (linha~\ref{lin:ex14:matrices/Server:catchex}) a oferta é ignorada e continuamos a inspecionar as demais.
+Por outro lado, se conseguirmos a faceta do serviço de interesse terminamos a busca (linha~\ref{lin:ex14:matrices/Server:servfound}).
+Após a inspeção dos resultados verificamos se conseguimos algum serviço acessível (linha~\ref{lin:ex14:matrices/Server:checkserv}).
+Caso nenhum serviço esteja acessível, encerramos a execução (linha~\ref{lin:ex14:matrices/Server:endexec}).
+
+\inputexrange{ex14}{matrices/Server}{97}{146}{Servidor que buscando ofertas de interesse.}
+
+Essa abordagem apresenta o problema de que a busca do serviço só é feita ao iniciar o servidor.
+Logo, se o serviço não estiver disponível nesse momento ou ser posteriormente substituído por outro serviço, o servidor terá que ser reiniciado para obter uma nova referência ao serviço.
+Para contornar isso, podemos alterar o servidor para buscar um novo serviço só quando for realmente utilizado e sempre buscar uma nova oferta quando ocorrer alguma falha ao acessar o serviço atual.
+A figura~\ref{fig:ex15:matrices/Server:55:104} ilustra a implementação de uma operação para obtenção dos dados de uma matriz através de um serviço.
+Caso não seja possível encontrar um serviço para obter os dados, é lançada a exceção \code{GeneralFailure} (linha~\ref{lin:ex15:matrices/Server:raiseex}) que deve ser repassada para o cliente que chama a operação \code{newMatrix}.
+
+\inputexrange{ex15}{matrices/Server}{55}{104}{Servidor que busca serviço sob demanda.}
+
+Inicialmente a operação \code{getTransformation} verifica se já existe uma referência em uso do serviço na variável \code{_transformations} (linha~\ref{lin:ex15:matrices/Server:savedref}).
+Se existir ela é usada para obter os dados para construção da matriz (linha~\ref{lin:ex15:matrices/Server:useserv1}).
+Caso contrário, se não houver uma referência ou ocorrer uma exceção ao tentar utilizá-la (linha~\ref{lin:ex15:matrices/Server:serverr}), a execução segue para buscar novas ofertas do serviço (linha~\ref{lin:ex15:matrices/Server:findserv}) e encontrar uma nova faceta para acessar o serviço (linha~\ref{lin:ex15:matrices/Server:iterateserv}).
+Caso uma nova faceta seja obtida a iteração dos resultados da busca é encerrada (linha~\ref{lin:ex15:matrices/Server:servfound}).
+Finalmente, se após a nova busca uma referência for encontrada e armazenada na variável \code{_transformations}, uma nova tentativa é feita para obter os dados da matriz (linha~\ref{lin:ex15:matrices/Server:useserv2}).
+Caso nenhum serviço seja utilizado para obter os dados, a exceção \code{GeneralFailure} é lançada a (linha~\ref{lin:ex15:matrices/Server:raiseex}).
+
+\section{Criação de Componente SCS}
+
+%figura~\ref{fig:ex13:matrices/Server:33:66}
+%(linha~\ref{lin:ex13:matrices/Server:disposematrix})
+%\inputexrange{ex13}{matrices/Server}{33}{66}{Matriz que notifica descarte.}
