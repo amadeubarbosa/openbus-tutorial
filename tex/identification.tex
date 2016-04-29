@@ -28,7 +28,7 @@ O SDK também inclui arquivos de documentação e aplicações de demonstração.
 
 \section{Iniciando o ORB}
 
-Um ORB OpenBus é iniciado através da operação \code{initORB}, cuja assinatura é apresentada baixo.
+Um ORB OpenBus é iniciado através da operação \code{initORB}, cuja assinatura é apresentada abaixo.
 
 \begin{samplecode}
   public class ORBInitializer {
@@ -466,8 +466,8 @@ Enquanto as operações \code{forgetLogin} e \code{forgetLogins} permitem remover 
 A operação \code{getWatchedLogins} devolve os logins de interesse atuais, e a operação \code{remove} cancela o registro do objeto observador e todos seus logins de interesse, evitando que futuras notificações a esse observador sejam feitas.
 
 Para adaptar nossa implementação do servidor de matrizes para descartar automaticamente as matrizes, faremos com que esse servidor registre um observador e sempre que uma matriz for criada, o login de quem a cria é adicionado ao observador para que ele seja notificado quando o login expirar.
-Isso é ilustrado na figura~\ref{fig:ex13:matrices/Server:68:79}.
-Agora, o construtor do objeto da fábrica recebe um POA que é onde o observador é registrado (linha~\ref{lin:ex13:matrices/Server:poaarg}).
+Isso é ilustrado na figura~\ref{fig:ex13:matrices/Server:68:92}.
+Nessa implementação, o construtor do objeto da fábrica recebe um POA que é onde o observador é registrado (linha~\ref{lin:ex13:matrices/Server:poaarg}).
 De forma complementar, o construtor passa a lançar exceções relativas ao registro de objetos CORBA no POA, mas que não devem ocorrer na prática, a menos por um erro de implementação (linha~\ref{lin:ex13:matrices/Server:newexcepts}).
 Nesse construtor é criado um mapa para associar cada nome de entidade a todas os objetos matriz criados por ela (linha~\ref{lin:ex13:matrices/Server:ownertable}).
 Cada entrada do mapa inclui um segundo mapa que associa cada matriz criada ao \term{object ID} que identifica o objeto CORBA correspondente.

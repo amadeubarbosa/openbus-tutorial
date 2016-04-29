@@ -1863,7 +1863,7 @@ new ServiceProperty[] = {
   \begin{itemize}
     \item O ComponentID:
     \begin{samplecode}
-ComponentId cid = new ComponentId("Name",  // component name
+ComponentId cid = new ComponentId("MySCS", // component name
                                   (byte)1, // major version
                                   (byte)0, // minor version
                                   (byte)0, // patch version
@@ -2052,29 +2052,38 @@ interface OfferRegistryObserver {
 \begin{frame}
   \frametitle{Exercício 19: Observando a Modificação de Ofertas}
   \inputjava[firstline=108,lastline=115]{old}{ex19}{watchoffers/Application}
-  \inputjava[firstline=116,lastline=125]{new}{ex19}{watchoffers/Application}
+  \inputjava[firstline=116,lastline=126]{new}{ex19}{watchoffers/Application}
 \end{frame}
 
 \begin{frame}
   \frametitle{Exercício 19: Observando a Remoção de Ofertas}
-  \inputjava[firstline=126,lastline=140]{new}{ex19}{watchoffers/Application}
-  \inputjava[firstline=141,lastline=147]{old}{ex19}{watchoffers/Application}
+  \inputjava[firstline=127,lastline=138]{new}{ex19}{watchoffers/Application}
+  \inputjava[firstline=139,lastline=145]{old}{ex19}{watchoffers/Application}
 \end{frame}
 
 \begin{frame}
   \frametitle{Exercício 19: Tratando Notificações de Registro Duplicadas}
-  \inputjava[firstline=147,lastline=147]{old}{ex19}{watchoffers/Application}
-  \inputjava[firstline=148,lastline=155]{new}{ex19}{watchoffers/Application}
-  \inputjava[firstline=156,lastline=156]{old}{ex19}{watchoffers/Application}
-  \inputjava[firstline=157,lastline=162]{new}{ex19}{watchoffers/Application}
-  \inputjava[firstline=163,lastline=163]{old}{ex19}{watchoffers/Application}
+  \inputjava[firstline=145,lastline=145]{old}{ex19}{watchoffers/Application}
+  \inputjava[firstline=146,lastline=152]{new}{ex19}{watchoffers/Application}
+  \inputjava[firstline=153,lastline=154]{old}{ex19}{watchoffers/Application}
+  \inputjava[firstline=155,lastline=160]{new}{ex19}{watchoffers/Application}
+  \inputjava[firstline=161,lastline=161]{old}{ex19}{watchoffers/Application}
 \end{frame}
 
 \begin{frame}
   \frametitle{Exercício 19: Inscrevendo o Observador da Oferta}
-  \inputjava[firstline=165,lastline=187]{new}{ex19}{watchoffers/Application}
-  \inputjava[firstline=188,lastline=189]{old}{ex19}{watchoffers/Application}
+  \inputjava[firstline=154,lastline=154]{old}{ex19}{watchoffers/Application}
+  \inputjava[firstline=155,lastline=160]{new}{ex19}{watchoffers/Application}
+  \inputjava[firstline=161,lastline=161]{old}{ex19}{watchoffers/Application}
+  \inputjava[firstline=162,lastline=176]{new}{ex19}{watchoffers/Application}
 \end{frame}
+
+\begin{frame}
+  \frametitle{Exercício 19: Tratando Falhas da Inscrição do Observador da Oferta}
+  \inputjava[firstline=177,lastline=189]{new}{ex19}{watchoffers/Application}
+  \inputjava[firstline=190,lastline=198]{old}{ex19}{watchoffers/Application}
+\end{frame}
+
 
 \begin{frame}[fragile]
   \frametitle{Callback de Login Inválido}

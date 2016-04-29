@@ -149,15 +149,15 @@ public class Server {
 				poa.the_POAManager().activate();
 
 				ComponentContext component =
-					new ComponentContext(orb, poa, new ComponentId("Matrices",
-					                                               (byte) 1,
-					                                               (byte) 0,
-					                                               (byte) 0,
+					new ComponentContext(orb, poa, new ComponentId("Matrices",$\exlabel{newscs}$
+					                                               (byte)1,
+					                                               (byte)0,
+					                                               (byte)0,
 					                                               "java"));
-				component.addFacet("Matrices", MatrixFactoryHelper.id(),
+				component.addFacet("Matrices", MatrixFactoryHelper.id(),$\exlabel{addfacet}$
 					new MatrixFactoryServant(context));
 
-				context.getOfferRegistry().registerService(component.getIComponent(),
+				context.getOfferRegistry().registerService(component.getIComponent(),$\exlabel{addoffer}$
 					new ServiceProperty[] { new ServiceProperty("domain", "Tutorial") });
 
 				System.in.read();

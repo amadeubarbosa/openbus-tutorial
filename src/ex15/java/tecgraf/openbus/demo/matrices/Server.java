@@ -69,7 +69,7 @@ class MatrixFactoryServant extends MatrixFactoryPOA {
 		String error;
 
 		if (_transformations != null) {$\exlabel{savedref}$
-			try { return _transformations.getTransformation(kind); }$\exlabel{userserv1}$
+			try { return _transformations.getTransformation(kind); }$\exlabel{useserv1}$
 			catch (org.omg.CORBA.SystemException e) {$\exlabel{serverr}$
 				error = "transformations service failure: "+e;
 				System.err.println(error);
@@ -94,7 +94,7 @@ class MatrixFactoryServant extends MatrixFactoryPOA {
 		catch (Exception e) { System.err.println("offer query failure: "+e); }
 
 		if (_transformations != null) {
-			try { return _transformations.getTransformation(kind); }$\exlabel{userserv2}$
+			try { return _transformations.getTransformation(kind); }$\exlabel{useserv2}$
 			catch (org.omg.CORBA.SystemException e) {
 				error = "transformations service failure: "+e;
 			}

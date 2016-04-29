@@ -1,7 +1,7 @@
 Neste capítulo são apresentaos os recursos oferecidos pela infraestrutura do \openbus{} para o registro e descoberta de ofertas de serviços oferecidos pelos sistemas integrados através do barramento.
 Como no capítulo anterior, os exemplos são elaborados como incrementos dos últimos exemplos para formar ao final uma integração completamente funcional sobre a infraestrutura do \openbus{}.
 
-\section{SCS: Sistema de Componentes de Software}
+\section{SCS: Sistema de Componentes de Software} \label{sec:scs}
 
 O \openbus{} é fortemente baseado no SCS, um modelo de de componentes de software distribuídos para CORBA.
 Um componente de software é um bloco básico para composição de um software.
@@ -175,7 +175,7 @@ A seguir listamos todas as propriedades adicionais definidas pelo \openbus{}.
   \code{openbus.component.interface} & RepID de interface implem. pela faceta do comp. SCS.
 \end{tabular}
 
-\section{Busca de Ofertas de Serviço}
+\section{Busca de Ofertas de Serviço} \label{sec:FindOffer}
 
 Todas as ofertas de serviço ficam acessíveis através do registro de ofertas, que pode ser obtido através da operação \code{getOfferRegistry} do objeto de contexto do \openbus{}, tal como ilustrado no codigo abaixo.
 
@@ -216,7 +216,7 @@ A interface \code{OfferRegistry} permite a consulta das ofertas de serviço atrav
 
 A operação \code{getAllServices} devolve uma lista completa de todas as ofertas de serviço atualmente registradas no barramento.
 Já a operação \code{findServices} permite buscar as ofertas que apresentem um conjunto de propriedades específico definido pelo parâmetro \code{properties}.
-A descrição de cada oferta informa a referência à faceta \code{IComponent} do component SCS do serviço ofertado (campo \code{service_ref}), a lista de todas as propriedades da oferta do serviço (campo \code{proprieties}), e finalmente uma referência a um objeto que representa a oferta (campo \code{ref}).
+A descrição de cada oferta informa a referência à faceta \code{IComponent} do component SCS do serviço ofertado (campo \code{service\_ref}), a lista de todas as propriedades da oferta do serviço (campo \code{proprieties}), e finalmente uma referência a um objeto que representa a oferta (campo \code{ref}).
 Essa última referência é usada para controlar a oferta, tal como alterar suas propriedades ou remover a oferta, como será apresentado mais a frente.
 
 Para ilustrar a utilização do registro de ofertas para buscar serviços, consideremos alterar o nosso servidor de exemplo para passar a utilizar um serviço que forneça os dados das matrizes de transformação através de uma faceta que implemente a interface \code{TransformationRepository}.
@@ -239,15 +239,242 @@ Caso não seja possível encontrar um serviço para obter os dados, é lançada a exc
 
 \inputexrange{ex15}{matrices/Server}{55}{104}{Servidor que busca serviço sob demanda.}
 
-Inicialmente a operação \code{getTransformation} verifica se já existe uma referência em uso do serviço na variável \code{_transformations} (linha~\ref{lin:ex15:matrices/Server:savedref}).
-Se existir ela é usada para obter os dados para construção da matriz (linha~\ref{lin:ex15:matrices/Server:useserv1}).
+Inicialmente a operação \code{getTransformation} verifica se já existe uma referência em uso do serviço na variável \code{\_transformations} (linha~\ref{lin:ex15:matrices/Server:savedref}).
+Se existir, ela é usada para obter os dados para construção da matriz (linha~\ref{lin:ex15:matrices/Server:useserv1}).
 Caso contrário, se não houver uma referência ou ocorrer uma exceção ao tentar utilizá-la (linha~\ref{lin:ex15:matrices/Server:serverr}), a execução segue para buscar novas ofertas do serviço (linha~\ref{lin:ex15:matrices/Server:findserv}) e encontrar uma nova faceta para acessar o serviço (linha~\ref{lin:ex15:matrices/Server:iterateserv}).
 Caso uma nova faceta seja obtida a iteração dos resultados da busca é encerrada (linha~\ref{lin:ex15:matrices/Server:servfound}).
-Finalmente, se após a nova busca uma referência for encontrada e armazenada na variável \code{_transformations}, uma nova tentativa é feita para obter os dados da matriz (linha~\ref{lin:ex15:matrices/Server:useserv2}).
+Finalmente, se após a nova busca uma referência for encontrada e armazenada na variável \code{\_transformations}, uma nova tentativa é feita para obter os dados da matriz (linha~\ref{lin:ex15:matrices/Server:useserv2}).
 Caso nenhum serviço seja utilizado para obter os dados, a exceção \code{GeneralFailure} é lançada a (linha~\ref{lin:ex15:matrices/Server:raiseex}).
 
 \section{Criação de Componente SCS}
 
-%figura~\ref{fig:ex13:matrices/Server:33:66}
-%(linha~\ref{lin:ex13:matrices/Server:disposematrix})
-%\inputexrange{ex13}{matrices/Server}{33}{66}{Matriz que notifica descarte.}
+A criação de um componente SCS é facilitada pelo uso de classes utilitárias que implementam a infraestrutura básica de componente SCS, deixando para o desenvolvedor apenas a implementação das facetas.
+A classe \code{ComponentId} permite definir o identificador do componente a partir de seus componentes principais, como no exemplo abaixo.
+
+\begin{samplecode}
+ComponentId cid = new ComponentId("MySCS", // component name
+                                  (byte)1, // major version
+                                  (byte)0, // minor version
+                                  (byte)0, // patch version
+                                  "java"); // platform name
+\end{samplecode}
+
+A classe \code{ComponentContext} permite criar um componente que implementa as facetas básicas do modelo SCS.
+Para tanto, é necessário prover como parâmetros do construtor um ORB e um POA onde os objetos CORBA das facetas do componente serão registradas.
+O construtor também recebe o identificador do componente a ser criado, tal como ilustrado no código abaixo.
+
+\begin{samplecode}
+ComponentContext component = new ComponentContext(orb, poa, cid);
+\end{samplecode}
+
+O objeto criado ofere operações para adicionar portas específicas ao componente.
+No caso da adição de facetas (operação \code{addFacet}), é necessário informar o nome, o identificador da interface da faceta (repID) e o objeto que implementa a faceta, como ilustrado no código abaixo.
+
+\begin{samplecode}
+component.addFacet("Transformations",                         // facet name
+                   TransformationRepositoryHelper.id(),       // interface repID
+                   new TransformationRepositoryPOA () {...}); // implementation
+\end{samplecode}
+
+Já no caso da adição de um receptáculo, utiliza-se operação \code{addRecpetacle}, que recebe o nome do receptáculo, o identificador da interface (repID) dos objetos que podem ser conectados ao receptáculos e finalmente um valor lógico que indica se o receptáculo poderá aceitar mais de uma conexão simultaneamente.
+
+\begin{samplecode}
+component.addReceptacle("Matrices",               // receptacle name
+                        MatrixFactoryHelper.id(), // interface repID
+                        false);                   // is multiple?
+\end{samplecode}
+
+A operação \code{getIComponent} permite obter a referência CORBA do componente SCS criado, como ilustrado no código abaixo.
+
+\begin{samplecode}
+IComponent icomp = component.getIComponent();
+\end{samplecode}
+
+Essa referência pode ser utilizada para obter referências as demais referências usando as facetas básicas do SCS describas anteriormente.
+Por outro lado, os objetos da classe \code{ComponentContext} também oferece a operação \code{getFacetByName} para obter localmente as referências CORBA das facetas, como no código abaixo que ilustra a obtenção da faceta de nome \code{"Transformations"}.
+
+\begin{samplecode}
+org.omg.CORBA.Object obj =
+  component.getFacetByName("Transformations").getReference();
+\end{samplecode}
+
+Adicionalmente, a operação \code{getRecetacleByName} pode ser utilizada para obter um objeto da classe \code{Recetacle}, que permite manipular as conexões num receptáculo do componente.
+O exemplo do código abaixo ilustra como obter a referência conectada ao receptáculo de nome \code{"Matrices"}.
+
+\begin{samplecode}
+Receptacle r = component.getRecetacleByName("Matrices")
+org.omg.CORBA.Object obj = r.getConnectionsSize()>0  ?
+                           r.getConnections().get(0) :
+                           null;
+\end{samplecode}
+
+\section{Registro de Ofertas}
+
+O registro de ofertas (\code{OfferRegistry}), que pode ser obtido através da operação \code{getOfferRegistry} do objeto de contexto do \openbus{}, oferece a operação \code{registerService} para o adição de novas ofertas de serviço, tal como ilustrado na IDL abaixo.
+
+\begin{samplecode}[language= {[CORBA]IDL} ]
+struct ServiceProperty {
+  string name;
+  string value;
+};
+typedef sequence<ServiceProperty> ServicePropertySeq;
+
+typedef scs::core::IComponent OfferedService;
+
+interface OfferRegistry {
+  ...
+  ServiceOfferDescSeq registerService(
+    in OfferedService service_ref,
+    in ServicePropertySeq properties)
+    raises (InvalidService, InvalidProperties,
+            UnauthorizedFacets, ServiceFailure);
+  ...
+};
+\end{samplecode}
+
+Essa operação recebe como primeiro parâmetro a referência da faceta \code{IComponent} do componente que representa o serviço sendo ofertado (\code{service\_ref}).
+O segundo parâmetro é a lista de propriedades adicionais (\code{properties}) da oferta de serviço sendo adicionada.
+Durante o registro dessa oferta, tanto a referência do serviço como as propriedades da oferta são inspecionadas.
+Por conta disso, se o componente do serviço estiver inacessível ou não implementar as facetas básicas do SCS adequadamente, a exceção \code{InvalidService} é lançada.
+Similarmente, se as propriedades adicionais informadas colidirem com as propriedades automáticas (cujo nome tem o prefixo \code{openbus.}), a exceção \code{InvalidProperties} é lançada.
+Se o componente do serviço apresentar facetas que implementem interfaces que não estiverem autorizadas para serem ofertadas pela entidade autorizada no momento que essa chamada é feita (veja seção~\ref{sec:ConnManage}), então a exceção \code{UnauthorizedFacets} é lançada.
+Finalmente, a exceção \code{ServiceFailure} é lançada para indicar uma falha na infraestrutura do barramento, que tipicamente não tem causa relacionada com a chamada, mas sim com problemas de configuração na infraestrutura do barramento.
+
+Para ilustrar o uso a operação \code{registerService} adaptaremos o servidor de matrizes para ofertar um serviço que implementa a interface \code{MatrixFactory} como uma faceta.
+Adicionalmente, ofertaremos esse serviço com a operação adicional \code{domain} com o valor \code{"Tutorial"}, como ilustrado na figura~\ref{fig:ex16:matrices/Server:134:168}.
+Inicialmente, criamos um componente SCS com um identificador adequado usando as classes \code{ComponentContext} e \code{ComponentId} (linha~\ref{lin:ex16:matrices/Server:newscs}).
+Em seguida, adicionamos a faceta \code{Matrices} ao componente que implementa a interface \code{MatrixFactory} (linha~\ref{lin:ex16:matrices/Server:addfacet}).
+Finalmente, chamamos a operação \code{registerService} para ofertar o componente criado com a proriedade \code{domain} tendo o valor \code{"Tutorial"} (linha~\ref{lin:ex16:matrices/Server:addoffer}).
+
+\inputexrange{ex16}{matrices/Server}{134}{168}{Registro de oferta do serviço de matrizes.}
+
+Para completar esse exemplo, devemos também adaptar a aplicação cliente para buscar o serviço ao invés de utilizar um IOR textual passado por argumento para aplicação, tal como ilustrado na figura~\ref{fig:ex17:matrices/Application:19:68}.
+Como apresentado na seção~\ref{sec:FindOffer}, utilizamos a operação \code{findService} para buscar por ofertas de serviços (linha~\ref{lin:ex17:matrices/Application:findoffer}).
+Nessa busca restringimos a busca a serviços que apresentem a propriedade adicional \code{domain} com o valor \code{"Tutorial"} (linha~\ref{lin:ex17:matrices/Application:domainprop}).
+Também definimos duas propriedades automáticas que restringem a busca a ofertas de uma entidade específica (linha~\ref{lin:ex17:matrices/Application:entityprop}) e que implementem a interface que estamos interessados (linha~\ref{lin:ex17:matrices/Application:ifaceprop}).
+
+\inputexrange{ex17}{matrices/Application}{19}{68}{Busca do serviço de matrizes.}
+
+Uma vez feita a busca, iteramos sobre todas as ofertas encontradas para tentar obter a faceta de interesse através da operação \code{getFacet} da referência do componente do serviço (linha~\ref{lin:ex17:matrices/Application:getfacet}).
+Se alguma exceção ocorrer durante o acesso ao serviço ofertado (linha~\ref{lin:ex17:matrices/Application:catchex}) a oferta é ignorada e continuamos a inspecionar as demais.
+Por outro lado, se conseguirmos a faceta do serviço de interesse terminamos a busca (linha~\ref{lin:ex17:matrices/Application:servfound}).
+Finalmente, se após a nova busca nenhuma uma referência for encontrada terminamos a aplicação com uma mensagem informando isso (linha~\ref{lin:ex17:matrices/Application:endapp}).
+
+\section{Observadores de Registro de Oferta}
+
+O registro de ofertas também provê o recurso de observação do registro que permite receber notificações sobre o registro de ofertas com propriedades específicas.
+Isso é oferecido pela operação \code{subscribeObserver} descrita abaixo em IDL.
+
+\begin{samplecode}[language= {[CORBA]IDL} ]
+interface OfferRegistryObserver {
+  void offerRegistered(in ServiceOfferDesc offer);
+};
+
+interface OfferRegistry {
+  ...
+  OfferRegistryObserverSubscription subscribeObserver(
+    in OfferRegistryObserver observer,
+    in ServicePropertySeq properties)
+    raises (ServiceFailure);
+  ...
+};
+\end{samplecode}
+
+Ao registrar um observador é necessário informar as propriedades que as ofertas notificadas deverão apresentar.
+Ou seja, apenas as ofertas que ofereçam as propriedades informadas é que serão notificadas ao observador cadastrado.
+O observador deve ser um objeto CORBA (e não um objeto local) que implementa a interface \code{OfferRegistryObserver}.
+Sempre que for registrada uma oferta que apresente pelo menos as propriedades definidas nessa chama, a operação \code{offerRegistered} do observador será chamada com uma descrição da oferta.
+Essa operação devolve um objeto \code{OfferRegistryObserverSubscription}, que apresenta a operação \code{remove} que cancela a instrição do observador e faz com que nenhuma notificação seja mais enviada ao observador.
+
+É importante notar que só serão notificadas as ofertas registradas após a execução com sucesso dessa operação.
+Ou seja, em geral é interessante fazer uma busca pelas ofertas previamente existentes logo após o registro do observador.
+
+Para ilustrar o uso de observadores do registro de oferta, considere o código da figura~\ref{fig:ex18:watchoffers/Application:90:125} que ilustra o código de uma aplicação que fica exibindo todas as ofertas registradas no barramento com a propriedade \code{domain} de valor \code{"Tutorial"}.
+Inicialmente obtemos o registro de ofertas através da operação \code{getOfferRegistry} do objeto de contexto do \openbus{} (linha~\ref{lin:ex18:watchoffers/Application:getreg}).
+Em seguida, criamos a lista de propriedades das ofertas de interesse (linha~\ref{lin:ex18:watchoffers/Application:makeprops}).
+Depois disso, criamos a implementação do observador que irá exibir na tela uma mensagem informando as novas ofertas que apresentarem as propriedades de interesse (linha~\ref{lin:ex18:watchoffers/Application:newobs}).
+Mas para poder registrar o observador (linha~\ref{lin:ex18:watchoffers/Application:subobs}) é preciso antes registrá-lo no POA para obter a referência do objeto CORBA correspondente a esse observador (linha~\ref{lin:ex18:watchoffers/Application:corbaobs}).
+Depois desse registro do observador, todas as novas ofertas com a propriedade \code{domain} com o valor \code{"Tutorial"} serão notificadas e devidamente impressas na tela.
+Contudo, as ofertas registradas antes desse registro do observador não foram exibidas.
+Para contornar isso, terminamos a inicialização da aplicação fazendo uma busca pelas ofertas previamente registradas (linha~\ref{lin:ex18:watchoffers/Application:findserv}).
+Para cada oferta encontrada passamos para o observador, simulando uma notificação realizada pelo registro de ofertas (linha~\ref{lin:ex18:watchoffers/Application:notifyserv}).
+
+\inputexrange{ex18}{watchoffers/Application}{90}{125}{Aplicação de observação de novas ofertas.}
+
+E importante notar que nesse exemplo é possível que uma oferta seja registrada após o registro do observador, mas antes da busca de ofertas.
+Nesse caso, essa oferta seria exibida duas vezes na tela.
+Uma por conta da notificação feita pelo registro de oferta e outra por conta de aparecer no resultado da busca.
+
+\section{Observadores de Oferta}
+
+No \openbus{} também também é possível observar de ofertas específicas.
+Isso permite que as aplicações possam perceber quando uma oferta particular é removida ou modificada.
+Isso é oferecido pela operação \code{subscribeObserver} dos objetos \code{ServiceOffer} disponível através do campo \code{ref} da estrutura \code{ServiceOfferDesc} que descrevem ofertas registradas e são ofertadas pelas operações \code{findServices}, \code{getAllServices} e na notificação de novas ofertas nos observadores do registro de oferta.
+A operação \code{subscribeObserver} dos objetos \code{ServiceOffer} é descrita abaixo.
+
+\begin{samplecode}[language= {[CORBA]IDL} ]
+interface OfferObserver {
+  void propertiesChanged(in ServiceOfferDesc offer);
+  void removed(in ServiceOfferDesc offer);
+};
+
+interface ServiceOffer {
+  ...
+  OfferObserverSubscription subscribeObserver(
+    in OfferObserver observer)
+    raises (ServiceFailure);
+  ...
+};
+\end{samplecode}
+
+Assim como a operação de registro de observadores de oferta, essa operação também devolve um objeto (com a \code{OfferObserverSubscription} nesse caso), que apresenta a operação \code{remove} que cancela a instrição do observador e faz com que nenhuma notificação seja mais enviada ao observador.
+O observador nesse caso também deve ser um objeto CORBA (e não um objeto local), mas que implementa a interface \code{OfferObserver}.
+Essa interface do observador de oferta apresenta duas operações que são chamadas pela infraestrutura do barramento para notificar dois eventos.
+A operação \code{propertiesChanged} é chamada sempre que as propriedades da oferta mudarem.
+A operação \code{removed} é chamada quando a oferta for finalmente removida do registro de ofertas.
+Essa remoção pode ocorrer tanto explicitamente por um sistema com autorização para remover a oferta, ou pode ocorrer quando o login que registrou a oferta expirar.
+
+Para ilustrar o uso de observadores de oferta, modificaremos a aplicação de monitoração de ofertas da seção anterior para que ela também informe quando as ofertas forem removidas do barramento.
+A figura~\ref{fig:ex19:watchoffers/Application:113:138} ilustra a implementação de um observador de ofertas (linha~\ref{lin:ex19:watchoffers/Application:offerobs}) que será inscrito em todas as ofertas de interesse, ou seja, que tenham a propriedade \code{domain} com o valor \code{"Tutorial"}.
+Manteremos um mapa de todos os IDs de ofertas de interesse à inscrição desse observador nessa oferta de interesse (linha~\ref{lin:ex19:watchoffers/Application:subsmap}).
+Na implementação do evento de mudança das propriedades de uma oferta de interesse (linha~\ref{lin:ex19:watchoffers/Application:propchanged}), buscamos se as novas propriedade ainda contém a propriedade de interesse (linha~\ref{lin:ex19:watchoffers/Application:findprop}).
+Caso ainda tenha, não fazemos mais nada (linha~\ref{lin:ex19:watchoffers/Application:propfound}).
+Caso contrário, tratamos como se a oferta tenha sido removida (linha~\ref{lin:ex19:watchoffers/Application:fakeremove}).
+Já na implementação do evento de remoção da oferta, obhajatermos o ID da oferta removida (linha~\ref{lin:ex19:watchoffers/Application:getofferid1}) e removemos do mapa a inscrição correspondente do observador de ofertas (linha~\ref{lin:ex19:watchoffers/Application:removesubs}).
+Caso uma inscrição tenha sido efetivamente removida (linha~\ref{lin:ex19:watchoffers/Application:subremoved}) isso indica que essa notificação nunca foi processada.
+Esse teste é importante pois chamaremos esse método sempre que percebemos que uma oferta foi removida ou deixou de apresentar a propriedade de interesse, e portanto esse método pode executar mais de uma vez para uma mesma oferta devido a condições de corrida das chamadas remotas, como discutiremos mais adiante.
+Caso a notificação não tenha sido processada, exibimos uma mensagem que a oferta foi removida do domínio de interesse (linha~\ref{lin:ex19:watchoffers/Application:showremoved1}) e tentamos remover a inscrição do observador de ofertas (linha~\ref{lin:ex19:watchoffers/Application:unsubs1}).
+Mas é importante ignorar eventuais exceções dessa operação, pois quando a oferta é removida, todas as inscrições de observadores nela são automaticamente descartadas.
+
+\inputexrange{ex19}{watchoffers/Application}{113}{138}{Observador das ofertas de interesse.}
+
+A figura~\ref{fig:ex19:watchoffers/Application:140:196} ilustra a implementação do observador do registro de ofertas (linha~\ref{lin:ex19:watchoffers/Application:regobs}) que recebe notificações de novas ofertas de interesse.
+Esse observador utiliza um objeto especial que simula uma inscrição de observador (linha~\ref{lin:ex19:watchoffers/Application:fakeobs}).
+Esse objeto é adicionado ao mapa de inscrições de observadores de oferta uma vez que uma nova oferta é encontrada, mas antes da inscrição do observador de oferta seja concluída.
+Isso é útil para controlar múltiplas notificações simultâneas de uma nova oferta, assim como lidar com notificações sobre a nova oferta que cheguem antes do registro da inscrição efetiva no mapa.
+Na implementação da operação de notificação de uma nova oferta de interesse, inicialmente buscamos pelo ID dessa nova oferta (linha~\ref{lin:ex19:watchoffers/Application:getofferid2}).
+Em seguida, verificamos se já existe uma inscrição de observador para essa oferta (linha~\ref{lin:ex19:watchoffers/Application:notinmap}), o que indicaria que a notificação dessa nova oferta já foi processada ou já está sendo processada, e portanto a notificação pode ser ignorada.
+Caso contrário, adicionamos o objeto \code{fakeSub} no mapa de inscrições para essa oferta (linha~\ref{lin:ex19:watchoffers/Application:addfaketomap}) para indicar que mesmo sem a inscrição concluída, essa tarefa está em andamento.
+Então exibimos uma mensagem para notificar o usuário que a nova oferta foi encontrada (linha~\ref{lin:ex19:watchoffers/Application:showadded}).
+
+Depois disso, tentamos efetivamente inscrever o observador de oferta nessa nova oferta (linha~\ref{lin:ex19:watchoffers/Application:subobs}).
+Caso a inscrição seja feita, verificamos se o objeto \code{fakeSub} ainda está no mapa para essa oferta (linha~\ref{lin:ex19:watchoffers/Application:stillfake}).
+Esse teste é importante pois caso uma notificação de remoção ou mudança de propriedades dessa oferta seja recebida e processada antes da resposta da inscrição ser recebida, então o objeto \code{fakeSub} será removido do mapa (linha~\ref{lin:ex19:watchoffers/Application:removesubs}).
+Nesse caso a nova inscrição não deve ser adicionada no mapa, pois a oferta não é mais de interesse e deve ser ignorada.
+Por outro lado, se o objeto \code{fakeSub} ainda estiver no mapa, ele é substituído pela inscrição efetiva (linha~\ref{lin:ex19:watchoffers/Application:replacesubs}) e marcamos que essa inscrição efetivamente realizada não deve ser cancelada ao atribuir \code{null} à variável \code{subscription} (linha~\ref{lin:ex19:watchoffers/Application:cancelunsubs}).
+Sempre que a variável \code{subscription} não for \code{null} (linha~\ref{lin:ex19:watchoffers/Application:checkunsubs}) assumimos que a inscrição se refere a uma oferta que não é mais de interesse, e portanto podemos informar que foi removida (linha~\ref{lin:ex19:watchoffers/Application:showremoved2}) e cancelar a inscrição (linha~\ref{lin:ex19:watchoffers/Application:unsubs2}).
+Por fim, caso uma exceção de \code{ServiceFailure} ocorra durante a inscrição do observador(linha~\ref{lin:ex19:watchoffers/Application:servfail}), exibimos o erro, mas é importante notar que nesse caso alterações ou a remoção da oferta não seriam notificados.
+Já no caso da exceção \code{OBJECT\_NOT\_EXIST} (linha~\ref{lin:ex19:watchoffers/Application:objnotexist}), isso indica que a oferta foi removida antes de que a inscrição do observador pudesse ser feita, portanto podemos simplesmente notificar a remoção da oferta.
+Um tratamento similar é dado no caso de execeções de sistema de CORBA (linha~\ref{lin:ex19:watchoffers/Application:sysex}).
+
+Após inscrever esse observador no registro de ofertas (linha~\ref{lin:ex19:watchoffers/Application:subsregobs}), fazemos uma busca pelas ofetas existentes (linha~\ref{lin:ex19:watchoffers/Application:findoffers}), uma vez que as notificação só serão feitas para novos registros.
+Para cada oferta encontrada chamamos diretamente a operação de notificação do observador (linha~\ref{lin:ex19:watchoffers/Application:callregobs}).
+É importante notar que é possível que uma notificação de registro ocorra depois do registro do observador, mas antes da busca de ofertas.
+Nesse caso a operação \code{offerRegistered} seria chamada duas vezes: uma pela notificação remota oriunda da infraestrutura do barramento; e outra pela oferta encontrada na busca (linha~\ref{lin:ex19:watchoffers/Application:callregobs}).
+Contudo, apenas a primeira chamada que conseguir adicionar o objeto \code{fakeSubs} no mapa (linha~\ref{lin:ex19:watchoffers/Application:addfaketomap}) será capaz de processar a informação do registro da oferta.
+
+\inputexrange{ex19}{watchoffers/Application}{140}{196}{Observador de registro que registra observadores de oferta.}
+
+%figura~\ref{fig:ex16:matrices/Server:33:66}
+%(linha~\ref{lin:ex16:matrices/Server:disposematrix})
+%\inputexrange{ex16}{matrices/Server}{33}{66}{Matriz que notifica descarte.}

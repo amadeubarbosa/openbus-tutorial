@@ -101,21 +101,21 @@ public class Application {
 				POA poa = POAHelper.narrow(orb.resolve_initial_references("RootPOA"));
 				poa.the_POAManager().activate();
 
-				OfferRegistry offers = context.getOfferRegistry();
+				OfferRegistry offers = context.getOfferRegistry();$\exlabel{getreg}$
 
 				ServiceProperty[] props = new ServiceProperty[] {
-					new ServiceProperty("domain", "Tutorial") };
+					new ServiceProperty("domain", "Tutorial") };$\exlabel{makeprops}$
 
-				OfferRegistryObserverPOA regObs = new OfferRegistryObserverPOA() {
+				OfferRegistryObserverPOA regObs = new OfferRegistryObserverPOA() {$\exlabel{newobs}$
 					public void offerRegistered(ServiceOfferDesc offer) {
 						printOffer(System.out, "ADDED", offer);
 					}
 				};
-				offers.subscribeObserver(
-					OfferRegistryObserverHelper.narrow(poa.servant_to_reference(regObs)), props);
+				offers.subscribeObserver($\exlabel{subobs}$
+					OfferRegistryObserverHelper.narrow(poa.servant_to_reference(regObs)), props);$\exlabel{corbaobs}$
 
-				for (ServiceOfferDesc offer : offers.findServices(props))
-					regObs.offerRegistered(offer);
+				for (ServiceOfferDesc offer : offers.findServices(props))$\exlabel{findserv}$
+					regObs.offerRegistered(offer);$\exlabel{notifyserv}$
 
 				System.in.read();
 			}

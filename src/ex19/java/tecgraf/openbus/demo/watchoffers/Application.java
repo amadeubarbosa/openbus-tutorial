@@ -113,39 +113,37 @@ public class Application {
 				POA poa = POAHelper.narrow(orb.resolve_initial_references("RootPOA"));
 				poa.the_POAManager().activate();
 
-				final Map<String,OfferObserverSubscriptionOperations> offSubs =
+				final Map<String,OfferObserverSubscriptionOperations> offSubs =$\exlabel{domainprop}$
 					new HashMap <String,OfferObserverSubscriptionOperations>();
 
-				final OfferObserver offObs = OfferObserverHelper.narrow(
+				final OfferObserver offObs = OfferObserverHelper.narrow($\exlabel{offerobs}$
 					poa.servant_to_reference(new OfferObserverPOA () {
-						public void propertiesChanged(ServiceOfferDesc offer) {
+						public void propertiesChanged(ServiceOfferDesc offer) {$\exlabel{propchanged}$
 							for (ServiceProperty prop : offer.properties)
-								if (prop.name == "domain" && prop.value == "Tutorial") return;
-							removed(offer);
+								if (prop.name.equals("domain") && prop.value.equals("Tutorial"))$\exlabel{findprop}$
+									return;$\exlabel{propfound}$
+							removed(offer);$\exlabel{fakeremove}$
 						}
-						public void removed(ServiceOfferDesc offer) {
+						public void removed(ServiceOfferDesc offer) {$\exlabel{offerremoved}$
 							for (ServiceProperty prop : offer.properties)
-								if (prop.name.equals("openbus.offer.id")) {
+								if (prop.name.equals("openbus.offer.id")) {$\exlabel{getofferid1}$
 									OfferObserverSubscriptionOperations subscription;
-									synchronized (offSubs) { subscription = offSubs.remove(prop.value); }
-									if (subscription != null) {
-										try { subscription.remove(); }
-										catch (UnauthorizedOperation e) {}
-										catch (ServiceFailure e) {}
-										catch (org.omg.CORBA.SystemException e) {}
-										printOffer(System.out, "REMOVED", offer);
+									synchronized (offSubs) { subscription = offSubs.remove(prop.value); }$\exlabel{removesubs}$
+									if (subscription != null) {$\exlabel{subremoved}$
+										printOffer(System.out, "REMOVED", offer);$\exlabel{showremoved1}$
+										try { subscription.remove(); } catch (Exception e) {}$\exlabel{unsubs1}$
 									}
 								}
-							}
-						}));
+						}
+					}));
 
 				OfferRegistry offers = context.getOfferRegistry();
 
 				ServiceProperty[] props = new ServiceProperty[] {
 					new ServiceProperty("domain", "Tutorial") };
 
-				OfferRegistryObserverPOA regObs = new OfferRegistryObserverPOA() {
-					private OfferObserverSubscriptionOperations fakeSub =
+				OfferRegistryObserverPOA regObs = new OfferRegistryObserverPOA() {$\exlabel{regobs}$
+					private OfferObserverSubscriptionOperations fakeSub =$\exlabel{fakeobs}$
 						new OfferObserverSubscriptionOperations() {
 							public OfferObserver observer() { return null; }
 							public ServiceOffer offer() { return null; }
@@ -155,43 +153,47 @@ public class Application {
 
 					public void offerRegistered(ServiceOfferDesc offer) {
 						for (ServiceProperty prop : offer.properties)
-							if (prop.name.equals("openbus.offer.id")) {
+							if (prop.name.equals("openbus.offer.id")) {$\exlabel{getofferid2}$
 								synchronized (offSubs) {
-									if (offSubs.get(prop.value) != null) break;
-									offSubs.put(prop.value, fakeSub);
+									if (offSubs.get(prop.value) != null) break;$\exlabel{notinmap}$
+									offSubs.put(prop.value, fakeSub);$\exlabel{addfaketomap}$
 								}
-								printOffer(System.out, "ADDED", offer);
-
-								for (int i=1; i<Integer.MAX_VALUE; ++i)
-									try {
-										OfferObserverSubscriptionOperations subscription =
-											offer.ref.subscribeObserver(offObs);
-										synchronized (offSubs) { offSubs.put(prop.value, subscription); }
-										break;
+								printOffer(System.out, "ADDED", offer);$\exlabel{showadded}$
+								try {
+									OfferObserverSubscriptionOperations subscription =
+										offer.ref.subscribeObserver(offObs);$\exlabel{subobs}$
+									synchronized (offSubs) {
+										if (offSubs.get(prop.value) == fakeSub) {$\exlabel{stillfake}$
+											offSubs.put(prop.value, subscription);$\exlabel{replacesubs}$
+											subscription = null;$\exlabel{cancelunsubs}$
+										}
 									}
-									catch (ServiceFailure e) {
-										System.err.println("offer watch failure: "+e);
-										try { Thread.sleep(i*1000); } catch (InterruptedException ie) {}
+									if (subscription != null) {$\exlabel{checkunsubs}$
+										printOffer(System.out, "REMOVED", offer);$\exlabel{showremoved2}$
+										try { subscription.remove(); } catch (Exception e) {}$\exlabel{unsubs2}$
 									}
-									catch (OBJECT_NOT_EXIST e) {
-										offObs.removed(offer);
-										break;
-									}
-									catch (org.omg.CORBA.SystemException e) {
-										System.err.println("offer watch failure: "+e);
-										if (!e.completed.equals(CompletionStatus.COMPLETED_YES))
-											offObs.removed(offer);
-										break;
-									}
+									break;
+								}
+								catch (ServiceFailure e) {$\exlabel{servfail}$
+									System.err.println("offer watch failure: "+e);
+								}
+								catch (OBJECT_NOT_EXIST e) {$\exlabel{objnotexist}$
+									printOffer(System.out, "REMOVED", offer);
+								}
+								catch (org.omg.CORBA.SystemException e) {$\exlabel{sysex}$
+									System.err.println("offer watch failure: "+e);
+									if (!e.completed.equals(CompletionStatus.COMPLETED_YES))
+										printOffer(System.out, "REMOVED", offer);
+								}
 								break;
 							}
 					}
 				};
-				offers.subscribeObserver(
+				offers.subscribeObserver($\exlabel{subsregobs}$
 					OfferRegistryObserverHelper.narrow(poa.servant_to_reference(regObs)), props);
 
-				for (ServiceOfferDesc offer : offers.findServices(props))
-					regObs.offerRegistered(offer);
+				for (ServiceOfferDesc offer : offers.findServices(props))$\exlabel{findoffers}$
+					regObs.offerRegistered(offer);$\exlabel{callregobs}$
 
 				System.in.read();
 			}

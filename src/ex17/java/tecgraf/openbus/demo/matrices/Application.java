@@ -27,11 +27,11 @@ public class Application {
 
 			conn.loginByPassword(entity, password.getBytes());
 			try {
-				ServiceOfferDesc[] offers = context.getOfferRegistry().findServices(
+				ServiceOfferDesc[] offers = context.getOfferRegistry().findServices($\exlabel{findoffer}$
 					new ServiceProperty[] {
-						new ServiceProperty("domain", "Tutorial"),
-						new ServiceProperty("openbus.offer.entity", factoryEntity),
-						new ServiceProperty("openbus.component.interface",
+						new ServiceProperty("domain", "Tutorial"),$\exlabel{domainprop}$
+						new ServiceProperty("openbus.offer.entity", factoryEntity),$\exlabel{entityprop}$
+						new ServiceProperty("openbus.component.interface",$\exlabel{ifaceprop}$
 						                    MatrixFactoryHelper.id())
 					});
 
@@ -39,14 +39,14 @@ public class Application {
 				for (ServiceOfferDesc offer : offers)
 					try {
 						factory = MatrixFactoryHelper.narrow(
-							offer.service_ref.getFacet(MatrixFactoryHelper.id()));
-						if (factory != null) break;
+							offer.service_ref.getFacet(MatrixFactoryHelper.id()));$\exlabel{getfacet}$
+						if (factory != null) break;$\exlabel{servfound}$
 						System.err.println("found service with missing facet!");
 					}
-					catch (Exception e) { System.err.println("offered service failure: "+e); }
+					catch (Exception e) { System.err.println("offered service failure: "+e); }$\exlabel{catchex}$
 				if (factory == null) {
 					System.err.println("no suitable service found");
-					return;
+					return;$\exlabel{endapp}$
 				}
 
 				SquareMatrix matrix = factory.newMatrix("reverse");
