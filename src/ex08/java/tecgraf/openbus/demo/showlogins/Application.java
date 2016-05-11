@@ -1,14 +1,10 @@
 package tecgraf.openbus.demo.showlogins;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import javax.xml.bind.DatatypeConverter;
 import org.omg.CORBA.ORB;
 import tecgraf.openbus.Connection;
 import tecgraf.openbus.core.ORBInitializer;
 import tecgraf.openbus.core.v2_0.services.access_control.LoginInfo;
-import tecgraf.openbus.core.v2_0.services.access_control.LoginProcess;
-import tecgraf.openbus.core.v2_0.services.access_control.LoginProcessHelper;
 import tecgraf.openbus.core.v2_0.services.access_control.LoginRegistry;
 import tecgraf.openbus.OpenBusContext;
 
@@ -17,8 +13,7 @@ public class Application {
 	private static final short busPort = 20100;
 
 	public static void main(String[] args) throws Exception {
-		String ior = args[0];
-		String secret = args[1];
+		String secret = args[0];
 
 		ORB orb = ORBInitializer.initORB(args);
 		try {
@@ -28,8 +23,8 @@ public class Application {
 			Connection conn = context.createConnection(busHost, busPort);
 			context.setDefaultConnection(conn);
 
-			conn.loginBySharedAuth(LoginProcessHelper.narrow(orb.string_to_object(ior)),
-			                       DatatypeConverter.parseBase64Binary(secret));
+			byte[] encoded = DatatypeConverter.parseBase64Binary(secret);
+			conn.loginBySharedAuth(context.decodeSharedAuth(encoded));
 			try {
 				LoginRegistry logins = context.getLoginRegistry();
 				LoginInfo[] list = logins.getEntityLogins(conn.login().entity);

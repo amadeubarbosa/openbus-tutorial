@@ -102,7 +102,7 @@ class MatrixFactoryServant extends MatrixFactoryPOA {
 			if (_transformations != null)
 				return _transformations.getTransformation(kind);
 		}
-		catch (Throwable e) { System.err.println("offer query failure: "+e); }
+		catch (Exception e) { System.err.println("offer query failure: "+e); }
 
 		throw error;
 	}

@@ -6,9 +6,8 @@ import javax.xml.bind.DatatypeConverter;
 import org.omg.CORBA.ORB;
 import tecgraf.openbus.Connection;
 import tecgraf.openbus.core.ORBInitializer;
-import tecgraf.openbus.core.v2_0.OctetSeqHolder;
-import tecgraf.openbus.core.v2_0.services.access_control.LoginProcess;
 import tecgraf.openbus.OpenBusContext;
+import tecgraf.openbus.SharedAuthSecret;
 
 public class Application {
 	private static final String entity = "MatricesUser";
@@ -27,11 +26,10 @@ public class Application {
 
 			conn.loginByPassword(entity, password.getBytes());
 			try {
-				OctetSeqHolder secret = new OctetSeqHolder();
-				LoginProcess attempt = conn.startSharedAuth(secret);
+				SharedAuthSecret secret = conn.startSharedAuth();
 
-				System.out.println(orb.object_to_string(attempt));
-				System.out.println(DatatypeConverter.printBase64Binary(secret.value));
+				byte[] encoded = context.encodeSharedAuth(secret);
+				System.out.println(DatatypeConverter.printBase64Binary(encoded));
 
 				MatrixFactory factory = MatrixFactoryHelper.narrow(orb.string_to_object(
 					new BufferedReader(new InputStreamReader(System.in)).readLine()));

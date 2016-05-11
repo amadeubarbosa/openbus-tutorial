@@ -19,7 +19,7 @@ public class AssistantFailurePrinter implements OnFailureCallback {
 
 	public AssistantFailurePrinter(PrintStream out) { _out = out; }
 
-	private String getErrorMessage(Throwable except) {
+	private String getErrorMessage(Exception except) {
 		StringBuilder errmsg = new StringBuilder();
 		try { throw except; }
 		catch (InvalidService e) {
@@ -48,18 +48,18 @@ public class AssistantFailurePrinter implements OnFailureCallback {
 			errmsg.append(e.message);
 			errmsg.append(")");
 		}
-		catch (Throwable e) { errmsg.append(e); }
+		catch (Exception e) { errmsg.append(e); }
 		return errmsg.toString();
 	}
 
-	public void onLoginFailure(Assistant assistant, Throwable except) {
+	public void onLoginFailure(Assistant assistant, Exception except) {
 		_out.println("[ASSISTANT] Login Failure: "+getErrorMessage(except));
 	}
 
 	public void onRegisterFailure(Assistant assistant,
 	                       scs.core.IComponent component,
 	                       ServiceProperty[] properties,
-	                       Throwable except) {
+	                       Exception except) {
 		_out.println("[ASSISTANT] Offer Failure: "+getErrorMessage(except));
 		_out.println("              Properties:");
 		for (ServiceProperty prop : properties)
@@ -78,11 +78,11 @@ public class AssistantFailurePrinter implements OnFailureCallback {
 			_out.println("                "+facet.name+": "+facet.interface_name);
 	}
 
-	public void onFindFailure(Assistant assistant, Throwable except) {
+	public void onFindFailure(Assistant assistant, Exception except) {
 		_out.println("[ASSISTANT] Offer Query Failure: "+getErrorMessage(except));
 	}
 
-	public void onStartSharedAuthFailure(Assistant assistant, Throwable except) {
+	public void onStartSharedAuthFailure(Assistant assistant, Exception except) {
 		_out.println("[ASSISTANT] Shared Auth. Failure: "+getErrorMessage(except));
 	}
 }

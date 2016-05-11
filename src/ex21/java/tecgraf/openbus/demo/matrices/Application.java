@@ -18,7 +18,7 @@ public class Application {
 	private static final short busPort = 20100;
 	private static final String factoryEntity = "MatricesService";
 
-	public static void main(String[] args) throws Throwable {
+	public static void main(String[] args) throws Exception {
 		AssistantParams params = new AssistantParams();
 		params.callback = new AssistantFailurePrinter(System.err);
 		Assistant assistant = Assistant.createWithPassword(busHost, busPort,
