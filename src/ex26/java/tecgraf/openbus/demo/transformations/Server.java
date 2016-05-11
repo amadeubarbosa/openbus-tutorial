@@ -5,6 +5,8 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import java.security.interfaces.RSAPrivateKey;
+
 import org.omg.CORBA.NO_PERMISSION;
 import org.omg.CORBA.OBJECT_NOT_EXIST;
 import org.omg.CORBA.ORB;
@@ -15,7 +17,6 @@ import scs.core.ComponentContext;
 import scs.core.ComponentId;
 import tecgraf.openbus.CallerChain;
 import tecgraf.openbus.Connection;
-import tecgraf.openbus.core.OpenBusPrivateKey;
 import tecgraf.openbus.core.ORBInitializer;
 import tecgraf.openbus.core.v2_0.services.access_control.LoginInfo;
 import tecgraf.openbus.core.v2_0.services.access_control.LoginObserver;
@@ -31,6 +32,7 @@ import tecgraf.openbus.core.v2_0.services.ServiceFailure;
 import tecgraf.openbus.exception.AlreadyLoggedIn;
 import tecgraf.openbus.InvalidLoginCallback;
 import tecgraf.openbus.OpenBusContext;
+import tecgraf.openbus.security.Cryptography;
 
 class TransformationRepository_Impl extends TransformationRepositoryPOA
 {
@@ -99,8 +101,8 @@ public class Server {
 		System.out.println("\t[originator suffix] (current: "+originatorSuffix+")");
 		System.out.println("\t[server port]       (current: "+serverPort+")");
 
-		final OpenBusPrivateKey privateKey =
-			OpenBusPrivateKey.createPrivateKeyFromFile(privateKeyFile);
+		final RSAPrivateKey privateKey =
+			Cryptography.getInstance().readKeyFromFile(privateKeyFile);
 
 		Map<String, double[]> transformations =
 			new HashMap<String, double[]>();

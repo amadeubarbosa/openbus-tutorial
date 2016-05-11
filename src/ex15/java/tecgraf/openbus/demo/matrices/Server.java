@@ -1,5 +1,7 @@
 package tecgraf.openbus.demo.matrices;
 
+import java.security.interfaces.RSAPrivateKey;
+
 import org.omg.CORBA.NO_PERMISSION;
 import org.omg.CORBA.ORB;
 import org.omg.CORBA.ORBPackage.InvalidName;
@@ -10,15 +12,15 @@ import org.omg.PortableServer.POAPackage.ServantNotActive;
 import org.omg.PortableServer.POAPackage.WrongPolicy;
 import tecgraf.openbus.CallerChain;
 import tecgraf.openbus.Connection;
-import tecgraf.openbus.core.OpenBusPrivateKey;
 import tecgraf.openbus.core.ORBInitializer;
+import tecgraf.openbus.core.v2_0.services.offer_registry.ServiceOfferDesc;
+import tecgraf.openbus.core.v2_0.services.offer_registry.ServiceProperty;
 import tecgraf.openbus.demo.matrices.Matrix;
-import tecgraf.openbus.OpenBusContext;
 import tecgraf.openbus.demo.transformations.TransformationRepository;
 import tecgraf.openbus.demo.transformations.TransformationRepositoryHelper;
 import tecgraf.openbus.demo.transformations.UnknownTransformation;
-import tecgraf.openbus.core.v2_0.services.offer_registry.ServiceProperty;
-import tecgraf.openbus.core.v2_0.services.offer_registry.ServiceOfferDesc;
+import tecgraf.openbus.OpenBusContext;
+import tecgraf.openbus.security.Cryptography;
 
 class MatrixServant extends SquareMatrixPOA {
 	private Matrix _matrix;
@@ -136,8 +138,8 @@ public class Server {
 	private static final short busPort = 20100;
 
 	public static void main(String[] args) throws Exception {
-		OpenBusPrivateKey privateKey =
-			OpenBusPrivateKey.createPrivateKeyFromFile(privateKeyFile);
+		RSAPrivateKey privateKey =
+			Cryptography.getInstance().readKeyFromFile(privateKeyFile);
 
 		ORB orb = ORBInitializer.initORB(args, null);
 		try {

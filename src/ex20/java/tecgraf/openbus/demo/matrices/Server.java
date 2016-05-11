@@ -1,5 +1,7 @@
 package tecgraf.openbus.demo.matrices;
 
+import java.security.interfaces.RSAPrivateKey;
+
 import org.omg.CORBA.NO_PERMISSION;
 import org.omg.CORBA.ORB;
 import org.omg.CORBA.ORBPackage.InvalidName;
@@ -12,7 +14,6 @@ import scs.core.ComponentContext;
 import scs.core.ComponentId;
 import tecgraf.openbus.CallerChain;
 import tecgraf.openbus.Connection;
-import tecgraf.openbus.core.OpenBusPrivateKey;
 import tecgraf.openbus.core.ORBInitializer;
 import tecgraf.openbus.core.v2_0.services.access_control.LoginInfo;
 import tecgraf.openbus.core.v2_0.services.offer_registry.ServiceOfferDesc;
@@ -24,6 +25,7 @@ import tecgraf.openbus.demo.transformations.UnknownTransformation;
 import tecgraf.openbus.exception.AlreadyLoggedIn;
 import tecgraf.openbus.InvalidLoginCallback;
 import tecgraf.openbus.OpenBusContext;
+import tecgraf.openbus.security.Cryptography;
 
 class MatrixServant extends SquareMatrixPOA {
 	private Matrix _matrix;
@@ -135,8 +137,8 @@ public class Server {
 	private static final short busPort = 20100;
 
 	public static void main(String[] args) throws Exception {
-		final OpenBusPrivateKey privateKey =
-			OpenBusPrivateKey.createPrivateKeyFromFile(privateKeyFile);
+		final RSAPrivateKey privateKey =
+			Cryptography.getInstance().readKeyFromFile(privateKeyFile);
 
 		ORB orb = ORBInitializer.initORB(args, null);
 		try {
