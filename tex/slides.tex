@@ -910,17 +910,17 @@
     \item Adapte o exemplo de matrizes (servidor e aplicação) para utilizar um ORB com suporte ao OpenBus.
     \item Para compilar a IDL:
     \begin{samplecode}[language=bash]
-java -cp $ODK_HOME/lib/jacorb-idl-compiler-3.4.jar org.jacorb.idl.parser matrices.idl
+java -cp $ODK_HOME/lib/jacorb-idl-compiler-3.5.jar org.jacorb.idl.parser matrices.idl
     \end{samplecode}
     \item Para compilar o código:
     \begin{samplecode}[language=bash]
-javac -cp "$ODK_HOME/lib/jacorb-3.4.jar\
-:$ODK_HOME/lib/jacorb-omgapi-3.4.jar\
-:$ODK_HOME/lib/openbus-sdk-core-2.0-SNAPSHOT.jar\
-:$ODK_HOME/lib/openbus-sdk-legacy-2.0-SNAPSHOT.jar\
-:$ODK_HOME/lib/scs-core-1.2.1.1.jar\
-:$ODK_HOME/lib/slf4j-api-1.6.4.jar\
-:$ODK_HOME/lib/slf4j-jdk14-1.6.4.jar" \
+javac -cp "$ODK_HOME/lib/jacorb-3.5.jar\
+:$ODK_HOME/lib/jacorb-omgapi-3.5.jar\
+:$ODK_HOME/lib/openbus-sdk-core-2.0.2.0.jar\
+:$ODK_HOME/lib/openbus-sdk-legacy-2.0.2.0.jar\
+:$ODK_HOME/lib/scs-core-1.2.1.3.jar\
+:$ODK_HOME/lib/slf4j-api-1.7.6.jar\
+:$ODK_HOME/lib/slf4j-jdk14-1.7.6.jar" \
     tecgraf/openbus/demo/matrices/Server.java \
     tecgraf/openbus/demo/matrices/Application.java
     \end{samplecode}
@@ -1098,27 +1098,25 @@ conn.logout();
   \begin{itemize}
     \item Utilitário para leitura de chaves
     \begin{samplecode}
-public class OpenBusPrivateKey {
-  static public PrivateKey createPrivateKeyFromBytes(
-    byte[] privateKeyBytes) throws NoSuchAlgorithmException,
-                                   InvalidKeySpecException;
-  static public PrivateKey createPrivateKeyFromFile(
-    String privateKeyFile) throws IOException,
-                                  NoSuchAlgorithmException,
-                                  InvalidKeySpecException;
+public final class Cryptography {
+  public static synchronized Cryptography getInstance();
+  public RSAPrivateKey readKeyFromFile(String fileName)
+    throws IOException, InvalidKeySpecException, CryptographyException;
+  public RSAPrivateKey readKeyFromBytes(byte[] prvKeyByteArray)
+    throws InvalidKeySpecException, CryptographyException;
 }
     \end{samplecode}
     \item Conexões permitem autenticação por certificado:
     \begin{samplecode}
 public interface Connection {
-  void loginByCertificate(String entity, PrivateKey privateKey)
+  void loginByCertificate(String entity, RSAPrivateKey privateKey)
     throws AlreadyLoggedIn, AccessDenied, MissingCertificate, ServiceFailure;
   ...
 \end{samplecode}
     \item Login por certificado:
     \begin{samplecode}
-OpenBusPrivateKey privateKey =
-  OpenBusPrivateKey.createPrivateKeyFromFile(privateKeyFile);
+RSAPrivateKey privateKey =
+  Cryptography.getInstance().readKeyFromFile(fileName);
 conn.loginByCertificate("SomeoneService", privateKey);
     \end{samplecode}
   \end{itemize}
@@ -1169,22 +1167,25 @@ openssl req -new -x509 \
     \item Conexões permitem compartilhamento de autenticação:
     \begin{samplecode}
 public interface Connection {
+  SharedAuthSecret startSharedAuth() throws ServiceFailure;
+  void loginBySharedAuth(SharedAuthSecret secret) throws
+    AlreadyLoggedIn, InvalidLoginProcess, AccessDenied, ServiceFailure;
   ...
-  LoginProcess startSharedAuth(OctetSeqHolder secret) throws ServiceFailure;
-
-  void loginBySharedAuth(LoginProcess process, byte[] secret)
-    throws AlreadyLoggedIn,
-           InvalidLoginProcess,
-           AccessDenied,
-           ServiceFailure;
-  ...
+}
     \end{samplecode}
     \item Login por autenticação compartilhada:
     \begin{samplecode}
-      OctetSeqHolder secret = new OctetSeqHolder();
-      LoginProcess attempt = conn1.startSharedAuth(secret);
+      SharedAuthSecret secret = conn1.startSharedAuth();
       ...
-      conn2.loginBySharedAuth(attempt, secret.value());
+      conn2.loginBySharedAuth(secret);
+    \end{samplecode}
+    \item Métodos para serialização do segredo:
+    \begin{samplecode}
+public interface OpenBusContext {
+  byte[] encodeSharedAuth(SharedAuthSecret secret);
+  SharedAuthSecret decodeSharedAuth(byte[] encoded) throws InvalidEncodedStream;
+  ...
+} 
     \end{samplecode}
   \end{itemize}
 \end{frame}
@@ -1223,12 +1224,14 @@ interface LoginRegistry {
   \begin{itemize}
     \item Escreva uma aplicação que receba por parâmetro as seguintes informações:
     \begin{itemize}
-      \item O IOR do \code{LoginProcess}.
       \item O segredo gerado codificado em texto, por exemplo:
       \begin{samplecode}
 import javax.xml.bind.DatatypeConverter;
-String encoded = DatatypeConverter.printBase64Binary(secret.value));
-byte[] decoded = DatatypeConverter.parseBase64Binary(encoded);
+byte[] encoded = context.encodeSharedAuth(secret);
+String b64text = DatatypeConverter.printBase64Binary(encoded);
+...
+byte[] encodedTest = DatatypeConverter.parseBase64Binary(b64text);
+SharedAuthSecret secret = context.decodeSharedAuth(encodedTest);
       \end{samplecode}
     \end{itemize}
     \item Essa nova aplicação deve utilizar essas informações para se logar ao barramento na máquina \code{ubu.tecgraf.puc-rio.br} e porta 20100 utilizando autenticação compartilhada e deve exibir na saída padrão todos os logins da entidade com que se autenticar.
@@ -2155,10 +2158,10 @@ public abstract class Assistant {
 
   public static Assistant createWithPrivateKey(String host, int port,
                                                String entity,
-                                               PrivateKey key);
+                                               RSAPrivateKey key);
   public static Assistant createWithPrivateKey(String host, int port,
                                                String entity,
-                                               PrivateKey key,
+                                               RSAPrivateKey key,
                                                AssistantParams params);
   ...
 }
@@ -2178,15 +2181,15 @@ public abstract class Assistant {
 
 public class AuthArgs {
   public AuthArgs(String entity, byte[] password);
-  public AuthArgs(String entity, PrivateKey privkey);
-  public AuthArgs(LoginProcess attempt, byte[] secret);
+  public AuthArgs(String entity, RSAPrivateKey privkey);
+  public AuthArgs(SharedAuthSecret secret);
 }
 
-return new Assistant(busHost, busPort) {
+return new Assistant(busHost, busPort, params) {
   public AuthArgs onLoginAuthentication() {
-    OctetSeqHolder secret = new OctetSeqHolder();
-    LoginProcess attempt = conn.startSharedAuth(secret);
-    return new AuthArgs(attempt, secret.value);
+    byte[] data = ...
+    SharedAuthSecret secret = context.decodeSharedAuth(data);
+    return new AuthArgs(secret);
   }
 };
   \end{samplecode}
@@ -2203,13 +2206,12 @@ public abstract class Assistant {
                               ServiceProperty[] properties);
   public ServiceOfferDesc[] findServices(ServiceProperty[] properties,
                                          int retries)
-                                         throws Throwable;
+                                         throws Exception;
   public ServiceOfferDesc[] getAllServices(int retries)
-                                           throws Throwable;
+                                           throws Exception;
 
-  public LoginProcess startSharedAuth(OctetSeqHolder secret,
-                                      int retries)
-                                      throws Throwable;
+  public SharedAuthSecret startSharedAuth(int retries)
+                                      throws Exception;
 
   public void shutdown();
   ...
@@ -2229,15 +2231,15 @@ public class AssistantParams {
 
 public interface OnFailureCallback {
   void onLoginFailure(Assistant assistant,
-                      Throwable except);
+                      Exception except);
   void onRegisterFailure(Assistant assistant,
                          IComponent component,
                          ServiceProperty[] properties,
-                         Throwable except);
+                         Exception except);
   void onFindFailure(Assistant assistant,
-                     Throwable except);
+                     Exception except);
   void onStartSharedAuthFailure(Assistant assistant,
-                                Throwable except);
+                                Exception except);
 }
   \end{samplecode}
 \end{frame}

@@ -219,23 +219,21 @@ Contudo, uma chave pode ser bem mais segura que uma senha se gerada de forma ade
 A seguir são apresentadas algumas as operações relacionadas a autenticação via chave e certificado.
 
 \begin{samplecode}[language=java]
-public class OpenBusPrivateKey {
-  static public PrivateKey createPrivateKeyFromBytes(
-    byte[] privateKeyBytes) throws NoSuchAlgorithmException,
-                                   InvalidKeySpecException;
-  static public PrivateKey createPrivateKeyFromFile(
-    String privateKeyFile) throws IOException,
-                                  NoSuchAlgorithmException,
-                                  InvalidKeySpecException;
+public final class Cryptography {
+  public static synchronized Cryptography getInstance();
+  public RSAPrivateKey readKeyFromFile(String fileName)
+    throws IOException, InvalidKeySpecException, CryptographyException;
+  public RSAPrivateKey readKeyFromBytes(byte[] prvKeyByteArray)
+    throws InvalidKeySpecException, CryptographyException;
 }
 
 public interface Connection {
-  void loginByCertificate(String entity, PrivateKey privateKey)
+  void loginByCertificate(String entity, RSAPrivateKey privateKey)
     throws AlreadyLoggedIn, AccessDenied, MissingCertificate, ServiceFailure;
   ...
 \end{samplecode}
 
-A classe \code{OpenBusPrivateKey} oferece funções utilitárias para facilitar a leitura de chaves privadas a partir de um arquivo ou se um array de bytes.
+A classe \code{Cryptography} oferece funções utilitárias para facilitar a leitura de chaves privadas a partir de um arquivo ou se um array de bytes.
 Alternativamente, é possível utilizar as próprias classes do Java para obter a chave ser utilizada na autenticação por chave e certificado.
 A operação \code{loginByCertificate} recebe o nome da entidade a ser autenticada e a chave privada correspondente ao certificado registrado no barramento para essa entidade.
 Por essa razão, é necessário gerar e registrar no barramento um certificado e chave para cada sistema que utilize essa forma de autenticação.
