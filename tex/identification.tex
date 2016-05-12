@@ -48,19 +48,19 @@ Em particular, é necessário utilizar o compilador de IDL do SDK e as bibliotecas
 Para compilar a IDL \code{matrices.idl} utilizando o compilador de IDL do OpenBus SDK para Java utilize o seguinte comando:
 
 \begin{samplecode}[language=bash,escapechar=]
-java -cp $ODK_HOME/lib/jacorb-idl-compiler-3.4.jar org.jacorb.idl.parser matrices.idl
+java -cp $ODK_HOME/lib/jacorb-idl-compiler-3.5.jar org.jacorb.idl.parser matrices.idl
 \end{samplecode}
 
 Para compilar os programas para utilizarem a biblioteca de acesso, utilize o seguinte comando:
 
 \begin{samplecode}[language=bash,escapechar=]
-javac -cp "$ODK_HOME/lib/jacorb-3.4.jar\
-:$ODK_HOME/lib/jacorb-omgapi-3.4.jar\
-:$ODK_HOME/lib/openbus-sdk-core-2.0-SNAPSHOT.jar\
-:$ODK_HOME/lib/openbus-sdk-legacy-2.0-SNAPSHOT.jar\
-:$ODK_HOME/lib/scs-core-1.2.1.1.jar\
-:$ODK_HOME/lib/slf4j-api-1.6.4.jar\
-:$ODK_HOME/lib/slf4j-jdk14-1.6.4.jar" \
+javac -cp "$ODK_HOME/lib/jacorb-3.5.jar\
+:$ODK_HOME/lib/jacorb-omgapi-3.5.jar\
+:$ODK_HOME/lib/openbus-sdk-core-2.0.2.0.jar\
+:$ODK_HOME/lib/openbus-sdk-legacy-2.0.2.0.jar\
+:$ODK_HOME/lib/scs-core-1.2.1.3.jar\
+:$ODK_HOME/lib/slf4j-api-1.7.6.jar\
+:$ODK_HOME/lib/slf4j-jdk14-1.7.6.jar" \
     tecgraf/openbus/demo/matrices/Server.java \
     tecgraf/openbus/demo/matrices/Application.java
 \end{samplecode}
