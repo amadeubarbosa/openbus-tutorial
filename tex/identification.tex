@@ -253,13 +253,13 @@ Tal como uma senha, é importante garantir que a chave privada gerada só possa se
 Por isso, sugere-se apagar o arquivo \code{tmp.key} gerado e só dar permissão de leitura ao arquivo \code{private.key} para o usuário do sistema que executará o sistema a ser autenticado.
 Finalmente envie o certificado público gerado \code{system.crt} para o gerente do barramento para que ele seja registrado para autenticação da entidade com que o sistema será autenticado.
 Veremos na seção~\ref{sec:addcertificate} como um administrador registra um certificado de autenticação no barramento.
-Uma vez feito isso, podemos adaptar nosso servidor de matrizes para que ele se autentique ao barramento usando a chave privada gerada \code{private.key}, conforme ilustrado na figura~\ref{fig:ex07:matrices/Server:60:87}.
+Uma vez feito isso, podemos adaptar nosso servidor de matrizes para que ele se autentique ao barramento usando a chave privada gerada \code{private.key}, conforme ilustrado na figura~\ref{fig:ex07:matrices/Server:62:89}.
 Inicialmente fazemos a leitura da chave private usando a função utilitária \code{createPrivateKeyFromFile} (linha~\ref{lin:ex07:matrices/Server:readkey}).
 Em seguida, tal como no exemplo da figura~\ref{fig:ex06:matrices/Application:16:46}, inicamos um ORB com suporte ao OpenBus (linha~\ref{lin:ex07:matrices/Server:initorb}), obtemos o objeto de contexto do ORB (linha~\ref{lin:ex07:matrices/Server:getcontext}), criamos uma conexão para um barramento específico (linha~\ref{lin:ex07:matrices/Server:createconn}) e definimos essa conexão como a conexão default a ser utilizada em todas as comunicações através aquele ORB (linha~\ref{lin:ex07:matrices/Server:setdefconn}).
 Contudo, a autenticação é feita através da chave privada usando a operação \code{loginByCertificate} (linha~\ref{lin:ex07:matrices/Server:loginconn}).
-Novamente, como no exemplo da figura~\ref{fig:ex07:matrices/Server:60:87}, é importante chamar a operação \code{logout} quando a conexão não for mais utilizada para facilitar com que os recursos alocados para manutenção da autenticação sejam liberados (linha~\ref{lin:ex07:matrices/Server:logoutconn}).
+Novamente, como no exemplo da figura~\ref{fig:ex07:matrices/Server:62:89}, é importante chamar a operação \code{logout} quando a conexão não for mais utilizada para facilitar com que os recursos alocados para manutenção da autenticação sejam liberados (linha~\ref{lin:ex07:matrices/Server:logoutconn}).
 
-\inputexrange{ex07}{matrices/Server}{60}{87}{Servidor de matrizes com login por certificado.}
+\inputexrange{ex07}{matrices/Server}{62}{89}{Servidor de matrizes com login por certificado.}
 
 \section{Autenticação Compartilhada}
 
@@ -331,18 +331,18 @@ Já a operação \code{originators} devolve uma lista de informações de login de ou
 As operações \code{busid} e \code{target} devolvem os identificadores do barramento e do login da conexão através do qual a chamada foi recebida, o que é útil em aplicações que fazem uso de múltiplas conexões com múltiplos barramentos ou identidades.
 
 Para ilustrar isso, consideremos alternar o nosso servidor de matrizes para que ele só aceite chamadas provenientes de sistemas autenticados com a entidade \code{MatricesUser}.
-A figura~\ref{fig:ex09:matrices/Server:53:81} ilustra a implementação da fábrica de matrizes fazendo uso da identificação da origem das chamadas para recusar chamadas de origens não autenticadas.
+A figura~\ref{fig:ex09:matrices/Server:55:83} ilustra a implementação da fábrica de matrizes fazendo uso da identificação da origem das chamadas para recusar chamadas de origens não autenticadas.
 Inicialmente, obtemos o objeto de contexto do OpenBus para o ORB que recebeu a chamada (linha~\ref{lin:ex09:matrices/Server:getctxt}).
 A partir da operação \code{getCallerChain} do objeto de contexto obtermos todas as identidades originadoras daquela cadeia de chamadas, e a operação \code{caller} devolve a identidade de quem efetivamente fez a chamada atual (linha~\ref{lin:ex09:matrices/Server:getcaller}).
 Na linha~\ref{lin:ex09:matrices/Server:checkcaller} testamos se a entidade de origem da chamada não é a esperada e lançamos uma exceção de \code{NO\_PERMISSION} para impedir que achamada prossiga (linha~\ref{lin:ex09:matrices/Server:noperm}).
 
-\inputexrange{ex09}{matrices/Server}{53}{81}{Fábrica de matrizes com identificação de chamada.}
+\inputexrange{ex09}{matrices/Server}{55}{83}{Fábrica de matrizes com identificação de chamada.}
 
-Adotamos essa abordagem para adaptar as implementações das operações dos objetos de matrizes, como ilustrado na figura~\ref{fig:ex09:matrices/Server:18:51}.
-Na linha~\ref{lin:ex09:matrices/Server:authimpl} declaramos uma operação privada que faz a validação da origem da chamada tal como na figura~\ref{fig:ex09:matrices/Server:53:81}.
+Adotamos essa abordagem para adaptar as implementações das operações dos objetos de matrizes, como ilustrado na figura~\ref{fig:ex09:matrices/Server:20:53}.
+Na linha~\ref{lin:ex09:matrices/Server:authimpl} declaramos uma operação privada que faz a validação da origem da chamada tal como na figura~\ref{fig:ex09:matrices/Server:55:83}.
 Em seguida, chamamos essa operação de validação nas implementações das operações \code{multiply} (linha~\ref{lin:ex09:matrices/Server:authmultiply}) e \code{dispose} (linha~\ref{lin:ex09:matrices/Server:authdispose}) para garantir que elas só executem por completo quando iniciadas por um sistema devidamente autenticado.
 
-\inputexrange{ex09}{matrices/Server}{18}{51}{Operações das matrizes com identificação de chamada.}
+\inputexrange{ex09}{matrices/Server}{20}{53}{Operações das matrizes com identificação de chamada.}
 
 Fica como exercício para o leitor adaptar a aplicação cliente para que ela tente executar uma operação com a identidade errada para validar a implementação do servidor com identificação da origem da chamada.
 
@@ -398,14 +398,14 @@ A operação \code{joinChain} sendo chamada sem nenhum parâmetro é equivalente a \
 A operação \code{exitChain} remove a cadeia de chamadas definida para o contexto atual, e é equivalente a \code{OpenBusContext.joinChain(null)}.
 Por fim, a operação \code{getJoinedChain} é usada para obter a cadeia de chamadas definida para o contexto atual.
 
-A figura~\ref{fig:ex12:matrices/Server:89:129} ilustra a adaptação do servidor de matrizes para obter uma refência para o serviço de provedor de dados (linha~\ref{lin:ex12:matrices/Server:getref}) e repassá-la para a fábrica de matrizes (linha~\ref{lin:ex12:matrices/Server:passref}).
+A figura~\ref{fig:ex12:matrices/Server:91:131} ilustra a adaptação do servidor de matrizes para obter uma refência para o serviço de provedor de dados (linha~\ref{lin:ex12:matrices/Server:getref}) e repassá-la para a fábrica de matrizes (linha~\ref{lin:ex12:matrices/Server:passref}).
 
-\inputexrange{ex12}{matrices/Server}{89}{129}{Servidor de fábrica de matrizes obtendo referência para serviço de dados.}
+\inputexrange{ex12}{matrices/Server}{91}{131}{Servidor de fábrica de matrizes obtendo referência para serviço de dados.}
 
-A figura~\ref{fig:ex12:matrices/Server:53:87} ilustra as alterações na fábrica de matrizes para armazenar a referência do serviço (linha~\ref{lin:ex12:matrices/Server:saveref}) e utilizá-la para obter os dados (linha~\ref{lin:ex12:matrices/Server:callservice}) para criação de uma matriz (linha~\ref{lin:ex12:matrices/Server:creatematrix}).
+A figura~\ref{fig:ex12:matrices/Server:55:89} ilustra as alterações na fábrica de matrizes para armazenar a referência do serviço (linha~\ref{lin:ex12:matrices/Server:saveref}) e utilizá-la para obter os dados (linha~\ref{lin:ex12:matrices/Server:callservice}) para criação de uma matriz (linha~\ref{lin:ex12:matrices/Server:creatematrix}).
 Contudo, para que o acesso ao serviço de dados seja realizado com as identidades necessárias para que seja autorizado, é necessário antes fazer a junção da cadeia de chamadas correspondente à chamada atual, o que é feito através da operação \code{joinChain} (linha~\ref{lin:ex12:matrices/Server:joinchain}).
 
-\inputexrange{ex12}{matrices/Server}{53}{87}{Fábrica de matrizes utilizando serviço de dados.}
+\inputexrange{ex12}{matrices/Server}{55}{89}{Fábrica de matrizes utilizando serviço de dados.}
 
 \section{Observadores de Login}
 
@@ -464,29 +464,29 @@ Enquanto as operações \code{forgetLogin} e \code{forgetLogins} permitem remover 
 A operação \code{getWatchedLogins} devolve os logins de interesse atuais, e a operação \code{remove} cancela o registro do objeto observador e todos seus logins de interesse, evitando que futuras notificações a esse observador sejam feitas.
 
 Para adaptar nossa implementação do servidor de matrizes para descartar automaticamente as matrizes, faremos com que esse servidor registre um observador e sempre que uma matriz for criada, o login de quem a cria é adicionado ao observador para que ele seja notificado quando o login expirar.
-Isso é ilustrado na figura~\ref{fig:ex13:matrices/Server:68:92}.
+Isso é ilustrado na figura~\ref{fig:ex13:matrices/Server:70:94}.
 Nessa implementação, o construtor do objeto da fábrica recebe um POA que é onde o observador é registrado (linha~\ref{lin:ex13:matrices/Server:poaarg}).
 De forma complementar, o construtor passa a lançar exceções relativas ao registro de objetos CORBA no POA, mas que não devem ocorrer na prática, a menos por um erro de implementação (linha~\ref{lin:ex13:matrices/Server:newexcepts}).
 Nesse construtor é criado um mapa para associar cada nome de entidade a todas os objetos matriz criados por ela (linha~\ref{lin:ex13:matrices/Server:ownertable}).
 Cada entrada do mapa inclui um segundo mapa que associa cada matriz criada ao \term{object ID} que identifica o objeto CORBA correspondente.
 Essa informação será utilizada na desativação dos objetos CORBA correspondentes às matrizes criadas por uma entidade quando a notificação do seu logout for recebida pelo observador (linha~\ref{lin:ex13:matrices/Server:deactivatematrix}).
 
-\inputexrange{ex13}{matrices/Server}{68}{92}{Observador que descarta matrizes.}
+\inputexrange{ex13}{matrices/Server}{70}{94}{Observador que descarta matrizes.}
 
-A figura~\ref{fig:ex13:matrices/Server:105:151} ilustra como alteramos a operação de criação de matrizes para registrar as matrizes para o devido descarte em decorrência da notificação de logout.
+A figura~\ref{fig:ex13:matrices/Server:107:153} ilustra como alteramos a operação de criação de matrizes para registrar as matrizes para o devido descarte em decorrência da notificação de logout.
 Primeiramente, o construtor dos objetos de matriz passa a receber a fábrica e o login de quem requisitou sua criação (linha~\ref{lin:ex13:matrices/Server:informlogin}).
-Isso será usado para que a matriz possa se retirar do mapa de matrizes da fábrica quando ela for descartada como ilustrado na figura~\ref{fig:ex13:matrices/Server:153:173}.
+Isso será usado para que a matriz possa se retirar do mapa de matrizes da fábrica quando ela for descartada como ilustrado na figura~\ref{fig:ex13:matrices/Server:155:175}.
 Uma vez criado o objeto da matriz, ele é ativado como objeto CORBA (linha~\ref{lin:ex13:matrices/Server:activatematrix}) e adicionado ao mapa de matrizes (linha~\ref{lin:ex13:matrices/Server:registermatrix}).
 Caso alguma exceção seja lançada durante o registro da matriz no POA, então a mesma é removida do mapa de matrizes criadas (linhas~\ref{lin:ex13:matrices/Server:disposematrix1} e \ref{lin:ex13:matrices/Server:disposematrix2}).
 Após o registro do objeto CORBA, o login que solicita a criação da matriz passa a ser observado (linha~\ref{lin:ex13:matrices/Server:watchlogin}), de forma que a matriz possa ser descartada quando esse login ficar inválido.
 Caso ocorra uma exceção na observação do login, a matriz é descartada e uma exceção é sinalizada para o cliente indicando que não foi possível criar a matriz (linha~\ref{lin:ex13:matrices/Server:disposematrix3}).
 De forma similar, se a operação \code{watchLogin} devolver o valor \code{false}, indicando que o login sendo observado já está inválido (linha~\ref{lin:ex13:matrices/Server:watchfail}), então a matriz também é descartada (linha~\ref{lin:ex13:matrices/Server:disposematrix4}) e uma exceção é sinalizada para o cliente.
 
-\inputexrange{ex13}{matrices/Server}{105}{151}{Registrando matriz para descarte.}
+\inputexrange{ex13}{matrices/Server}{107}{153}{Registrando matriz para descarte.}
 
-\inputexrange{ex13}{matrices/Server}{153}{173}{Operação de descarte da matriz.}
+\inputexrange{ex13}{matrices/Server}{155}{175}{Operação de descarte da matriz.}
 
-Por fim, a figura~\ref{fig:ex13:matrices/Server:33:66} ilustra a nova implementação da classe \code{MatrixServant} em que o construtor recebe uma referência para o objeto de fábrica e o login que solicitou a criação da matriz(linha~\ref{lin:ex13:matrices/Server:savefactory} e \ref{lin:ex13:matrices/Server:savelogin}).
+Por fim, a figura~\ref{fig:ex13:matrices/Server:35:68} ilustra a nova implementação da classe \code{MatrixServant} em que o construtor recebe uma referência para o objeto de fábrica e o login que solicitou a criação da matriz(linha~\ref{lin:ex13:matrices/Server:savefactory} e \ref{lin:ex13:matrices/Server:savelogin}).
 Essas informações são utilizadas na operação \code{dispose} da matriz para descartá-la da fábrica (linha~\ref{lin:ex13:matrices/Server:disposematrix}) e assim evitar que seja descartada automaticamente em virtude do logout do cliente.
 
-\inputexrange{ex13}{matrices/Server}{33}{66}{Matriz que notifica descarte.}
+\inputexrange{ex13}{matrices/Server}{35}{68}{Matriz que notifica descarte.}

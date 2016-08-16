@@ -222,14 +222,14 @@ Essa última referência é usada para controlar a oferta, tal como alterar suas pr
 Para ilustrar a utilização do registro de ofertas para buscar serviços, consideremos alterar o nosso servidor de exemplo para passar a utilizar um serviço que forneça os dados das matrizes de transformação através de uma faceta que implemente a interface \code{TransformationRepository}.
 Para tanto, também vamos considerar que esse serviço seja ofertado pela entidade \code{Transformations} e seja ofertado com a propriedade de nome \code{Domain} com o valor \code{"Tutorial"}.
 
-A figura~\ref{fig:ex14:matrices/Server:97:146} ilustra o código do servidor alterado para buscar o serviço de dados de matrizes através da operação \code{findServices} (linha~\ref{lin:ex14:matrices/Server:findserv}).
+A figura~\ref{fig:ex14:matrices/Server:99:148} ilustra o código do servidor alterado para buscar o serviço de dados de matrizes através da operação \code{findServices} (linha~\ref{lin:ex14:matrices/Server:findserv}).
 Uma vez feita a busca, iteramos sobre todas as ofertas encontradas para tentar obter a faceta de interesse através da operação \code{getFacet} da referência do componente do serviço (linha~\ref{lin:ex14:matrices/Server:getfacet}).
 Se alguma exceção ocorrer durante o acesso ao serviço ofertado (linha~\ref{lin:ex14:matrices/Server:catchex}) a oferta é ignorada e continuamos a inspecionar as demais.
 Por outro lado, se conseguirmos a faceta do serviço de interesse terminamos a busca (linha~\ref{lin:ex14:matrices/Server:servfound}).
 Após a inspeção dos resultados verificamos se conseguimos algum serviço acessível (linha~\ref{lin:ex14:matrices/Server:checkserv}).
 Caso nenhum serviço esteja acessível, encerramos a execução (linha~\ref{lin:ex14:matrices/Server:endexec}).
 
-\inputexrange{ex14}{matrices/Server}{97}{146}{Servidor que buscando ofertas de interesse.}
+\inputexrange{ex14}{matrices/Server}{99}{148}{Servidor que buscando ofertas de interesse.}
 
 Essa abordagem apresenta o problema de que a busca do serviço só é feita ao iniciar o servidor.
 Logo, se o serviço não estiver disponível nesse momento ou ser posteriormente substituído por outro serviço, o servidor terá que ser reiniciado para obter uma nova referência ao serviço.
@@ -237,7 +237,7 @@ Para contornar isso, podemos alterar o servidor para buscar um novo serviço só q
 A figura~\ref{fig:ex15:matrices/Server:55:104} ilustra a implementação de uma operação para obtenção dos dados de uma matriz através de um serviço.
 Caso não seja possível encontrar um serviço para obter os dados, é lançada a exceção \code{GeneralFailure} (linha~\ref{lin:ex15:matrices/Server:raiseex}) que deve ser repassada para o cliente que chama a operação \code{newMatrix}.
 
-\inputexrange{ex15}{matrices/Server}{55}{104}{Servidor que busca serviço sob demanda.}
+\inputexrange{ex15}{matrices/Server}{57}{106}{Servidor que busca serviço sob demanda.}
 
 Inicialmente a operação \code{getTransformation} verifica se já existe uma referência em uso do serviço na variável \code{\_transformations} (linha~\ref{lin:ex15:matrices/Server:savedref}).
 Se existir, ela é usada para obter os dados para construção da matriz (linha~\ref{lin:ex15:matrices/Server:useserv1}).
@@ -341,12 +341,12 @@ Se o componente do serviço apresentar facetas que implementem interfaces que não
 Finalmente, a exceção \code{ServiceFailure} é lançada para indicar uma falha na infraestrutura do barramento, que tipicamente não tem causa relacionada com a chamada, mas sim com problemas de configuração na infraestrutura do barramento.
 
 Para ilustrar o uso a operação \code{registerService} adaptaremos o servidor de matrizes para ofertar um serviço que implementa a interface \code{MatrixFactory} como uma faceta.
-Adicionalmente, ofertaremos esse serviço com a operação adicional \code{domain} com o valor \code{"Tutorial"}, como ilustrado na figura~\ref{fig:ex16:matrices/Server:134:168}.
+Adicionalmente, ofertaremos esse serviço com a operação adicional \code{domain} com o valor \code{"Tutorial"}, como ilustrado na figura~\ref{fig:ex16:matrices/Server:136:170}.
 Inicialmente, criamos um componente SCS com um identificador adequado usando as classes \code{ComponentContext} e \code{ComponentId} (linha~\ref{lin:ex16:matrices/Server:newscs}).
 Em seguida, adicionamos a faceta \code{Matrices} ao componente que implementa a interface \code{MatrixFactory} (linha~\ref{lin:ex16:matrices/Server:addfacet}).
 Finalmente, chamamos a operação \code{registerService} para ofertar o componente criado com a proriedade \code{domain} tendo o valor \code{"Tutorial"} (linha~\ref{lin:ex16:matrices/Server:addoffer}).
 
-\inputexrange{ex16}{matrices/Server}{134}{168}{Registro de oferta do serviço de matrizes.}
+\inputexrange{ex16}{matrices/Server}{136}{170}{Registro de oferta do serviço de matrizes.}
 
 Para completar esse exemplo, devemos também adaptar a aplicação cliente para buscar o serviço ao invés de utilizar um IOR textual passado por argumento para aplicação, tal como ilustrado na figura~\ref{fig:ex17:matrices/Application:19:68}.
 Como apresentado na seção~\ref{sec:FindOffer}, utilizamos a operação \code{findService} para buscar por ofertas de serviços (linha~\ref{lin:ex17:matrices/Application:findoffer}).
@@ -474,7 +474,3 @@ Nesse caso a operação \code{offerRegistered} seria chamada duas vezes: uma pela 
 Contudo, apenas a primeira chamada que conseguir adicionar o objeto \code{fakeSubs} no mapa (linha~\ref{lin:ex19:watchoffers/Application:addfaketomap}) será capaz de processar a informação do registro da oferta.
 
 \inputexrange{ex19}{watchoffers/Application}{140}{196}{Observador de registro que registra observadores de oferta.}
-
-%figura~\ref{fig:ex16:matrices/Server:33:66}
-%(linha~\ref{lin:ex16:matrices/Server:disposematrix})
-%\inputexrange{ex16}{matrices/Server}{33}{66}{Matriz que notifica descarte.}
