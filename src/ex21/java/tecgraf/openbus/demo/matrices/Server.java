@@ -143,13 +143,13 @@ public class Server {
 		RSAPrivateKey privateKey =
 			Cryptography.getInstance().readKeyFromFile(privateKeyFile);
 
-		AssistantParams params = new AssistantParams();
-		params.callback = new AssistantFailurePrinter(System.err);
-		Assistant assistant = Assistant.createWithPrivateKey(busHost, busPort,
+		AssistantParams params = new AssistantParams();$\exlabel{assistparams}$
+		params.callback = new AssistantFailurePrinter(System.err);$\exlabel{setcallback}$
+		Assistant assistant = Assistant.createWithPrivateKey(busHost, busPort,$\exlabel{newassist}$
 		                                                     entity, privateKey,
 		                                                     params);
 
-		ORB orb = assistant.orb();
+		ORB orb = assistant.orb();$\exlabel{getorb}$
 		try {
 			OpenBusContext context = (OpenBusContext)
 				orb.resolve_initial_references("OpenBusContext");
@@ -164,15 +164,15 @@ public class Server {
 				                                               (byte) 0,
 				                                               "java"));
 			component.addFacet("Matrices", MatrixFactoryHelper.id(),
-				new MatrixFactoryServant(context, assistant));
+				new MatrixFactoryServant(context, assistant));$\exlabel{assist2factory}$
 
-			assistant.registerService(component.getIComponent(),
+			assistant.registerService(component.getIComponent(),$\exlabel{regserv}$
 				new ServiceProperty[] { new ServiceProperty("domain", "Tutorial") });
 
 			System.in.read();
 		}
 		finally {
-			assistant.shutdown();
+			assistant.shutdown();$\exlabel{assistshutdown}$
 			orb.shutdown(true);
 		}
 	}

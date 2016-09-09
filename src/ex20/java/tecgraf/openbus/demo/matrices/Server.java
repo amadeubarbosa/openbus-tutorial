@@ -152,16 +152,16 @@ public class Server {
 				public void invalidLogin(Connection conn, LoginInfo login) {
 					for (int i=0; i<Integer.MAX_VALUE; ++i)
 						try {
-							conn.loginByCertificate(entity, privateKey);
+							conn.loginByCertificate(entity, privateKey);$\exlabel{loginbycert}$
 							break;
 						}
-						catch (AlreadyLoggedIn e) { break; }
-						catch (org.omg.CORBA.SystemException e) {
+						catch (AlreadyLoggedIn e) { break; }$\exlabel{alreadylogged}$
+						catch (org.omg.CORBA.SystemException e) {$\exlabel{sysex}$
 							System.err.println("wait "+i+" sec. after login failure: "+e);
 							try { Thread.sleep(i*1000); }
 							catch (InterruptedException ie) {}
 						}
-						catch (Exception e) {
+						catch (Exception e) {$\exlabel{otherex}$
 							System.err.println("bus login failure: "+e);
 							break;
 						}

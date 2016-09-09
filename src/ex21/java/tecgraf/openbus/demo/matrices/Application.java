@@ -19,18 +19,18 @@ public class Application {
 	private static final String factoryEntity = "MatricesService";
 
 	public static void main(String[] args) throws Exception {
-		AssistantParams params = new AssistantParams();
-		params.callback = new AssistantFailurePrinter(System.err);
-		Assistant assistant = Assistant.createWithPassword(busHost, busPort,
+		AssistantParams params = new AssistantParams();$\exlabel{assistparams}$
+		params.callback = new AssistantFailurePrinter(System.err);$\exlabel{setcallback}$
+		Assistant assistant = Assistant.createWithPassword(busHost, busPort,$\exlabel{newassist}$
 		                                                   entity, password.getBytes(),
 		                                                   params);
 
-		ORB orb = assistant.orb();
+		ORB orb = assistant.orb();$\exlabel{getorb}$
 		try {
 			OpenBusContext context = (OpenBusContext)
 				orb.resolve_initial_references("OpenBusContext");
 
-			ServiceOfferDesc[] offers = assistant.findServices(new ServiceProperty[] {
+			ServiceOfferDesc[] offers = assistant.findServices(new ServiceProperty[] {$\exlabel{assistfindsrv}$
 				new ServiceProperty("domain", "Tutorial"),
 				new ServiceProperty("openbus.offer.entity", factoryEntity),
 				new ServiceProperty("openbus.component.interface",
@@ -65,7 +65,7 @@ public class Application {
 			finally { matrix.dispose(); }
 		}
 		finally {
-			assistant.shutdown();
+			assistant.shutdown();$\exlabel{assistshutdown}$
 			orb.shutdown(true);
 		}
 	}

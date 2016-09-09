@@ -1,0 +1,244 @@
+Neste capítulo são apresentaos os recursos oferecidos pela infraestrutura do \openbus{} para permitir lidar com eventuais falhas momentâneas do ambiente, tal como falhas de rede.
+Como no capítulo anterior, os exemplos são elaborados como incrementos dos últimos exemplos para formar ao final uma integração completamente funcional sobre a infraestrutura do \openbus{}.
+
+\section{Callback de Login Inválido} \label{sec:invlogincallback}
+
+Sempre que uma conexão é autenticada ela fica associada a um login que é periodicamente revalidado de forma automática.
+Contudo eventualmente o login pode não ser revalidado, por exemplo quando a comunicação com a infraestrutura do barramento ficar indisponível.
+Alternativamente um login pode ser explicitamente invalidado manualmente através das ferramentas de governança do barramento.
+Em qualquer caso, sem um login válido não é possível acessar plenamente os serviços disponíveis através do barramento.
+
+Tipicamente quando uma chamada é feita usando uma conexão com um login inválido é lançada uma exceção de \code{CORBA::NO\_PERMISSION} com o \term{minor code} INVALID_LOGIN.
+O tratamento desses casos tipicamente é autenticar novamente a conexão e repetir a chamada com o novo login obtido.
+Contudo fazer esse tipo de tratamento em todas as chamadas de operações a serviços através do barramento pode impliciar em muito código adicional repetido em todos acessos a serviços.
+
+Para evitar isso, as conexões ao barramento oferecem uma \term{callback de login inválido}, que pode ser implementada pela aplicação e é executada sempre que uma chamada for feita com um login inválido.
+Em particular essa callback pode evitar que a exceção \code{CORBA::NO\_PERMISSION} seja lançada caso um novo login válido seja estabelecido para a conexão.
+
+\subsection{Definição da Callback}
+
+A callback é definida através da operação \code{onInvalidLoginCall} como ilustrado abaixo:
+
+\begin{samplecode}
+public interface Connection {
+  ...
+  void onInvalidLoginCallback(InvalidLoginCallback callback);
+  InvalidLoginCallback onInvalidLoginCallback();
+  ...
+}
+\end{samplecode}
+
+A callback é implementada pela interface \code{InvalidLoginCallback} ilustrada abaixo.
+A operação \code{invalidLogin} recebe por parâmetro a conexão através da qual a chamada está sendo feita e as informações sobre login inválido utilizado.
+Após a execução da callback, se a conexão possuir um novo login a chamada é realizada novamente de forma transparente para a aplicação.
+Caso contrário, a chamada resulta numa exceção de \code{CORBA::NO\_PERMISSION} com o \code{minor code} apropriado.
+
+\begin{samplecode}
+public interface InvalidLoginCallback {
+  void invalidLogin(Connection conn, LoginInfo login);
+}
+\end{samplecode}
+
+Ao implementar essa callback é importante atentar para algumas características importantes dela.
+Em particular, essa callback é executada no contexto de cada chamada remota feita através da conexão enquanto o login estiver inválido.
+Portanto, se há multiplas threads fazendo chamadas concorrentes numa mesma conexão com um login inválido, a callback é executada concorrentemente para todas as chamadas.
+Felizmente as operações da conexão são thread-safe e podem ser chamadas concorrentemente de forma correta.
+
+Outra característica importante é que a chamada que resulta na chamada na callback não retorna até que a callback termine.
+Ou seja, enquanto a callback executa a chamada através da conexão fica suspensa aguardando se a callback restaurará o login válido ou se encerrará mantendo o mesmo login inválido resultando numa exceção de \code{CORBA::NO\_PERMISSION} na chamada.
+Por essa razão, essa calback é utilizada para implementar diversas políticas de como lidar com indisponibilidades do barramento, podendo decidir em que situações deve-se aguardar para que o acesso ao barramento seja restaurado, ou quando é melhor desistir do acesso e lidar com a exceção de outra forma.
+
+Uma implementação ingênua dessa callback é ilustrada na figura~\ref{fig:ex20:matrices/Server:148:169}.
+Nessa implementação é repetida a tentativa de autenticação por certificado até que seja feita com sucesso (linha~\ref{lin:ex20:matrices/Server:loginbycert}).
+É importante notar o tratamento da exceção \code{AlreadyLoggedIn} (linha~\ref{lin:ex20:matrices/Server:alreadylogged}) que pode ser lançada caso a conexão seja autenticada por outra thread, como por exemplo outra execução concorrente dessa mesma callback.
+Caso uma exceção de sistema de CORBA ocorra (linha~\ref{lin:ex20:matrices/Server:sysex}) assumimos que seja causado por uma indisponibilidade temporária e suspendemos a execução por um tempo para que uma nova tentativa de autenticação seja realizada novamente em seguida.
+Já no caso de uma outra exceção qualquer (linha~\ref{lin:ex20:matrices/Server:otherex}) assumimos que seja um caso inesperado e logamos a exceção antes de encerrar a execução da callback e encerrando as tentativas de autenticação.
+
+\inputexrange{ex20}{matrices/Server}{148}{169}{Implementação ingênua da callback de login inválido.}
+
+\subsection{Realocação de Recursos}
+
+Quando um login é invalidado, todos os recursos alocados no barramento com aquele login são automaticamente descartados.
+Exemplos desses recursos são ofertas de serviços e observadores (de oferta e login).
+Por conta disso é importante renovar esses recursos sempre que a aplicação troca o seu login.
+Ou seja, a callback de login inválido também é utilizada para registrar novamente ofertas de serviços e observadores no barramento.
+
+Por outro lado a implementação correta disso na callback de renovação pode se mostrar bem complexa devido às questões de multithread envolvidas e todos os cenários possíveis a serem considerados.
+Por exemplo, se implementarmos o registro de uma oferta de serviços logo após uma nova autenticação com sucesso na callback de login inválido, o novo login pode se tornar inválido durante o processo de registro, fazendo com que a callback seja chamada novamente recursivamente.
+Sem um devido cuidado, isso pode resultar em registros duplicados da oferta de serviço, ou mesmo que nenhuma oferta permaneça no barramento.
+
+Para evitar que os desenvolvedores de intregrações do OpenBus tenham que lidar com essas questões, oferecemos um utilitário que lida com essas questões de forma mais automática, como será apresentado na seção seguinte.
+
+\section{O Assistente} \label{sec:assistant}
+
+O Assistente é um utilitário responsável por gerenciar a integração de uma aplicação com o barramento.
+Basicamente o Assistente implementa o comportamento básico de integrações mais simples e comuns.
+Em particular, o Assistente cria uma única conexão que é definida como a conexão padrão (seção \ref{sec:ConnManage}) e faz o relogin automático dessa conexão sempre que o login corrente se torne inválido.
+Adicionalmente, o Assistente também permite que seja definido um conjunto de ofertas de serviço que o Assistente deve manter registradas no barramento sempre que tiver um login válido.
+O Assistente também facilita o tratamento de eventuais falhas de acessibilidade do barramento na busca de ofertas de serviço.
+
+\subsection{Autenticação do Assistente}
+
+Um Assistente pode ser criado através das funções fábrica ilustradas abaixo, que permitem criar Assistentes que realizarão autenticação por senha (\code{createWithPassword}) ou por certificado usando a chave privada correspondente (\code{createWithPrivateKey}).
+Nesses casos o Assistente armazena internamente a senha ou a chave privada para utilizá-la sempre que precisar reautenticar a conexão.
+
+\begin{samplecode}
+public abstract class Assistant {
+  ...
+  public static Assistant createWithPassword(String host, int port,
+                                             String entity,
+                                             byte[] password);
+  public static Assistant createWithPassword(String host, int port,
+                                             String entity, 
+                                             byte[] password,
+                                             AssistantParams params);
+
+  public static Assistant createWithPrivateKey(String host, int port,
+                                               String entity,
+                                               RSAPrivateKey key);
+  public static Assistant createWithPrivateKey(String host, int port,
+                                               String entity,
+                                               RSAPrivateKey key,
+                                               AssistantParams params);
+  ...
+}
+\end{samplecode}
+
+Alternativamente, podemos criar um Assistente extendendo a classe \code{Assistant} e implementando a operação \code{onLoginAuthentication} (ilustrada no código abaixo) para fornecer os dados de autenticação apenas quando o Assistente precisar.
+
+\begin{samplecode}
+public abstract class Assistant {
+  ...
+  public Assistant(String host, int port);
+  public Assistant(String host, int port, AssistantParams params);
+  public abstract AuthArgs onLoginAuthentication();
+  ...
+}
+
+public class AuthArgs {
+  public AuthArgs(String entity, byte[] password);
+  public AuthArgs(String entity, RSAPrivateKey privkey);
+  public AuthArgs(SharedAuthSecret secret);
+}
+\end{samplecode}
+
+Com isso, evitamos a necessidade de armazenar no Assistente informações sensíveis.
+Esse modelo também permite autenticação com dados temporários como é o caso do segredo usando na autenticação compartilhada (seção \ref{sec:sharedauth}).
+Para ilustrar isso, no código abaixo é criado um Assistente que sempre que precisa reautenticar a conexão obtem um novo segredo para autenticação compartilhada através de uma operação do sistema, como a \code{MyAppSubSystem.requestBusAuthData()} do exemplo abaixo.
+Por fim, a operação \code{onLoginAuthentication} devolve uma instância de \code{AuthArgs} contendo o dado de autenticação a ser usado, que também poderia ser uma senha ou uma chave privada de um certificado registrado para autenticação no barramento.
+
+\begin{samplecode}
+return new Assistant(busHost, busPort) {
+  public AuthArgs onLoginAuthentication() {
+    byte[] data = MyAppSubSystem.requestBusAuthData();
+    SharedAuthSecret secret = context.decodeSharedAuth(data);
+    return new AuthArgs(secret);
+  }
+};
+\end{samplecode}
+
+\subsection{Operações do Assistente}
+
+As operações oferecidas pelo Assistente são ilustradas abaixo.
+
+\begin{samplecode}
+public abstract class Assistant {
+  ...
+  public ORB orb();
+
+  public void registerService(IComponent component,
+                              ServiceProperty[] properties);
+  public ServiceOfferDesc[] findServices(ServiceProperty[] properties,
+                                         int retries)
+                                         throws Exception;
+  public ServiceOfferDesc[] getAllServices(int retries)
+                                           throws Exception;
+
+  public SharedAuthSecret startSharedAuth(int retries)
+                                      throws Exception;
+
+  public void shutdown();
+  ...
+}
+\end{samplecode}
+
+A operação \code{orb} permite obter o ORB CORBA utilizado pelo assistente para interagir com o barramento.
+A operação \code{registerService} é usada para registrar ofertas de serviço que ele deverá manter publicadas no barramento.
+A operações \code{findServices} e \code{getAllServices} buscam por ofertas no barramento ocultando eventuais falhas por um número máximo de tentativas indicado pelo parâmetro \code{retries}.
+Quando \code{retries} é negativo, essas operações só retornam quando uma busca for realizada com sucesso.
+A operação \code{startSharedAuth} se comporta de forma similar às operações de busca, mas é usada para obter um novo segredo de autenticação compartilhada.
+Por fim, a operação \code{shutdown} é usada para encerrar o funcionamento do Assistente, fazendo com que as ofertas a serem registradas sejam canceladas e removidas do barramento.
+Após essa operação, o objeto do Assistente não deve mais ser usado.
+
+\subsection{Configurações do Assistente}
+
+O comportamento do Assistente basicamente se resume a tratar eventuais falhas de acesso ao barramento, seja na autenticação, oferta de serviços, busca de serviços ofertados ou obtenção de segredos para autenticação compartilhada.
+Sempre que uma operação realizada pelo Assistente falha, ele espera por um intervalo de tempo e retenta a operação em seguida pelo número de retentativas adequado.
+Por exemplo, para o registro de um serviço, o Assistente tenta até seu encerramento (\code{shutdown}).
+Já para as demais operações, o número de retentativas informado pelo parâmetro \code{retries} é usado.
+
+A estrutura \code{AssistantParams} é usada para definir os parâmetros de configuração do Assistente.
+O parâmetro \code{interval} permite definir o intervalo (em segundos) de espera entre as retentativas de uma operação em caso de falha.
+O valor \term{defualt} é 1 segundo.
+O parâmetro \code{orb} permite definir o ORB CORBA a ser usado pelo Assistente.
+Caso nenhum ORB seja informado, um novo ORB é criado pelo Assistente.
+O parâmetro \code{connprops} permite definir as propriedades da conexão a ser criada pelo Assistente (veja a seção \ref{sec:ConnManage}).
+O parâmetro \code{callback} permite definir um objeto de callback tal como será apresentado na seção \ref{sec:AssisantFailureCallback}.
+
+\begin{samplecode}
+public class AssistantParams {
+  public Integer interval;
+  public ORB orb;
+  public Properties connprops;
+  public OnFailureCallback callback;
+}
+\end{samplecode}
+
+\subsection{Callback de Falhas do Assistente} \label{sec:AssisantFailureCallback}
+
+Em muitos casos, é importante para a aplicação poder informar sobre as eventuais falhas de acesso ao barramento.
+Essas falhas podem ter obtidas através de uma callback que implementa a interface \code{OnFailureCallback} ilustrada abaixo.
+
+\begin{samplecode}
+public interface OnFailureCallback {
+  void onLoginFailure(Assistant assistant,
+                      Exception except);
+  void onRegisterFailure(Assistant assistant,
+                         IComponent component,
+                         ServiceProperty[] properties,
+                         Exception except);
+  void onFindFailure(Assistant assistant,
+                     Exception except);
+  void onStartSharedAuthFailure(Assistant assistant,
+                                Exception except);
+}
+\end{samplecode}
+
+Todas as operações recebem como primeiro parâmetro o Assistente que obteve a exceção, e o último parâmetro é a exceção obtida.
+A operação \code{onLoginFailure} é chamada sempre que acontece uma falha no processo de autenticação.
+A operação \code{onRegisterFailure} é chamada sempre que acontece uma falha no processo de oferta de um serviço local no barramento.
+Os parâmetros \code{component} e \code{properties} indicam a referência do serviço e as propriedades a serem usadas no registro que falhou.
+A operação \code{onFindFailure} é chamada sempre que acontece uma falha numa busca, seja pela operação \code{findServices} ou \code{getAllServices}.
+A operação \code{onStartSharedAuthFailure} é chamada sempre que acontece uma falha na obtenção de um novo segredo para autenticação compartilhada através da operação \code{startSharedAuth}.
+
+\subsection{Exemplo de Uso do Assistente}
+
+A figura~\ref{fig:ex21:matrices/Server:142:179} ilustra o exemplo de servidor de matrizes utilizando um Assistente para manter o acesso ao barramento.
+Criamos um \code{AssistantParams} (linha~\ref{lin:ex21:matrices/Server:assistparams}) para definir uma callback de falhas (linha~\ref{lin:ex21:matrices/Server:setcallback}).
+Com isso criamos um novo Assistente usando uma chave privada para autenticação (linha~\ref{lin:ex21:matrices/Server:newassist}).
+Em seguida, obtemos o ORB criado pelo Assistente (linha~\ref{lin:ex21:matrices/Server:getorb}) para que seja usado para criar serviços e obter o \code{OpenBusContext} a ser usado para inpecionar as chamadas recebidas.
+Agora, ao invés de passarmos para a fábrica de matrizes uma conexão, passamos o Assistente para que ele seja usado nas buscas pelos serviços necessários pela fábrica (linha~\ref{lin:ex21:matrices/Server:assist2factory}).
+Para concluir, registramos o serviço criado no Assistente (linha~\ref{lin:ex21:matrices/Server:regserv}) para que ele mantenha esse serviço ofertado no barramento continuamente.
+Na finalização do servidor encerramos o Assistente através da operação \code{shutdown} (linha~\ref{lin:ex21:matrices/Server:assistshutdown}).
+
+\inputexrange{ex21}{matrices/Server}{142}{179}{Servidor de matrizes com Assistente.}
+
+Modificações similares podem ser feitas no lado cliente, como é ilustrado na figura~\ref{fig:ex21:matrices/Application:21:71}.
+Contudo, nesse caso o Assistente é criado com uma senha ao invés de uma chave privada (linha~\ref{lin:ex21:matrices/Application:newassist}).
+Nesse caso, a busca pelo serviço de criação de matrizes também é feita através do Assistente (linha~\ref{lin:ex21:matrices/Application:assistfindsrv}).
+
+\inputexrange{ex21}{matrices/Application}{21}{71}{Matriz que notifica descarte.}
+
+A figura~\ref{fig:ex21:matrices/AssistantFailurePrinter:17:88} ilustra a implementação da callback de falhas do Assistente utilizada nos exemplos anteriores.
+
+\inputexrange{ex21}{matrices/AssistantFailurePrinter}{17}{88}{Callback de falhas do Assistente.}
