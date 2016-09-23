@@ -1,0 +1,303 @@
+Neste capítulo são apresentados os recursos oferecidos para gerenciar a infraestrutura básica do \openbus{}, tal como levantar e configurar os serviços básicos, gerenciar os acessos ao barramento e demais serviços ofertados.
+Como no capítulo anterior, os exemplos são elaborados como incrementos dos últimos exemplos para formar ao final uma integração completamente funcional sobre a infraestrutura do \openbus{}.
+
+\section{Serviços do Núcleo}
+
+O funcionamento das integrações do barramento se baseia num conjunto de serviços básicos que compõem o núcleo.
+Esses serviços do núcleo regem o funcionamento das integrações através do barramento e a configuração desses serviços permitem controlar aspectos das integrações dos sistemas, tal como as identidades assumidas pelos sistemas, as formas de autenticação, permissões de ações, etc.
+
+\subsection{Executáveis}
+
+Uma instalação de um barramento \openbus{} consiste basicamente em levantar os serviços básicos do barramento.
+O pacote de instalação do núcleo do barramento (Core) consiste basicamente de dois executáveis, como descritos a seguir:
+
+\begin{description}
+	\item[\code{busservices}]
+	Executável que implementa todos os serviços básicos do núcleo do barramento que compõem sua infraestrutura básica de funcionamento.
+	\item[\code{busadmin}]
+	Executável que oferece uma interface de linha de comando com operações para gerência e controle dos serviços do núcleo do barramento.
+\end{description}
+
+Para que o barramento esteja operacional o executável \code{busservices} deve permacer em execução continuamente, seja como um serviço em segundo plano ou como um programa executado pelo usuário da máquina.
+As diversas formas que executável \code{busservices} pode ser disparado para atender as necessidades particulares de uma instalação variam de acordo com o sistema operacional usado e fogem do escopo desse manual.
+
+\subsection{Arquivo de Configurações}
+
+Tanto o executável do \code{busservices} como o \code{busadmin} podem obter seus parâmetros de configuração a partir de um arquivo.
+Por padrão o \code{busservices} tenta ler o arquivo \code{openbus.cfg} do diretório corrente, caso ele exista, para extrair os parâmetros de configuração (veja a seção~\ref{sec:coreconfigparams}).
+Alternativamente, é possível definir a variável de ambiente \code{OPENBUS_CONFIG} para indicar qual o arquivo de configuração a ser carregado.
+Caso essa variável de ambiente seja definida, o arquivo \code{openbus.cfg} não é carregado.
+
+Já o \code{busadmin}, por padrão, tenta ler o arquivo \code{busadmin.cfg} do diretório corrente, caso ele exista, para definir os seus parâmetros de configuração (veja a seção~\ref{sec:adminconfigparams}).
+De forma similar, a variável de ambiente que redefine o caminho do arquivo de configurações do \code{busadmin} é \code{OPENBUS_ADMINCFG}.
+
+\subsection{Argumentos de Linha de Comando}
+
+As configurações do \code{busservices} e do \code{busadmin} também podem ser redefinidas por meio de argumentos de linha de comando.
+Nesse caso o nome de cada propriedade deve ser precedido com um \code{-} (hífen) e seguido do valor da propridade, tal como ilustrado no exemplo abaixo:
+
+\begin{samplecode}[language=bash]
+busservices -port 20000 -admin john -admin jane -validator mypswval.PasswordIsEntityName
+\end{samplecode}
+
+Opcionalmente é possível separar o nome da propriedade de configuração e o seu valor por um \code{=} (sinal de igual).
+Por exemplo como ilustrado abaixo:
+
+\begin{samplecode}[language=bash]
+busservices -port=20000 -admin=john -admin=jane -validator=mypswval.PasswordIsEntityName
+\end{samplecode}
+
+Propriedades cujo valor são \code{true} e o valor default é \code{false} não tem um valor associado.
+Por exemplo para definir \code{logaddress=true} basta passar o parâmetro \code{-logaddress}.
+
+As definições passadas por linha de comando sobrescrevem as definições definidas no arquivo de configuração carregado.
+
+\subsection{Configuração do Núcleo} \label{sec:coreconfigparams}
+
+Independnete da forma que o executável \code{busservices} é disparado, é sempre necessário definir algumas configurações minimas para que ele execute adequadamente.
+Essas configurações são fornecidas através de um conjunto de propriedades fornecidas na forma de pares nome e valor.
+A seguir são apresentadas as propriedades de configuração do \code{busservices}
+
+\paragraph{\code{host}}
+Define o endereço de rede que deve ser utilizado para atender as requisições dos serviços básicos.
+Esse endereço é visto na prática como o endereço de conexão ao barramento, visto que para se autenticar e ter acesso ao barramento é necessário contactar os serviços básicos através desse endereço.
+O valor \term{default} é \code{*} que indica que todos os endereço das interfaces de rede da máquina devem ser usado para atender os sistemas intergrados.
+
+\paragraph{\code{port}}
+Define o número da porta a ser utilizada para atender as requisições dos serviços básicos.
+O valor \term{default} é \code{2089}.
+Essa porta tipicamente deve ser liberada no sistema de \code{firewall} da máquina para permitir receber conexões externas.
+Em conjunto com o endereço de rede, esse número de porta indicam as informações necessárias para contactar uma instalação particular de um barramento \openbus{}.
+Para levantar duas instâncias independentes do OpenBus numa mesma máquina é tipicamente necessário configurar cada um com uma porta diferente.
+
+\paragraph{\code{certificate}}
+Define um certificado X.509 (representação DER) a ser disponibilizado para os sistemas que acessarem o barramento para que obtenham a chave criptográfica a ser usada para encriptar dados sensíveis a serem transmitidos pelo barramento, tais como senhas e tokens temporários de autenticação.
+O valor \term{default} é \code{openbus.crt}, que indica que deve haver um arquivo com esse nome no diretório corrente contendo o certificado.
+
+\paragraph{\code{privatekey}}
+Define a chave privada (em formato PKCS\#8 na representação DER) correspondente à chave contida do certificado público do barramento.
+Esse parâmetro também é obrigatório.
+O valor \term{default} é \code{openbus.key}, que indica que deve haver um arquivo com esse nome no diretório corrente contendo a chave privada.
+
+\paragraph{\code{database}}
+Define o endereço onde o arquivo de dados persistidos dos serviços deve ser armazenado.
+O valor \term{default} é \code{openbus.db}, que indica que um arquivo com esse nome sejá utilizado (ou criado) no diretório corrente para manter os dados dos serviços persistidos.
+
+\paragraph{\code{iorfile}}
+Define o endereço onde deve ser gerado um arquivo contendo o IOR de acesso aos serviços básicos do núcleo.
+Caso esse parâmetro não seja definido o IOR de acesso aos serviços básicos do núcleo é exibido numa mensagem no log.
+
+\paragraph{\code{logfile}}
+Define o endereço onde o arquivo de log deve ser gerado com mensagens sobre a operação dos serviços básicos do núcleo.
+Caso esse parâmetro não seja definido as mensagens sobre a operação dos serviços são exibidas na saída padrão.
+
+\paragraph{\code{loglevel}}
+Define um número que indica nível de detalhe que das mensagens sobre as operações dos serviços no log gerado.
+De forma geral os primeiro cinco níveis de log podem ser entendidos da seguinte forma:
+\begin{itemize}
+	\item Erros lançados durante a execução do serviço.
+	\item Condições adversas encontradas, mas que são ignoradas.
+	\item Informações de depuração para o adminstrador.
+	\item Informações de depuração para usuários do serviço.
+	\item Informações sobre todas as chamadas CORBA ao núcleo.
+\end{itemize}
+O valor \term{default} é 3.
+
+\paragraph{\code{sslmode}}
+Define o nível de suporte ao uso de conexões encriptadas com SSL.
+Os valores possíveis são descritos abaixo:
+\begin{description}
+	\item[supported]
+	Permite o uso opicional de SSL nos acessos aos serviços do núcleo.
+	\item[required]
+	Obriga o uso de SSL nos acessos aos serviços do núcleo.
+\end{description}
+Caso esse parâmetro não seja definido então o uso de SSL não é suportado nos acessos aos serviços do núcleo.
+
+\paragraph{\code{sslport}}
+Define o número da porta a ser utilizada para atender as requisições dos serviços básicos usando SSL, que é codificada no IOR de acesso ao barramento.
+O valor \term{default} é \code{2090}.
+Essa porta tipicamente deve ser liberada no sistema de \code{firewall} da máquina para permitir receber conexões externas.
+Para levantar duas instâncias independentes do OpenBus numa mesma máquina é tipicamente necessário configurar cada um com uma porta diferente.
+
+\paragraph{\code{sslcapath}}
+Define um diretório com certificados X.509 (representação PEM) de CAs que devam ser usados na autentição dos acessos SSL.
+
+\paragraph{\code{sslcafile}}
+Define um arquivo de certificado X.509 (representação PEM) de CA que deve ser usado na autentição dos acessos SSL.
+
+\paragraph{\code{sslcert}}
+Define um arquivo de certificado X.509 (representação PEM) a ser usado pelos serviços do núcleo nos acessos SSL.
+Caso esse parâmetro não seja definido então os serviços do núcleo não fornecem uma identificação própria nos acessos SSL.
+
+\paragraph{\code{sslkey}}
+Define um arquivo de chave privada (formato PKCS\#8 na representação PEM) correspondente ao certificado SSL (parâmetro \code{sslcert}) usado pelos serviços do núcleo nos acessos SSL.
+Caso esse parâmetro não seja definido então os serviços do núcleo não fornecem uma identificação própria nos acessos SSL.
+
+\paragraph{\code{admin}}
+Define o nome de uma entidade com permissão administrativa no barramento.
+Dessa forma, qualquer sistema que acesse o barramento autenticado com o nome dessa entidade poderá executar operações administrativas tal como autorizar ofertas de serviço, remover ofertas de serviço, dentre outras ações.
+Essa propriedade pode ser definida múltiplas vezes para dar permissão a múltiplas entidades.
+
+\paragraph{\code{validator}}
+Define o nome de um módulo Lua que implemente um validador de senha do \openbus{}. e opcionalmente um nome do domínio de autenticação que esse validador ficará responsável por autenticar as senhas.
+O formato do valor desse parâmetro é \code{<domain>:<module>}, onde \code{<domain>} é o nome do domínio de autenticação de senhas do validador e \code{<module>} é o nome do módulo Lua que implementa o validador.
+Caso o valor dessa propriedade seja apenas o nome do módulo Lua, o domínio adotado para o validador é um nome vazio, ou seja, composto por nenhum caracter.
+O módulo Lua que implementa o validador deve ser uma função que é chamada para obter o validador de senha, que consiste de uma função que receve um nome de entidade a ser autenticada e a senha.
+Essa propriedade pode ser definida múltiplas vezes para definir múltiplos validadores de senha.
+O exemplo abaixo implementa um validador de senha que valida senhas através da comparação de valores de hash armazenados num arquivo.
+
+\inputnumcode[language=lua]{ex22/lua/openbus/demo/password/validator/MD5.lua}
+
+%\paragraph{\code{tokenvalidator}}
+
+\paragraph{\code{leasetime}}
+Define o tempo em segundos da validade dos logins autenticados no barramento sem necessiade da renovação automática que é feita pelo SDK do \openbus{}.
+Quando menor esse tempo, mais tráfego de rede será necessário para que os sistemas se mantenham autenticados continuamente no barramento.
+Por outro lado, quando maior esse tempo, por mais tempo os recursos como ofertas e observadores permanecerão alocados no barramento depois que um sistema for interrompido abrutamente.
+O valor \term{default} é 1800 segundos (30 minutos).
+
+\paragraph{\code{expirationgap}}
+Define o tempo em segundos do tempo que logins permanecem válidos mesmo após o tempo definido pelo parâmetro \code{leasetime}.
+Esse tempo é importante para acomodar eventuais atrasos nas comunicações de rede.
+Portanto, se a velocidade e qualidade da rede é alta esse tempo pode ser pequeno.
+Caso contrário, é interessante manter esse tempo alto para evitar que muitos login sejam perdidos devido a piora da qualidade de serviço da rede.
+O valor \term{default} é 10 segundos.
+
+\paragraph{\code{challengetime}}
+Define o tempo em segundos de validade para que o processo de autenticação por certificado seja realizado.
+Portanto, se a qualidade da rede e responsividade dos sistemas que se autenticam no barramento é alta, então esse tempo pode ser pequeno.
+Caso contrário, é interessante manter esse tempo alto para evitar que a autenticação por certificado possa expirar antes de ser completada.
+O valor \term{default} é o valor da propriedade \code{expirationgap}.
+
+\paragraph{\code{sharedauthtime}}
+Define o tempo em segundos de validade de um segredo para autenticação compartilhada.
+O valor \term{default} é o valor da propriedade \code{leasetime}.
+
+\paragraph{\code{badpasswordpenalty}}
+Define o tempo em segundos com tentativas de login limitadas após uma falha de autenticação por senha.
+Após uma falha de autenticação, este é o período em que o número de falhas de autenticação por senha (ver \code{badpasswordtries}) provenientes de um mesmo IP ou entidade será limitado.
+O valor \term{default} é 180 segundos.
+
+\paragraph{\code{badpasswordtries}}
+Define o número máximo de tentativas durante o período definido pela propriedade \code{badpasswordpenalty} oriundas de um mesmo IP ou entidade.
+O valor \term{default} é 3 tentativas. 
+
+\paragraph{\code{badpasswordlimit}}
+Define o número máximo de autenticações simultâneas com senha incorreta repassadas para os validadores de senha, ou seja, que ocorram dentro de um tempo curto.
+Caso esse parâmetro não seja definido então todas as autenticações por senha serão repassadas imediatamente para validação através dos validadores de senha configurados.
+
+\paragraph{\code{badpasswordrate}}
+Define a frequência máxima de autenticações com senha incorreta repassadas para os validadores de senha em períodos longos. 
+Caso esse parâmetro não seja definido então todas as autenticações por senha serão repassadas imediatamente para validação através dos validadores de senha configurados.
+
+\paragraph{\code{maxchannels}}
+Define o número máximo de canais de comunicação (sockets) que podem ser criados para permitir acesso aos serviços do núcleo.
+Caso esse parâmetro não seja definido então nenhum limite é imposto ao número de canais mantidos abertos com os sistemas clientes.
+
+\paragraph{\code{noauthorizations}}
+Desativa o suporte à autorizações de oferta, permitindo que qualquer serviço possa ser ofertado no barramento por qualquer sistema autenticado.
+O valor \term{default} é \code{false}, que faz com que apenas entidades devidamente registradas com autorização para ofertar serviços com interfaces específicas poderão registrar ofertas de serviço no barramento.
+
+\paragraph{\code{logaddress}}
+Inclui o endereço de origem das operações registradas no log gerado pelos serviços do núcelo.
+O valor \term{default} é \code{false}, que o log do barramento não registre essas informações.
+
+\paragraph{\code{nolegacy}}
+Desativa o suporte a versão legada do protocolo do barramento, que impede que sistemas que utilizem a versão anterior do protocolo básico do barramento sejam capazes de ter acesso ao barramento.
+O valor \term{default} é \code{false}, que habilita o suporte a sistemas que utilizem o protocolo legado.
+
+\paragraph{\code{legacydomain}}
+Define o domínio de autenticação de senha a ser utilizado para validar as autenticações legadas que não indicam um domínio de autenticação.
+Caso esse parâmetro não seja definido então o domínio adotado é o indicado pela string vazia, ou seja, sem nenhum caracter (que é o domínio padrão de um validador que não define domínio de autenticação).
+
+\paragraph{\code{configs}}
+Define um arquivo com configurações adicionais a ser carregado.
+As definições contidas nesse aquivo redefinem as definições feitas anteriormente (seja na linha de comando ou dentro de um arquivo de configuração).
+
+\subsection{Configuração do BusAdmin} \label{sec:adminconfigparams}
+
+\paragraph{busref}
+Define o endereço dos serviços do núcleo do barramento ao qual o \code{busadmin} deve ser iniciado já conectado.
+O valor dessa propriedade pode ser o caminho do arquivo contendo o IOR textual dos serviços do núcleo (tal como dado gerado pelo parâmetro \code{iorfile} do \code{busservices}).
+Alternativamente, o endereço pode ser dado no formato \code{<host>:<port>}, onde \code{<host>} é o endereço da máquina onde os serviços do núcleo estão rodando e \code{<port>} é a porta desses serviços.
+É importante notar que para conexões com SSL é necessário definir o arquivo com o IOR textual.
+
+\paragraph{entity}
+Define o nome de entidade com que o \code{busadmin} deve se autenticar durante sua inicialização.
+Essa propriedade tipicamente é definida junto com alguma que informe os dados para autenticação.
+Caso contrário uma senha e domínio de autenticação são requisitados iterativamente do usuário.
+
+\paragraph{privatekey}
+Define o caminho de um arquivo contendo a chave privada (format PKCS\#8 codificação DER) a ser utilizada na autenticação por certificado junto ao barramento durante a inicialização do \code{busadmin}.
+
+\paragraph{password}
+Define a senha a ser utilizada na autenticação junto ao barramento durante a inicialização do \code{busadmin}.
+
+\paragraph{domain}
+Define o domínio de validação de senha a ser utilizado na autenticação junto ao barramento durante a inicialização do \code{busadmin}.
+
+\paragraph{sslmode}
+Define o nível de suporte ao uso de conexões encriptadas com SSL.
+Os valores possíveis são descritos abaixo:
+\begin{description}
+	\item[supported]
+	Permite o uso opicional de SSL nos acessos aos serviços do núcleo.
+	\item[required]
+	Obriga o uso de SSL nos acessos aos serviços do núcleo.
+\end{description}
+Caso esse parâmetro não seja definido então o uso de SSL não é suportado nas comunicações através do barramento.
+
+\paragraph{\code{sslcafile}}
+Define um arquivo de certificado X.509 (representação PEM) de CA que deve ser usado na autentição dos acessos SSL.
+
+\paragraph{\code{sslcert}}
+Define um arquivo de certificado X.509 (representação PEM) a ser usado pelos serviços do núcleo nos acessos SSL.
+Caso esse parâmetro não seja definido então os serviços do núcleo não fornecem uma identificação própria nos acessos SSL.
+
+\paragraph{\code{sslkey}}
+Define um arquivo de chave privada (formato PKCS\#8 na representação PEM) correspondente ao certificado SSL (parâmetro \code{sslcert}) usado pelos serviços do núcleo nos acessos SSL.
+Caso esse parâmetro não seja definido então os serviços do núcleo não fornecem uma identificação própria nos acessos SSL.
+
+\paragraph{loglevel}
+Define um número que indica nível de detalhe que das mensagens sobre as operações feitas através do barramento.
+O valor \term{default} é 1.
+
+\paragraph{logfile}
+Define o endereço onde o arquivo de log deve ser gerado.
+Caso esse parâmetro não seja definido as mensagens de log são exibidas na saída padrão.
+
+\paragraph{interactive}
+Quando esse parâmetro é \code{true} habilita o modo interativo, no qual o \code{busadmin} aguarda que o usuário digite comandos para serem executados.
+O valor \term{default} é \code{false}.
+Caso esse parâmetro não seja definido e nenhum arquivo de script seja indicado a linha de comando para execução, este modo interativo é habilitado por padrão.
+
+\paragraph{version}
+Quando esse parâmetro é \code{true} faz com que a versão do \code{busadmin} seja exibida na saída padrão.
+O valor \term{default} é \code{false}.
+
+\paragraph{noenvironment}
+Quando esse parâmetro é \code{true} faz com que as variáveis de ambiente \code{LUA_PATH} e \code{LUA_CPATH} sejam ignoradas para definir os valores iniciais de \code{package.path} e \code{package.cpath} no ambiente Lua.
+O valor \term{default} é \code{false}.
+
+\paragraph{load}
+Define o nome de um módulo Lua a ser carregado.
+
+\paragraph{execute}
+Define um código Lua a ser executado.
+
+\section{O BusExplorer}
+
+\subsection{Registro de Certificados}
+
+\subsection{Registro de Interfaces}
+
+\subsection{Autorização de Ofertas}
+
+\subsection{Gerência de Ofertas}
+
+\subsection{Gerência de Logins}
+
+%figura~\ref{fig:ex16:matrices/Server:33:66}
+%(linha~\ref{lin:ex16:matrices/Server:disposematrix})
+%\inputexrange{ex16}{matrices/Server}{33}{66}{Matriz que notifica descarte.}
