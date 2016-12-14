@@ -237,7 +237,7 @@ A classe \code{Cryptography} oferece funções utilitárias para facilitar a leitur
 Alternativamente, é possível utilizar as próprias classes do Java para obter a chave ser utilizada na autenticação por chave e certificado.
 A operação \code{loginByCertificate} recebe o nome da entidade a ser autenticada e a chave privada correspondente ao certificado registrado no barramento para essa entidade.
 Por essa razão, é necessário gerar e registrar no barramento um certificado e chave para cada sistema que utilize essa forma de autenticação.
-Isso pode ser feito utilizando o utilitário de linha de comando do projeto de código aberto OpenSSL, que vem instalado em muitas plataformas e também é disponibilizado pelo OpenBus.
+Isso pode ser feito utilizando o utilitário de linha de comando do projeto de código aberto OpenSSL (versão 1.0.0 ou maior), que vem instalado em muitas plataformas.
 Por exemplo, para gerar um par de chave (\code{private.key}) e certificado auto-assinado (\code{system.crt}) para uso na autenticação no OpenBus, é possível utilizar os seguintes comandos do OpenSSL:
 
 \begin{samplecode}[language=bash]
